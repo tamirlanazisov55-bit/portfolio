@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Азисов Тамирлан — Digital Brand Designer</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="hero screen" aria-label="Первый экран портфолио">
+      <header class="topbar" aria-label="Навигация">
+        <a class="pill logo-pill" href="/" aria-label="Азисов Тамирлан">
+          <img src="./assets/logotype.svg" alt="" class="logo-mark logo-mark-default" />
+          <img src="./assets/logotype-hover.svg" alt="" class="logo-mark logo-mark-hover" />
+        </a>
+
+        <nav class="pill nav-pill" aria-label="Основные разделы">
+          <a class="type-button" href="#about" data-panel="about" data-i18n="nav.about">Обо мне</a>
+          <a class="type-button" href="#projects" data-i18n="nav.projects">Проекты</a>
+          <a class="type-button" href="#malbert" data-i18n="nav.malbert">Мальберт</a>
+          <a class="type-button" href="#cv">CV</a>
+        </nav>
+
+        <div class="pill language-switch" aria-label="Выбор языка" data-active="ru">
+          <button class="language-option type-button is-active" type="button" aria-pressed="true">ru</button>
+          <button class="language-option type-button" type="button" aria-pressed="false">en</button>
+        </div>
+      </header>
+
+      <section class="intro" aria-labelledby="hero-title">
+        <div class="portrait-stage">
+          <img class="portrait portrait-base" src="./assets/portrait-hover-base.png" alt="Портрет Тамирлана Азисова" />
+          <img class="portrait portrait-hover" src="./assets/portrait-hover-overlay.png" alt="" aria-hidden="true" />
+          <div class="avatar-orbit" aria-hidden="true">
+            <div class="orbit-item orbit-item-under">
+              <img src="./assets/avatar-orbit-under.png" alt="" />
+            </div>
+            <div class="orbit-item orbit-item-1">
+              <div class="orbit-mask orbit-mask-round">
+                <img src="./assets/avatar-orbit-02.png" alt="" />
+              </div>
+            </div>
+            <div class="orbit-item orbit-item-2">
+              <img src="./assets/avatar-orbit-01.png" alt="" />
+            </div>
+            <div class="orbit-item orbit-item-3">
+              <img src="./assets/avatar-orbit-03.png" alt="" />
+            </div>
+            <div class="orbit-item orbit-item-4">
+              <img src="./assets/avatar-orbit-04.png" alt="" />
+            </div>
+            <div class="orbit-item orbit-item-5">
+              <div class="orbit-mask">
+                <img src="./assets/avatar-orbit-05.png" alt="" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <h1 class="type-h1 soft-blur-text" id="hero-title" data-soft-blur data-i18n="hero.name">Азисов Тамирлан</h1>
+        <p class="type-body-l soft-blur-text" data-soft-blur>Digital Brand Designer</p>
+      </section>
+
+      <aside class="about-dropdown" id="about-panel" aria-label="Обо мне" hidden>
+        <section class="about-section">
+          <h2 class="type-section-title" data-i18n="about.hello.title">Привет</h2>
+          <p class="type-body-s" data-i18n="about.hello.body1">
+            Digital brand designer с 3+ годами опыта в digital. Занимаюсь айдентикой, сайтами и интерфейсами
+            для продуктов, которым нужна ясная структура, характер и визуальная система.
+          </p>
+          <p class="type-body-s" data-i18n="about.hello.body2">
+            Хорошо чувствую себя в новых контекстах: там, где нужно разобраться в задаче, найти подход и
+            довести идею до рабочего дизайна.
+          </p>
+        </section>
+
+        <section class="about-section">
+          <h2 class="type-section-title" data-i18n="about.education.title">Образование</h2>
+          <div class="about-list type-body-s">
+            <p data-i18n="about.education.item1">UpRock — Веб-дизайн</p>
+            <p data-i18n="about.education.item2">Наука дизайна — Композиция и сетки</p>
+            <p data-i18n="about.education.item3">videosmile — Супер Illustrator</p>
+            <p data-i18n="about.education.item4">МГУ им. Н. П. Огарёва — высшее экономическое образование</p>
+          </div>
+        </section>
+
+        <section class="about-section">
+          <h2 class="type-section-title" data-i18n="about.experience.title">Опыт</h2>
+          <div class="action-list type-button">
+            <button type="button">Embacy — digital brand designer</button>
+            <button type="button" data-i18n="about.experience.item2">Only digital — ui/ux designer</button>
+            <button type="button">Vipavenue — motion designer</button>
+          </div>
+        </section>
+
+        <section class="about-section contacts-section">
+          <h2 class="type-section-title" data-i18n="about.contacts.title">Контакты</h2>
+          <div class="action-list type-button">
+            <button type="button">Telegram</button>
+            <button type="button">Instagram</button>
+            <button type="button">Behance</button>
+            <button type="button" data-i18n="about.contacts.linkedin">Linkedin</button>
+          </div>
+        </section>
+      </aside>
+
+      <footer class="meta type-button" aria-label="Локация и локальное время">
+        <span>Saransk, Russia</span>
+        <span class="time">
+          <span class="clock">--:--:--</span>
+          <span class="period">--</span>
+        </span>
+      </footer>
+    </main>
+
+    <section class="footer-screen screen" aria-labelledby="footer-title">
+      <div class="footer-message">
+        <h2 class="type-body-l soft-blur-text" id="footer-title" data-soft-blur data-i18n="footer.title">Есть проект или вопрос?</h2>
+        <a
+          class="email-button type-body-l soft-blur-text"
+          href="mailto:tamirlanazisov55@gmail.com?subject=%D0%9F%D1%80%D0%BE%D0%B5%D0%BA%D1%82%20%2F%20%D0%B2%D0%BE%D0%BF%D1%80%D0%BE%D1%81"
+          aria-label="Написать на tamirlanazisov55@gmail.com"
+          data-soft-blur
+        >
+          tamirlanazisov55@gmail.com
+        </a>
+      </div>
+    </section>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
