@@ -25,6 +25,16 @@ let currentLanguage = "ru";
 let lastFooterArtifactAt = 0;
 let footerArtifactIndex = 0;
 
+function getDisplayScale() {
+  return Math.max(1, Math.min(window.innerWidth / 1920, window.innerHeight / 1080));
+}
+
+function updateDisplayScale() {
+  document.documentElement.style.setProperty("--display-scale", getDisplayScale().toFixed(4));
+}
+
+updateDisplayScale();
+
 if ("scrollRestoration" in history) {
   history.scrollRestoration = "manual";
 }
@@ -260,10 +270,11 @@ function updateNavIndicator() {
 
   const navRect = navPill.getBoundingClientRect();
   const linkRect = activeLink.getBoundingClientRect();
-  const activeX = linkRect.left - navRect.left + navPill.scrollLeft;
+  const scale = getDisplayScale();
+  const activeX = (linkRect.left - navRect.left + navPill.scrollLeft) / scale;
 
   navPill.style.setProperty("--nav-active-x", `${activeX}px`);
-  navPill.style.setProperty("--nav-active-width", `${linkRect.width}px`);
+  navPill.style.setProperty("--nav-active-width", `${linkRect.width / scale}px`);
 }
 
 function setAboutNavActive(isActive) {
@@ -359,7 +370,10 @@ document.addEventListener("pointerdown", (event) => {
   updateNavIndicator();
 });
 
-window.addEventListener("resize", updateNavIndicator);
+window.addEventListener("resize", () => {
+  updateDisplayScale();
+  updateNavIndicator();
+});
 
 if (portraitStage) {
   portraitStage.addEventListener("pointerenter", () => {
@@ -396,7 +410,7 @@ function randomBetween(min, max) {
 }
 
 function pickFooterArtifactSize() {
-  const viewportScale = Math.min(1, Math.max(0.72, window.innerWidth / 1440));
+  const viewportScale = Math.min(2, Math.max(0.72, getDisplayScale()));
   const sizes = [132, 156, 184, 216, 252, 292, 328];
   return sizes[Math.floor(Math.random() * sizes.length)] * viewportScale;
 }

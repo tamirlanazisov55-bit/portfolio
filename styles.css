@@ -50,6 +50,7 @@
   --motion-avatar-hover-out: 600ms;
   --motion-avatar-stagger: 70ms;
   --motion-soft-blur-stagger: 15ms;
+  --display-scale: 1;
   --font-main: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-medium: 500;
 
@@ -212,7 +213,7 @@ button {
 
 .topbar {
   position: fixed;
-  inset: var(--space-300) 50px auto;
+  inset: calc(var(--space-300) * var(--display-scale)) calc(50px * var(--display-scale)) auto;
   z-index: 2;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -232,6 +233,8 @@ button {
   position: relative;
   justify-self: start;
   padding: var(--space-050);
+  transform: scale(var(--display-scale));
+  transform-origin: top left;
 }
 
 .logo-mark {
@@ -265,6 +268,8 @@ button {
   gap: var(--spacing-gap-none);
   padding: var(--spacing-padding-2xs);
   overflow: hidden;
+  transform: scale(var(--display-scale));
+  transform-origin: top center;
 }
 
 .nav-pill::before {
@@ -322,6 +327,8 @@ button {
   justify-self: end;
   padding: var(--space-050);
   overflow: hidden;
+  transform: scale(var(--display-scale));
+  transform-origin: top right;
 }
 
 .language-switch::before {
@@ -363,10 +370,11 @@ button {
 .intro {
   position: absolute;
   left: 50%;
-  top: 181px;
+  top: calc(181px * var(--display-scale));
   display: flex;
   width: 334px;
-  transform: translateX(-50%);
+  transform: translateX(-50%) scale(var(--display-scale));
+  transform-origin: top center;
   flex-direction: column;
   align-items: center;
   text-align: center;
@@ -627,14 +635,15 @@ button {
 
 .meta {
   position: fixed;
-  bottom: 34px;
+  bottom: calc(34px * var(--display-scale));
   left: 50%;
   z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: var(--spacing-gap-xl);
-  transform: translateX(-50%);
+  transform: translateX(-50%) scale(var(--display-scale));
+  transform-origin: bottom center;
   color: var(--muted-ink);
   white-space: nowrap;
 }
@@ -855,7 +864,8 @@ button {
   display: flex;
   width: max-content;
   max-width: calc(100vw - 40px);
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scale(var(--display-scale));
+  transform-origin: center;
   flex-direction: column;
   align-items: center;
   gap: 2px;
