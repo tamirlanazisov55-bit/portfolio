@@ -20,6 +20,8 @@ const aboutCloseMotionMs = 380;
 const displayReferenceWidth = 1440;
 const displayReferenceHeight = 810;
 const displayMaxScale = 2;
+const heroWideOffsetMinWidth = 1920;
+const heroWideOffsetMinHeight = 1080;
 const heroWideOffset = 100;
 const footerArtifactCount = 18;
 const footerArtifactMaxActive = 7;
@@ -43,8 +45,9 @@ function getDisplayScale() {
 
 function updateDisplayScale() {
   const scale = getDisplayScale();
+  const shouldOffsetHero = window.innerWidth > heroWideOffsetMinWidth || window.innerHeight > heroWideOffsetMinHeight;
   document.documentElement.style.setProperty("--display-scale", scale.toFixed(4));
-  document.documentElement.style.setProperty("--hero-visual-offset", `${scale > 1 ? heroWideOffset : 0}px`);
+  document.documentElement.style.setProperty("--hero-visual-offset", `${shouldOffsetHero ? heroWideOffset : 0}px`);
 }
 
 updateDisplayScale();
