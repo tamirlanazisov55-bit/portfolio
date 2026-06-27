@@ -230,32 +230,44 @@ button {
 }
 
 .logo-pill {
+  width: 47px;
+  height: 47px;
   position: relative;
   justify-self: start;
-  padding: var(--space-050);
+  justify-content: center;
+  padding: 0;
   overflow: hidden;
+  flex: 0 0 47px;
+  clip-path: inset(0 round 999px);
+  contain: paint;
+  isolation: isolate;
   transform: scale(var(--display-scale));
   transform-origin: top left;
   transition: box-shadow var(--motion-fast) var(--ease-in-out-quart);
 }
 
 .logo-pill:hover,
+.logo-pill.is-hovered,
 .logo-pill:focus-visible {
   box-shadow: 0 1px 4px rgb(0 0 0 / 16%);
 }
 
 .logo-mark {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   display: block;
+  flex: 0 0 39px;
   width: 39px;
   height: 39px;
 }
 
 .logo-hover-bg {
   position: absolute;
+  z-index: 1;
   top: 50%;
   left: 50%;
+  display: block;
+  max-width: none;
   width: 51px;
   height: 51px;
   opacity: 0;
@@ -267,6 +279,7 @@ button {
 }
 
 .logo-pill:hover .logo-hover-bg,
+.logo-pill.is-hovered .logo-hover-bg,
 .logo-pill:focus-visible .logo-hover-bg {
   opacity: 1;
   transform: translate(-50%, -50%) scale(1);
@@ -275,27 +288,35 @@ button {
 .nav-pill {
   --nav-active-x: 0px;
   --nav-active-width: 0px;
-  --nav-language-scale: 1;
   position: relative;
   justify-self: center;
   gap: var(--spacing-gap-none);
   padding: var(--spacing-padding-2xs);
   overflow: hidden;
-  transform: scale(var(--display-scale)) scaleX(var(--nav-language-scale));
+  transform: scale(var(--display-scale));
   transform-origin: top center;
   transition: opacity var(--motion-about-text) var(--ease-soft-blur-in),
     filter var(--motion-about-text) var(--ease-soft-blur-in),
-    transform var(--motion-about-text) var(--ease-soft-blur-in);
+    width var(--motion-about-panel) var(--ease-soft-blur-in);
 }
 
 .nav-pill.is-language-collapsing {
-  --nav-language-scale: 0.93;
   opacity: 0.72;
   filter: blur(1.5px);
 }
 
+.nav-pill.is-language-collapsing a {
+  opacity: 0;
+  filter: blur(3px);
+  transform: translateY(3px) scale(0.96);
+}
+
 .nav-pill.is-language-expanding {
   animation: nav-language-expand 420ms var(--ease-soft-blur-in) both;
+}
+
+.nav-pill.is-language-expanding a {
+  animation: nav-language-link-in 380ms var(--ease-soft-blur-in) both;
 }
 
 .nav-pill::before {
@@ -330,8 +351,12 @@ button {
   border-radius: 999px;
   color: var(--muted-on-dark);
   white-space: nowrap;
+  transform: translateY(0) scale(1);
   transition: background-color var(--motion-soft-blur) var(--ease-soft-blur-in),
-    color var(--motion-soft-blur) var(--ease-soft-blur-in);
+    color var(--motion-soft-blur) var(--ease-soft-blur-in),
+    opacity var(--motion-about-text) var(--ease-soft-blur-in),
+    filter var(--motion-about-text) var(--ease-soft-blur-in),
+    transform var(--motion-about-text) var(--ease-soft-blur-in);
 }
 
 .nav-pill a:hover,
@@ -352,19 +377,30 @@ button {
   0% {
     opacity: 0.76;
     filter: blur(1.25px);
-    transform: scale(var(--display-scale)) scaleX(0.94);
   }
 
   62% {
     opacity: 1;
     filter: blur(0);
-    transform: scale(var(--display-scale)) scaleX(1.025);
   }
 
   100% {
     opacity: 1;
     filter: blur(0);
-    transform: scale(var(--display-scale)) scaleX(1);
+  }
+}
+
+@keyframes nav-language-link-in {
+  0% {
+    opacity: 0;
+    filter: blur(3px);
+    transform: translateY(4px) scale(0.97);
+  }
+
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0) scale(1);
   }
 }
 

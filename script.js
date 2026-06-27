@@ -208,20 +208,30 @@ function animateNavLanguageChange(language) {
     return;
   }
 
+  const initialWidth = navPill.offsetWidth;
+  const collapsedWidth = Math.max(132, initialWidth * 0.66);
+
   navPill.classList.remove("is-language-expanding");
+  navPill.style.width = `${initialWidth}px`;
+  navPill.offsetWidth;
   navPill.classList.add("is-language-collapsing");
+  navPill.style.width = `${collapsedWidth}px`;
 
   navLanguageTimer = window.setTimeout(() => {
     applyLanguage(language);
+    const targetWidth = navPill.scrollWidth;
+
     navPill.classList.remove("is-language-collapsing");
     navPill.classList.add("is-language-expanding");
+    navPill.style.width = `${targetWidth}px`;
     updateNavIndicator();
 
     navLanguageTimer = window.setTimeout(() => {
       navPill.classList.remove("is-language-expanding");
+      navPill.style.width = "";
       updateNavIndicator();
     }, 520);
-  }, 130);
+  }, 240);
 }
 
 for (const element of softBlurTexts) {
