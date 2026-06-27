@@ -47,7 +47,12 @@ function updateDisplayScale() {
   const scale = getDisplayScale();
   const shouldOffsetHero = window.innerWidth > heroWideOffsetMinWidth || window.innerHeight > heroWideOffsetMinHeight;
   document.documentElement.style.setProperty("--display-scale", scale.toFixed(4));
-  document.documentElement.style.setProperty("--hero-visual-offset", `${shouldOffsetHero ? heroWideOffset : 0}px`);
+  document.documentElement.style.setProperty("--hero-top", shouldOffsetHero ? "50%" : `${181 * scale}px`);
+  document.documentElement.style.setProperty(
+    "--hero-translate-y",
+    shouldOffsetHero ? `calc(-50% + ${heroWideOffset}px)` : "0px",
+  );
+  document.documentElement.style.setProperty("--hero-transform-origin", shouldOffsetHero ? "center" : "top center");
 }
 
 updateDisplayScale();

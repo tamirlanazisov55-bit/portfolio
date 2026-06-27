@@ -370,11 +370,11 @@ button {
 .intro {
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: var(--hero-top, 50%);
   display: flex;
   width: 334px;
-  transform: translate(-50%, calc(-50% + var(--hero-visual-offset, 0px))) scale(var(--display-scale));
-  transform-origin: center;
+  transform: translate(-50%, var(--hero-translate-y, -50%)) scale(var(--display-scale));
+  transform-origin: var(--hero-transform-origin, center);
   flex-direction: column;
   align-items: center;
   text-align: center;
@@ -891,12 +891,12 @@ button {
       rotate(var(--artifact-rotate)) scale(1.2);
   }
 
-  30% {
+  22% {
     opacity: 1;
     filter: blur(0);
     transform: translate3d(
-        calc(var(--artifact-x) + var(--artifact-drift-x) * 0.24),
-        calc(var(--artifact-y) + var(--artifact-drift-y) * 0.24),
+        calc(var(--artifact-x) + var(--artifact-drift-x) * 0.2),
+        calc(var(--artifact-y) + var(--artifact-drift-y) * 0.2),
         0
       )
       rotate(calc(var(--artifact-rotate) + 1deg)) scale(1);
