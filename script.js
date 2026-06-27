@@ -17,8 +17,8 @@ const aboutRevealElements = aboutPanel ? aboutPanel.querySelectorAll("h2, p, .ac
 const aboutMotionMs = 420;
 const aboutCloseMotionMs = 380;
 const footerArtifactCount = 18;
-const footerArtifactMaxActive = 14;
-const footerArtifactIntervalMs = 95;
+const footerArtifactMaxActive = 7;
+const footerArtifactIntervalMs = 180;
 let aboutCloseTimer;
 let aboutHoverCloseTimer;
 let currentLanguage = "ru";
