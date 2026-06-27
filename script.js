@@ -12,6 +12,7 @@ const portraitStage = document.querySelector(".portrait-stage");
 const footerScreen = document.querySelector(".footer-screen");
 const footerArtifactsLayer = document.querySelector(".footer-artifacts");
 const footerMessage = document.querySelector(".footer-message");
+const workSections = document.querySelectorAll("[data-work-section]");
 const softBlurTexts = document.querySelectorAll("[data-soft-blur]");
 const i18nElements = document.querySelectorAll("[data-i18n]");
 const aboutRevealElements = aboutPanel ? aboutPanel.querySelectorAll("h2, p, .action-list button") : [];
@@ -34,7 +35,9 @@ let currentLanguage = "ru";
 let lastFooterArtifactAt = 0;
 let footerArtifactIndex = 0;
 let navLanguageTimer;
+let workScrollFrame;
 const recentFooterArtifacts = [];
+const workCarouselState = new WeakMap();
 const footerArtifactImages = new Map();
 
 function getFooterArtifactSrc(artifactNumber) {
@@ -464,7 +467,27 @@ document.addEventListener("pointerdown", (event) => {
 
 window.addEventListener("resize", () => {
   updateDisplayScale();
+  for (const section of workSections) {
+    const state = workCarouselState.get(section);
+    updateWorkSection(section, state?.activeIndex || 0, { animate: false });
+  }
   updateNavIndicator();
+});
+
+window.addEventListener("scroll", () => {
+  if (workScrollFrame) return;
+
+  workScrollFrame = requestAnimationFrame(() => {
+    for (const section of workSections) {
+      const rect = section.getBoundingClientRect();
+      if (rect.bottom > 0 && rect.top < window.innerHeight) {
+        const state = workCarouselState.get(section);
+        updateWorkSection(section, state?.activeIndex || 0, { animate: false });
+      }
+    }
+
+    workScrollFrame = null;
+  });
 });
 
 if (portraitStage) {
@@ -496,6 +519,114 @@ for (const button of darkPillButtons) {
     button.classList.remove("is-hovered");
   });
 }
+
+function getWorkStep(section) {
+  const firstCard = section.querySelector(".work-card");
+  const styles = getComputedStyle(section);
+  const gap = Number(styles.getPropertyValue("--work-card-gap").replace("px", "")) || 20;
+
+  return firstCard ? firstCard.offsetHeight + gap : 470;
+}
+
+function updateWorkSection(section, activeIndex = 0, { animate = true } = {}) {
+  const carousel = section.querySelector("[data-work-carousel]");
+  const cards = Array.from(section.querySelectorAll(".work-card"));
+  const title = section.querySelector("[data-work-title]");
+  const subtitle = section.querySelector("[data-work-subtitle]");
+  const primary = section.querySelector("[data-work-primary]");
+  const secondary = section.querySelector("[data-work-secondary]");
+  const activeCard = cards[activeIndex];
+
+  if (!carousel || !cards.length || !activeCard) return;
+
+  const step = getWorkStep(section);
+  const cardHeight = activeCard.offsetHeight;
+  const sectionTop = section.getBoundingClientRect().top;
+  const centeredY = window.innerHeight / 2 - sectionTop - cardHeight / 2;
+
+  carousel.style.transform = `translateX(-50%) translateY(${centeredY - activeIndex * step}px) scale(var(--display-scale))`;
+
+  cards.forEach((card, index) => {
+    card.classList.toggle("is-active", index === activeIndex);
+  });
+
+  if (title) title.textContent = activeCard.dataset.title || "";
+
+  if (subtitle) {
+    const subtitleText = activeCard.dataset.subtitle || "";
+    subtitle.textContent = subtitleText;
+    subtitle.hidden = !subtitleText;
+  }
+
+  if (primary) {
+    primary.textContent = activeCard.dataset.primaryLabel || "";
+    primary.hidden = !activeCard.dataset.primaryLabel;
+  }
+
+  if (secondary) {
+    secondary.textContent = activeCard.dataset.secondaryLabel || "";
+    secondary.hidden = !activeCard.dataset.secondaryLabel;
+  }
+
+  if (animate) {
+    section.classList.remove("is-updating");
+    requestAnimationFrame(() => {
+      section.classList.add("is-updating");
+    });
+
+    window.setTimeout(() => {
+      section.classList.remove("is-updating");
+    }, 440);
+  }
+}
+
+function setWorkActive(section, nextIndex) {
+  const cards = section.querySelectorAll(".work-card");
+  const state = workCarouselState.get(section) || { activeIndex: 0, lastWheelAt: 0 };
+  const activeIndex = Math.min(cards.length - 1, Math.max(0, nextIndex));
+
+  if (activeIndex === state.activeIndex) return;
+
+  state.activeIndex = activeIndex;
+  workCarouselState.set(section, state);
+  updateWorkSection(section, activeIndex);
+}
+
+function initWorkSections() {
+  for (const section of workSections) {
+    const cards = Array.from(section.querySelectorAll(".work-card"));
+    const state = { activeIndex: 0, lastWheelAt: 0 };
+    workCarouselState.set(section, state);
+    updateWorkSection(section, 0, { animate: false });
+
+    cards.forEach((card, index) => {
+      card.addEventListener("click", () => {
+        setWorkActive(section, index);
+      });
+    });
+
+    section.addEventListener(
+      "wheel",
+      (event) => {
+        const currentState = workCarouselState.get(section);
+        const now = Date.now();
+
+        if (!currentState || now - currentState.lastWheelAt < 520 || Math.abs(event.deltaY) < 18) return;
+
+        const nextIndex = currentState.activeIndex + Math.sign(event.deltaY);
+
+        if (nextIndex < 0 || nextIndex >= cards.length) return;
+
+        event.preventDefault();
+        currentState.lastWheelAt = now;
+        setWorkActive(section, nextIndex);
+      },
+      { passive: false },
+    );
+  }
+}
+
+initWorkSections();
 
 function randomBetween(min, max) {
   return min + Math.random() * (max - min);
