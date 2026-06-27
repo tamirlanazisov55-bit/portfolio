@@ -619,6 +619,7 @@ function setWorkActive(section, nextIndex) {
   if (activeIndex === state.activeIndex) return;
 
   state.activeIndex = activeIndex;
+  state.unlockPageScrollAt = activeIndex === cards.length - 1 ? Date.now() + 900 : Infinity;
   workCarouselState.set(section, state);
   updateWorkSection(section, activeIndex);
 }
@@ -652,24 +653,61 @@ function handleWorkWheel(event) {
 
   const nextIndex = currentState.activeIndex + direction;
   const canMoveCards = nextIndex >= 0 && nextIndex < cards.length;
+  const isLastCard = currentState.activeIndex === cards.length - 1;
+  const isFirstCard = currentState.activeIndex === 0;
+  const now = Date.now();
 
-  if (!canMoveCards) return;
+  if (!canMoveCards) {
+    if (direction > 0 && isLastCard) {
+      if (now < (currentState.unlockPageScrollAt || 0)) {
+        event.preventDefault();
+        event.stopPropagation();
+        window.scrollTo(0, section.offsetTop);
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+      window.scrollTo({ top: section.offsetTop + window.innerHeight, behavior: "smooth" });
+      currentState.unlockPageScrollAt = Date.now() + 700;
+      return;
+    }
+
+    if (direction < 0 && isFirstCard) return;
+
+    return;
+  }
 
   event.preventDefault();
   event.stopPropagation();
   window.scrollTo(0, section.offsetTop);
 
-  const now = Date.now();
   if (now - currentState.lastWheelAt < 520) return;
 
   currentState.lastWheelAt = now;
   setWorkActive(section, nextIndex);
 }
 
+function keepWorkSectionPinned() {
+  for (const section of workSections) {
+    const state = workCarouselState.get(section);
+    const cards = section.querySelectorAll(".work-card");
+    if (!state || !cards.length || state.activeIndex >= cards.length - 1) continue;
+
+    const sectionTop = section.offsetTop;
+    const scrollDelta = window.scrollY - sectionTop;
+
+    if (scrollDelta > 2 && scrollDelta < window.innerHeight * 0.9) {
+      window.scrollTo(0, sectionTop);
+      return;
+    }
+  }
+}
+
 function initWorkSections() {
   for (const section of workSections) {
     const cards = Array.from(section.querySelectorAll(".work-card"));
-    const state = { activeIndex: 0, lastWheelAt: 0 };
+    const state = { activeIndex: 0, lastWheelAt: 0, unlockPageScrollAt: Infinity };
     workCarouselState.set(section, state);
     updateWorkSection(section, 0, { animate: false });
 
@@ -681,6 +719,7 @@ function initWorkSections() {
   }
 
   window.addEventListener("wheel", handleWorkWheel, { passive: false, capture: true });
+  window.addEventListener("scroll", keepWorkSectionPinned, { passive: true });
 }
 
 initWorkSections();
