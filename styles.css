@@ -259,6 +259,8 @@ button {
   flex: 0 0 39px;
   width: 39px;
   height: 39px;
+  transform-origin: center;
+  will-change: transform;
 }
 
 .logo-hover-bg {
@@ -274,15 +276,59 @@ button {
   object-fit: cover;
   pointer-events: none;
   transform: translate(-50%, -50%) scale(0.86);
-  transition: opacity var(--motion-fast) var(--ease-in-out-quart),
-    transform var(--motion-fast) var(--ease-in-out-quart);
+  will-change: opacity, transform;
 }
 
 .logo-pill:hover .logo-hover-bg,
 .logo-pill.is-hovered .logo-hover-bg,
 .logo-pill:focus-visible .logo-hover-bg {
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
+  animation: logo-hover-bg-in 560ms var(--ease-in-out-quart) both;
+}
+
+.logo-pill:hover .logo-mark,
+.logo-pill.is-hovered .logo-mark,
+.logo-pill:focus-visible .logo-mark {
+  animation: logo-hover-wobble 560ms var(--ease-in-out-quart) both;
+}
+
+@keyframes logo-hover-wobble {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  28% {
+    transform: rotate(-25deg);
+  }
+
+  56% {
+    transform: rotate(25deg);
+  }
+
+  78% {
+    transform: rotate(5deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes logo-hover-bg-in {
+  0%,
+  44% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.86);
+  }
+
+  56% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.04);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
 }
 
 .nav-pill {

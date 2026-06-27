@@ -299,6 +299,14 @@ function resetHomeState() {
 window.addEventListener("pageshow", resetHomeState);
 
 if (logoLink) {
+  logoLink.addEventListener("pointerenter", () => {
+    logoLink.classList.add("is-hovered");
+  });
+
+  logoLink.addEventListener("pointerleave", () => {
+    logoLink.classList.remove("is-hovered");
+  });
+
   logoLink.addEventListener("click", (event) => {
     event.preventDefault();
     resetHomeState();
