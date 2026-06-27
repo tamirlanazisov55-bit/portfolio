@@ -9,14 +9,21 @@ const actionButtons = document.querySelectorAll(".action-list button");
 const darkPillButtons = document.querySelectorAll(".nav-pill a, .language-option");
 const logoLink = document.querySelector(".logo-pill");
 const portraitStage = document.querySelector(".portrait-stage");
+const footerScreen = document.querySelector(".footer-screen");
+const footerArtifactsLayer = document.querySelector(".footer-artifacts");
 const softBlurTexts = document.querySelectorAll("[data-soft-blur]");
 const i18nElements = document.querySelectorAll("[data-i18n]");
 const aboutRevealElements = aboutPanel ? aboutPanel.querySelectorAll("h2, p, .action-list button") : [];
 const aboutMotionMs = 420;
 const aboutCloseMotionMs = 380;
+const footerArtifactCount = 18;
+const footerArtifactMaxActive = 14;
+const footerArtifactIntervalMs = 95;
 let aboutCloseTimer;
 let aboutHoverCloseTimer;
 let currentLanguage = "ru";
+let lastFooterArtifactAt = 0;
+let footerArtifactIndex = 0;
 
 if ("scrollRestoration" in history) {
   history.scrollRestoration = "manual";
@@ -382,4 +389,69 @@ for (const button of darkPillButtons) {
   button.addEventListener("pointerleave", () => {
     button.classList.remove("is-hovered");
   });
+}
+
+function randomBetween(min, max) {
+  return min + Math.random() * (max - min);
+}
+
+function pickFooterArtifactSize() {
+  const viewportScale = Math.min(1, Math.max(0.72, window.innerWidth / 1440));
+  const sizes = [132, 156, 184, 216, 252, 292, 328];
+  return sizes[Math.floor(Math.random() * sizes.length)] * viewportScale;
+}
+
+function createFooterArtifact(event) {
+  if (!footerScreen || !footerArtifactsLayer) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  if (window.matchMedia("(pointer: coarse)").matches) return;
+
+  const now = Date.now();
+  if (now - lastFooterArtifactAt < footerArtifactIntervalMs) return;
+  lastFooterArtifactAt = now;
+
+  const rect = footerScreen.getBoundingClientRect();
+  const size = pickFooterArtifactSize();
+  const artifactNumber = Math.floor(Math.random() * footerArtifactCount) + 1;
+  const xFromPointer = event.clientX - rect.left - size / 2;
+  const yFromPointer = event.clientY - rect.top - size / 2;
+  const x = Math.min(rect.width - size * 0.42, Math.max(-size * 0.58, xFromPointer + randomBetween(-220, 220)));
+  const y = Math.min(rect.height - size * 0.42, Math.max(-size * 0.58, yFromPointer + randomBetween(-180, 180)));
+  const driftX = randomBetween(-42, 42);
+  const driftY = randomBetween(-50, 34);
+  const duration = Math.round(randomBetween(1450, 2300));
+  const rotation = randomBetween(-13, 13);
+
+  const artifact = document.createElement("figure");
+  artifact.className = "footer-artifact";
+  artifact.style.setProperty("--artifact-size", `${size}px`);
+  artifact.style.setProperty("--artifact-x", `${x}px`);
+  artifact.style.setProperty("--artifact-y", `${y}px`);
+  artifact.style.setProperty("--artifact-drift-x", `${driftX}px`);
+  artifact.style.setProperty("--artifact-drift-y", `${driftY}px`);
+  artifact.style.setProperty("--artifact-rotate", `${rotation}deg`);
+  artifact.style.setProperty("--artifact-duration", `${duration}ms`);
+  artifact.style.zIndex = String((footerArtifactIndex % 5) + 1);
+
+  const image = document.createElement("img");
+  image.src = `./assets/footer-artifacts/artifact-${String(artifactNumber).padStart(2, "0")}.png`;
+  image.alt = "";
+  image.decoding = "async";
+  image.draggable = false;
+
+  artifact.append(image);
+  footerArtifactsLayer.append(artifact);
+  footerArtifactIndex += 1;
+
+  while (footerArtifactsLayer.children.length > footerArtifactMaxActive) {
+    footerArtifactsLayer.firstElementChild.remove();
+  }
+
+  window.setTimeout(() => {
+    artifact.remove();
+  }, duration + 120);
+}
+
+if (footerScreen && footerArtifactsLayer) {
+  footerScreen.addEventListener("pointermove", createFooterArtifact);
 }

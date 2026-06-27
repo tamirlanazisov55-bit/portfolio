@@ -804,12 +804,54 @@ button {
 
 .footer-screen {
   min-height: 100svh;
+  isolation: isolate;
+  cursor: default;
+}
+
+.footer-artifacts {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.footer-artifact {
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin: 0;
+  width: var(--artifact-size);
+  height: var(--artifact-size);
+  opacity: 0;
+  filter: blur(12px);
+  transform: translate3d(var(--artifact-x), var(--artifact-y), 0)
+    rotate(var(--artifact-rotate)) scale(0.74);
+  transform-origin: center;
+  user-select: none;
+  will-change: opacity, filter, transform;
+  animation: footer-artifact-pop var(--artifact-duration) var(--ease-soft-blur-in) both;
+}
+
+.footer-artifact img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-artifact {
+    display: none;
+  }
 }
 
 .footer-message {
   position: absolute;
   top: 50%;
   left: 50%;
+  z-index: 2;
   display: flex;
   width: max-content;
   max-width: calc(100vw - 40px);
@@ -818,6 +860,48 @@ button {
   align-items: center;
   gap: 2px;
   text-align: center;
+}
+
+@keyframes footer-artifact-pop {
+  0% {
+    opacity: 0;
+    filter: blur(14px);
+    transform: translate3d(var(--artifact-x), var(--artifact-y), 0)
+      rotate(calc(var(--artifact-rotate) - 7deg)) scale(0.72);
+  }
+
+  18% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translate3d(
+        calc(var(--artifact-x) + var(--artifact-drift-x) * 0.18),
+        calc(var(--artifact-y) + var(--artifact-drift-y) * 0.18),
+        0
+      )
+      rotate(var(--artifact-rotate)) scale(1);
+  }
+
+  72% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translate3d(
+        calc(var(--artifact-x) + var(--artifact-drift-x) * 0.72),
+        calc(var(--artifact-y) + var(--artifact-drift-y) * 0.72),
+        0
+      )
+      rotate(calc(var(--artifact-rotate) + 2deg)) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translate3d(
+        calc(var(--artifact-x) + var(--artifact-drift-x)),
+        calc(var(--artifact-y) + var(--artifact-drift-y)),
+        0
+      )
+      rotate(calc(var(--artifact-rotate) + 5deg)) scale(0.86);
+  }
 }
 
 .footer-message h2 {
