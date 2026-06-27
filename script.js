@@ -43,9 +43,22 @@ function getDisplayScale() {
   );
 }
 
+function isWideHeroViewport() {
+  const screenWidth = window.screen?.width;
+  const screenHeight = window.screen?.height;
+
+  return (
+    Boolean(screenWidth && screenHeight) &&
+    window.innerWidth > heroWideOffsetMinWidth &&
+    window.innerHeight > heroWideOffsetMinHeight &&
+    screenWidth > heroWideOffsetMinWidth &&
+    screenHeight > heroWideOffsetMinHeight
+  );
+}
+
 function updateDisplayScale() {
   const scale = getDisplayScale();
-  const shouldOffsetHero = window.innerWidth > heroWideOffsetMinWidth || window.innerHeight > heroWideOffsetMinHeight;
+  const shouldOffsetHero = isWideHeroViewport();
   document.documentElement.style.setProperty("--display-scale", scale.toFixed(4));
   document.documentElement.style.setProperty("--hero-top", shouldOffsetHero ? "50%" : `${181 * scale}px`);
   document.documentElement.style.setProperty(
@@ -223,6 +236,7 @@ if ("IntersectionObserver" in window) {
 }
 
 function resetHomeState() {
+  updateDisplayScale();
   closeAboutPanel({ immediate: true });
 
   for (const item of navLinks) {
