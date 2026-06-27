@@ -27,7 +27,7 @@ const footerArtifactCount = 18;
 const footerArtifactMaxActive = 7;
 const footerArtifactIntervalMs = 180;
 const footerArtifactRepeatGap = 7;
-const footerArtifactSizeMultiplier = 1.5;
+const footerArtifactSizeMultiplier = 1.05;
 const footerArtifactPopScale = 1.2;
 let aboutCloseTimer;
 let aboutHoverCloseTimer;
@@ -506,8 +506,8 @@ function getFooterArtifactSafeZone(footerRect) {
 
   const messageRect = footerMessage.getBoundingClientRect();
   const scale = getDisplayScale();
-  const horizontalPadding = 260 * scale;
-  const verticalPadding = 180 * scale;
+  const horizontalPadding = 130 * scale;
+  const verticalPadding = 90 * scale;
 
   return {
     left: messageRect.left - footerRect.left - horizontalPadding,
