@@ -11,6 +11,7 @@ const logoLink = document.querySelector(".logo-pill");
 const portraitStage = document.querySelector(".portrait-stage");
 const footerScreen = document.querySelector(".footer-screen");
 const footerArtifactsLayer = document.querySelector(".footer-artifacts");
+const footerMessage = document.querySelector(".footer-message");
 const softBlurTexts = document.querySelectorAll("[data-soft-blur]");
 const i18nElements = document.querySelectorAll("[data-i18n]");
 const aboutRevealElements = aboutPanel ? aboutPanel.querySelectorAll("h2, p, .action-list button") : [];
@@ -22,11 +23,13 @@ const displayMaxScale = 2;
 const footerArtifactCount = 18;
 const footerArtifactMaxActive = 7;
 const footerArtifactIntervalMs = 180;
+const footerArtifactRepeatGap = 5;
 let aboutCloseTimer;
 let aboutHoverCloseTimer;
 let currentLanguage = "ru";
 let lastFooterArtifactAt = 0;
 let footerArtifactIndex = 0;
+const recentFooterArtifacts = [];
 
 function getDisplayScale() {
   return Math.max(
@@ -421,6 +424,103 @@ function pickFooterArtifactSize() {
   return sizes[Math.floor(Math.random() * sizes.length)] * viewportScale;
 }
 
+function pickFooterArtifactNumber() {
+  const allowedArtifacts = [];
+
+  for (let index = 1; index <= footerArtifactCount; index += 1) {
+    if (!recentFooterArtifacts.includes(index)) {
+      allowedArtifacts.push(index);
+    }
+  }
+
+  const pool = allowedArtifacts.length ? allowedArtifacts : Array.from({ length: footerArtifactCount }, (_, index) => index + 1);
+  const artifactNumber = pool[Math.floor(Math.random() * pool.length)];
+
+  recentFooterArtifacts.push(artifactNumber);
+  while (recentFooterArtifacts.length > footerArtifactRepeatGap) {
+    recentFooterArtifacts.shift();
+  }
+
+  return artifactNumber;
+}
+
+function getFooterArtifactSafeZone(footerRect) {
+  if (!footerMessage) return null;
+
+  const messageRect = footerMessage.getBoundingClientRect();
+  const scale = getDisplayScale();
+  const horizontalPadding = 140 * scale;
+  const verticalPadding = 96 * scale;
+
+  return {
+    left: messageRect.left - footerRect.left - horizontalPadding,
+    right: messageRect.right - footerRect.left + horizontalPadding,
+    top: messageRect.top - footerRect.top - verticalPadding,
+    bottom: messageRect.bottom - footerRect.top + verticalPadding,
+  };
+}
+
+function rectanglesOverlap(first, second) {
+  return first.left < second.right && first.right > second.left && first.top < second.bottom && first.bottom > second.top;
+}
+
+function clamp(value, min, max) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function pickFooterArtifactPosition(event, footerRect, size) {
+  const safeZone = getFooterArtifactSafeZone(footerRect);
+  const baseX = event.clientX - footerRect.left - size / 2;
+  const baseY = event.clientY - footerRect.top - size / 2;
+  const minX = -size * 0.58;
+  const maxX = footerRect.width - size * 0.42;
+  const minY = -size * 0.58;
+  const maxY = footerRect.height - size * 0.42;
+  let fallbackPosition = { x: clamp(baseX, minX, maxX), y: clamp(baseY, minY, maxY) };
+
+  for (let attempt = 0; attempt < 14; attempt += 1) {
+    const spread = attempt < 8 ? 1 : 1.65;
+    const x = clamp(baseX + randomBetween(-220 * spread, 220 * spread), minX, maxX);
+    const y = clamp(baseY + randomBetween(-180 * spread, 180 * spread), minY, maxY);
+    const bounds = {
+      left: x,
+      right: x + size,
+      top: y,
+      bottom: y + size,
+    };
+
+    fallbackPosition = { x, y };
+
+    if (!safeZone || !rectanglesOverlap(bounds, safeZone)) {
+      return fallbackPosition;
+    }
+  }
+
+  if (safeZone) {
+    const verticalCandidates = [
+      { x: clamp(baseX, minX, maxX), y: safeZone.top - size - 24 },
+      { x: clamp(baseX, minX, maxX), y: safeZone.bottom + 24 },
+    ].filter((position) => position.y >= minY && position.y <= maxY);
+    const horizontalCandidates = [
+      { x: safeZone.left - size - 24, y: clamp(baseY, minY, maxY) },
+      { x: safeZone.right + 24, y: clamp(baseY, minY, maxY) },
+    ].filter((position) => position.x >= minX && position.x <= maxX);
+    const candidates = [...verticalCandidates, ...horizontalCandidates];
+
+    if (candidates.length) {
+      candidates.sort((first, second) => {
+        const firstDistance = Math.hypot(first.x - baseX, first.y - baseY);
+        const secondDistance = Math.hypot(second.x - baseX, second.y - baseY);
+        return firstDistance - secondDistance;
+      });
+
+      return candidates[0];
+    }
+  }
+
+  return fallbackPosition;
+}
+
 function createFooterArtifact(event) {
   if (!footerScreen || !footerArtifactsLayer) return;
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -432,11 +532,8 @@ function createFooterArtifact(event) {
 
   const rect = footerScreen.getBoundingClientRect();
   const size = pickFooterArtifactSize();
-  const artifactNumber = Math.floor(Math.random() * footerArtifactCount) + 1;
-  const xFromPointer = event.clientX - rect.left - size / 2;
-  const yFromPointer = event.clientY - rect.top - size / 2;
-  const x = Math.min(rect.width - size * 0.42, Math.max(-size * 0.58, xFromPointer + randomBetween(-220, 220)));
-  const y = Math.min(rect.height - size * 0.42, Math.max(-size * 0.58, yFromPointer + randomBetween(-180, 180)));
+  const artifactNumber = pickFooterArtifactNumber();
+  const { x, y } = pickFooterArtifactPosition(event, rect, size);
   const driftX = randomBetween(-42, 42);
   const driftY = randomBetween(-50, 34);
   const duration = Math.round(randomBetween(1450, 2300));
