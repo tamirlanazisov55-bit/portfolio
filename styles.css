@@ -1092,12 +1092,14 @@ button {
   z-index: 1;
   display: flex;
   width: 252px;
+  transform: translateY(-50%) scale(var(--display-scale));
   transform-origin: left center;
   flex-direction: column;
   align-items: flex-start;
   gap: var(--spacing-gap-xs);
 }
 
+.work-copy h1,
 .work-copy h2,
 .work-copy p {
   margin: 0;
@@ -1113,6 +1115,7 @@ button {
   right: 50px;
   z-index: 1;
   display: flex;
+  width: 166px;
   transform-origin: right center;
   align-items: center;
 }
@@ -1121,8 +1124,9 @@ button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 56px;
-  padding: var(--spacing-gap-md) var(--spacing-padding-lg) var(--spacing-padding-lg);
+  width: 83px;
+  height: 56px;
+  padding: 0 20px;
   border-radius: 999px;
   color: var(--muted-ink);
   transition: color var(--motion-soft-blur) var(--ease-soft-blur-in),
@@ -1161,16 +1165,11 @@ button {
   border-radius: 12px;
   background: #fff;
   cursor: pointer;
-  opacity: 0.42;
-  transform: scale(0.78);
   transform-origin: center;
-  transition: opacity var(--motion-soft-blur) var(--ease-soft-blur-in),
-    transform var(--motion-soft-blur) var(--ease-soft-blur-in);
+  transition: transform var(--motion-soft-blur) var(--ease-soft-blur-in);
 }
 
 .work-card.is-active {
-  opacity: 1;
-  transform: scale(1);
   cursor: default;
 }
 

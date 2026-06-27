@@ -558,7 +558,18 @@ function updateWorkSection(section, activeIndex = 0, { animate = true } = {}) {
   const sectionTop = section.getBoundingClientRect().top;
   const centeredY = window.innerHeight / 2 - sectionTop - cardHeight / 2;
 
-  carousel.style.transform = `translateX(-50%) translateY(${centeredY - activeIndex * step}px) scale(var(--display-scale))`;
+  const carouselTransform = `translateX(-50%) translateY(${centeredY - activeIndex * step}px) scale(var(--display-scale))`;
+
+  if (!animate) {
+    carousel.style.transition = "none";
+    carousel.style.transform = carouselTransform;
+    carousel.offsetHeight;
+    requestAnimationFrame(() => {
+      carousel.style.transition = "";
+    });
+  } else {
+    carousel.style.transform = carouselTransform;
+  }
 
   cards.forEach((card, index) => {
     card.classList.toggle("is-active", index === activeIndex);
