@@ -16,6 +16,9 @@ const i18nElements = document.querySelectorAll("[data-i18n]");
 const aboutRevealElements = aboutPanel ? aboutPanel.querySelectorAll("h2, p, .action-list button") : [];
 const aboutMotionMs = 420;
 const aboutCloseMotionMs = 380;
+const displayReferenceWidth = 1440;
+const displayReferenceHeight = 810;
+const displayMaxScale = 2;
 const footerArtifactCount = 18;
 const footerArtifactMaxActive = 7;
 const footerArtifactIntervalMs = 180;
@@ -26,7 +29,10 @@ let lastFooterArtifactAt = 0;
 let footerArtifactIndex = 0;
 
 function getDisplayScale() {
-  return Math.max(1, Math.min(window.innerWidth / 1920, window.innerHeight / 1080));
+  return Math.max(
+    1,
+    Math.min(window.innerWidth / displayReferenceWidth, window.innerHeight / displayReferenceHeight, displayMaxScale),
+  );
 }
 
 function updateDisplayScale() {
