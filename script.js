@@ -623,6 +623,49 @@ function setWorkActive(section, nextIndex) {
   updateWorkSection(section, activeIndex);
 }
 
+function getActiveWorkSectionFromEvent(event) {
+  const targetSection = event.target?.closest?.("[data-work-section]");
+
+  if (targetSection) return targetSection;
+
+  return Array.from(workSections).find((section) => {
+    const rect = section.getBoundingClientRect();
+    return rect.top <= 8 && rect.bottom >= window.innerHeight * 0.5;
+  });
+}
+
+function handleWorkWheel(event) {
+  if (!workSections.length || event.ctrlKey || event.metaKey) return;
+
+  const direction = Math.sign(event.deltaY);
+  if (!direction || Math.abs(event.deltaY) < 18) return;
+
+  const section = getActiveWorkSectionFromEvent(event);
+  if (!section) return;
+
+  const rect = section.getBoundingClientRect();
+  if (rect.bottom <= window.innerHeight * 0.5 || rect.top >= window.innerHeight * 0.5) return;
+
+  const cards = Array.from(section.querySelectorAll(".work-card"));
+  const currentState = workCarouselState.get(section);
+  if (!currentState || !cards.length) return;
+
+  const nextIndex = currentState.activeIndex + direction;
+  const canMoveCards = nextIndex >= 0 && nextIndex < cards.length;
+
+  if (!canMoveCards) return;
+
+  event.preventDefault();
+  event.stopPropagation();
+  window.scrollTo(0, section.offsetTop);
+
+  const now = Date.now();
+  if (now - currentState.lastWheelAt < 520) return;
+
+  currentState.lastWheelAt = now;
+  setWorkActive(section, nextIndex);
+}
+
 function initWorkSections() {
   for (const section of workSections) {
     const cards = Array.from(section.querySelectorAll(".work-card"));
@@ -635,31 +678,9 @@ function initWorkSections() {
         setWorkActive(section, index);
       });
     });
-
-    section.addEventListener(
-      "wheel",
-      (event) => {
-        const currentState = workCarouselState.get(section);
-        const now = Date.now();
-        const direction = Math.sign(event.deltaY);
-
-        if (!currentState || !direction || Math.abs(event.deltaY) < 18) return;
-
-        const nextIndex = currentState.activeIndex + direction;
-        const canMoveCards = nextIndex >= 0 && nextIndex < cards.length;
-
-        if (!canMoveCards) return;
-
-        event.preventDefault();
-
-        if (now - currentState.lastWheelAt < 520) return;
-
-        currentState.lastWheelAt = now;
-        setWorkActive(section, nextIndex);
-      },
-      { passive: false },
-    );
   }
+
+  window.addEventListener("wheel", handleWorkWheel, { passive: false, capture: true });
 }
 
 initWorkSections();
