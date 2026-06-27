@@ -34,6 +34,7 @@ let aboutHoverCloseTimer;
 let currentLanguage = "ru";
 let lastFooterArtifactAt = 0;
 let footerArtifactIndex = 0;
+let navLanguageTimer;
 const recentFooterArtifacts = [];
 
 function getDisplayScale() {
@@ -203,6 +204,30 @@ function applyLanguage(language) {
   requestAnimationFrame(updateNavIndicator);
 }
 
+function animateNavLanguageChange(language) {
+  clearTimeout(navLanguageTimer);
+
+  if (!navPill || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    applyLanguage(language);
+    return;
+  }
+
+  navPill.classList.remove("is-language-expanding");
+  navPill.classList.add("is-language-collapsing");
+
+  navLanguageTimer = window.setTimeout(() => {
+    applyLanguage(language);
+    navPill.classList.remove("is-language-collapsing");
+    navPill.classList.add("is-language-expanding");
+    updateNavIndicator();
+
+    navLanguageTimer = window.setTimeout(() => {
+      navPill.classList.remove("is-language-expanding");
+      updateNavIndicator();
+    }, 520);
+  }, 130);
+}
+
 for (const element of softBlurTexts) {
   renderSoftBlurText(element);
 }
@@ -354,7 +379,7 @@ for (const option of languageOptions) {
       item.setAttribute("aria-pressed", String(isActive));
     }
 
-    applyLanguage(language);
+    animateNavLanguageChange(language);
   });
 }
 

@@ -233,43 +233,69 @@ button {
   position: relative;
   justify-self: start;
   padding: var(--space-050);
+  overflow: hidden;
   transform: scale(var(--display-scale));
   transform-origin: top left;
+  transition: box-shadow var(--motion-fast) var(--ease-in-out-quart);
+}
+
+.logo-pill:hover,
+.logo-pill:focus-visible {
+  box-shadow: 0 1px 4px rgb(0 0 0 / 16%);
 }
 
 .logo-mark {
+  position: relative;
+  z-index: 1;
   display: block;
   width: 39px;
   height: 39px;
-  transition: opacity var(--motion-fast) var(--ease-in-out-quart);
 }
 
-.logo-mark-hover {
+.logo-hover-bg {
   position: absolute;
-  inset: var(--space-050);
+  top: 50%;
+  left: 50%;
+  width: 51px;
+  height: 51px;
   opacity: 0;
+  object-fit: cover;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0.86);
+  transition: opacity var(--motion-fast) var(--ease-in-out-quart),
+    transform var(--motion-fast) var(--ease-in-out-quart);
 }
 
-.logo-pill:hover .logo-mark-default,
-.logo-pill:focus-visible .logo-mark-default {
-  opacity: 0;
-}
-
-.logo-pill:hover .logo-mark-hover,
-.logo-pill:focus-visible .logo-mark-hover {
+.logo-pill:hover .logo-hover-bg,
+.logo-pill:focus-visible .logo-hover-bg {
   opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
 }
 
 .nav-pill {
   --nav-active-x: 0px;
   --nav-active-width: 0px;
+  --nav-language-scale: 1;
   position: relative;
   justify-self: center;
   gap: var(--spacing-gap-none);
   padding: var(--spacing-padding-2xs);
   overflow: hidden;
-  transform: scale(var(--display-scale));
+  transform: scale(var(--display-scale)) scaleX(var(--nav-language-scale));
   transform-origin: top center;
+  transition: opacity var(--motion-about-text) var(--ease-soft-blur-in),
+    filter var(--motion-about-text) var(--ease-soft-blur-in),
+    transform var(--motion-about-text) var(--ease-soft-blur-in);
+}
+
+.nav-pill.is-language-collapsing {
+  --nav-language-scale: 0.93;
+  opacity: 0.72;
+  filter: blur(1.5px);
+}
+
+.nav-pill.is-language-expanding {
+  animation: nav-language-expand 420ms var(--ease-soft-blur-in) both;
 }
 
 .nav-pill::before {
@@ -320,6 +346,26 @@ button {
 
 .nav-pill a.is-active {
   color: var(--ink);
+}
+
+@keyframes nav-language-expand {
+  0% {
+    opacity: 0.76;
+    filter: blur(1.25px);
+    transform: scale(var(--display-scale)) scaleX(0.94);
+  }
+
+  62% {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(var(--display-scale)) scaleX(1.025);
+  }
+
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(var(--display-scale)) scaleX(1);
+  }
 }
 
 .language-switch {
