@@ -373,7 +373,7 @@ button {
   top: 50%;
   display: flex;
   width: 334px;
-  transform: translate(-50%, -50%) scale(var(--display-scale));
+  transform: translate(-50%, calc(-50% + var(--hero-visual-offset, 0px))) scale(var(--display-scale));
   transform-origin: center;
   flex-direction: column;
   align-items: center;
@@ -888,7 +888,7 @@ button {
         calc(var(--artifact-y) + var(--artifact-drift-y) * 0.12),
         0
       )
-      rotate(var(--artifact-rotate)) scale(1.1);
+      rotate(var(--artifact-rotate)) scale(1.2);
   }
 
   30% {

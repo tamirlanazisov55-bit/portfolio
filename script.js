@@ -20,10 +20,12 @@ const aboutCloseMotionMs = 380;
 const displayReferenceWidth = 1440;
 const displayReferenceHeight = 810;
 const displayMaxScale = 2;
+const heroWideOffset = 100;
 const footerArtifactCount = 18;
 const footerArtifactMaxActive = 7;
 const footerArtifactIntervalMs = 180;
-const footerArtifactRepeatGap = 5;
+const footerArtifactRepeatGap = 7;
+const footerArtifactSizeMultiplier = 1.5;
 let aboutCloseTimer;
 let aboutHoverCloseTimer;
 let currentLanguage = "ru";
@@ -39,7 +41,9 @@ function getDisplayScale() {
 }
 
 function updateDisplayScale() {
-  document.documentElement.style.setProperty("--display-scale", getDisplayScale().toFixed(4));
+  const scale = getDisplayScale();
+  document.documentElement.style.setProperty("--display-scale", scale.toFixed(4));
+  document.documentElement.style.setProperty("--hero-visual-offset", `${scale > 1 ? heroWideOffset : 0}px`);
 }
 
 updateDisplayScale();
@@ -421,14 +425,19 @@ function randomBetween(min, max) {
 function pickFooterArtifactSize() {
   const viewportScale = Math.min(2, Math.max(0.72, getDisplayScale()));
   const sizes = [132, 156, 184, 216, 252, 292, 328];
-  return sizes[Math.floor(Math.random() * sizes.length)] * viewportScale;
+  return sizes[Math.floor(Math.random() * sizes.length)] * viewportScale * footerArtifactSizeMultiplier;
 }
 
 function pickFooterArtifactNumber() {
+  const visibleArtifacts = Array.from(footerArtifactsLayer?.querySelectorAll("img") || [])
+    .map((image) => Number(image.getAttribute("src")?.match(/artifact-(\d+)/)?.[1]))
+    .filter(Boolean)
+    .slice(-footerArtifactRepeatGap);
+  const blockedArtifacts = new Set([...recentFooterArtifacts, ...visibleArtifacts]);
   const allowedArtifacts = [];
 
   for (let index = 1; index <= footerArtifactCount; index += 1) {
-    if (!recentFooterArtifacts.includes(index)) {
+    if (!blockedArtifacts.has(index)) {
       allowedArtifacts.push(index);
     }
   }
