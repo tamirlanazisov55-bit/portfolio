@@ -511,9 +511,8 @@ function getFooterArtifactSafeZone(footerRect) {
   if (!footerMessage) return null;
 
   const messageRect = footerMessage.getBoundingClientRect();
-  const scale = getDisplayScale();
-  const horizontalPadding = 130 * scale;
-  const verticalPadding = 90 * scale;
+  const horizontalPadding = messageRect.width * 0.1;
+  const verticalPadding = messageRect.height * 0.1;
 
   return {
     left: messageRect.left - footerRect.left - horizontalPadding,
