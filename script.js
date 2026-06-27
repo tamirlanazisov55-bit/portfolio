@@ -22,7 +22,6 @@ const displayReferenceHeight = 810;
 const displayMaxScale = 2;
 const heroWideOffsetMinWidth = 1920;
 const heroWideOffsetMinHeight = 1080;
-const heroWideOffset = 100;
 const footerArtifactCount = 18;
 const footerArtifactMaxActive = 7;
 const footerArtifactIntervalMs = 180;
@@ -62,10 +61,7 @@ function updateDisplayScale() {
   const shouldOffsetHero = isWideHeroViewport();
   document.documentElement.style.setProperty("--display-scale", scale.toFixed(4));
   document.documentElement.style.setProperty("--hero-top", shouldOffsetHero ? "50%" : `${181 * scale}px`);
-  document.documentElement.style.setProperty(
-    "--hero-translate-y",
-    shouldOffsetHero ? `calc(-50% + ${heroWideOffset}px)` : "0px",
-  );
+  document.documentElement.style.setProperty("--hero-translate-y", shouldOffsetHero ? "-50%" : "0px");
   document.documentElement.style.setProperty("--hero-transform-origin", shouldOffsetHero ? "center" : "top center");
 }
 
