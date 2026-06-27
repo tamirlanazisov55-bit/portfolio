@@ -26,6 +26,7 @@ const footerArtifactMaxActive = 7;
 const footerArtifactIntervalMs = 180;
 const footerArtifactRepeatGap = 7;
 const footerArtifactSizeMultiplier = 1.5;
+const footerArtifactPopScale = 1.2;
 let aboutCloseTimer;
 let aboutHoverCloseTimer;
 let currentLanguage = "ru";
@@ -458,8 +459,8 @@ function getFooterArtifactSafeZone(footerRect) {
 
   const messageRect = footerMessage.getBoundingClientRect();
   const scale = getDisplayScale();
-  const horizontalPadding = 140 * scale;
-  const verticalPadding = 96 * scale;
+  const horizontalPadding = 260 * scale;
+  const verticalPadding = 180 * scale;
 
   return {
     left: messageRect.left - footerRect.left - horizontalPadding,
@@ -477,6 +478,17 @@ function clamp(value, min, max) {
   return Math.min(max, Math.max(min, value));
 }
 
+function getFooterArtifactBounds(x, y, size, driftX = 0, driftY = 0) {
+  const popOverflow = ((footerArtifactPopScale - 1) * size) / 2;
+
+  return {
+    left: Math.min(x, x + driftX) - popOverflow,
+    right: Math.max(x + size, x + driftX + size) + popOverflow,
+    top: Math.min(y, y + driftY) - popOverflow,
+    bottom: Math.max(y + size, y + driftY + size) + popOverflow,
+  };
+}
+
 function pickFooterArtifactPosition(event, footerRect, size) {
   const safeZone = getFooterArtifactSafeZone(footerRect);
   const baseX = event.clientX - footerRect.left - size / 2;
@@ -485,23 +497,17 @@ function pickFooterArtifactPosition(event, footerRect, size) {
   const maxX = footerRect.width - size * 0.42;
   const minY = -size * 0.58;
   const maxY = footerRect.height - size * 0.42;
-  let fallbackPosition = { x: clamp(baseX, minX, maxX), y: clamp(baseY, minY, maxY) };
 
-  for (let attempt = 0; attempt < 14; attempt += 1) {
-    const spread = attempt < 8 ? 1 : 1.65;
+  for (let attempt = 0; attempt < 24; attempt += 1) {
+    const spread = attempt < 10 ? 1 : 2.3;
     const x = clamp(baseX + randomBetween(-220 * spread, 220 * spread), minX, maxX);
     const y = clamp(baseY + randomBetween(-180 * spread, 180 * spread), minY, maxY);
-    const bounds = {
-      left: x,
-      right: x + size,
-      top: y,
-      bottom: y + size,
-    };
-
-    fallbackPosition = { x, y };
+    const driftX = randomBetween(-42, 42);
+    const driftY = randomBetween(-50, 34);
+    const bounds = getFooterArtifactBounds(x, y, size, driftX, driftY);
 
     if (!safeZone || !rectanglesOverlap(bounds, safeZone)) {
-      return fallbackPosition;
+      return { x, y, driftX, driftY };
     }
   }
 
@@ -523,11 +529,19 @@ function pickFooterArtifactPosition(event, footerRect, size) {
         return firstDistance - secondDistance;
       });
 
-      return candidates[0];
+      for (const candidate of candidates) {
+        const driftX = randomBetween(-42, 42);
+        const driftY = randomBetween(-50, 34);
+        const bounds = getFooterArtifactBounds(candidate.x, candidate.y, size, driftX, driftY);
+
+        if (!rectanglesOverlap(bounds, safeZone)) {
+          return { ...candidate, driftX, driftY };
+        }
+      }
     }
   }
 
-  return fallbackPosition;
+  return null;
 }
 
 function createFooterArtifact(event) {
@@ -541,10 +555,11 @@ function createFooterArtifact(event) {
 
   const rect = footerScreen.getBoundingClientRect();
   const size = pickFooterArtifactSize();
+  const position = pickFooterArtifactPosition(event, rect, size);
+  if (!position) return;
+
+  const { x, y, driftX, driftY } = position;
   const artifactNumber = pickFooterArtifactNumber();
-  const { x, y } = pickFooterArtifactPosition(event, rect, size);
-  const driftX = randomBetween(-42, 42);
-  const driftY = randomBetween(-50, 34);
   const duration = Math.round(randomBetween(1450, 2300));
   const rotation = randomBetween(-13, 13);
 
