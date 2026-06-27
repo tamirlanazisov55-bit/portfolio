@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Мальберт — Азисов Тамирлан</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="work-screen screen" id="malbert" aria-labelledby="malbert-title" data-work-section>
+      <header class="topbar" aria-label="Навигация">
+        <a class="pill logo-pill" href="./index.html" aria-label="Азисов Тамирлан">
+          <img src="./assets/logotype-hover-bg.png" alt="" class="logo-hover-bg" aria-hidden="true" />
+          <img src="./assets/logotype.svg" alt="" class="logo-mark logo-mark-default" />
+        </a>
+
+        <nav class="pill nav-pill" aria-label="Основные разделы">
+          <a class="type-button" href="./index.html#about" data-i18n="nav.about">Обо мне</a>
+          <a class="type-button" href="./projects.html" data-i18n="nav.projects">Проекты</a>
+          <a class="type-button is-active" href="./malbert.html" data-i18n="nav.malbert">Мальберт</a>
+          <a class="type-button" href="#cv">CV</a>
+        </nav>
+
+        <div class="pill language-switch" aria-label="Выбор языка" data-active="ru">
+          <button class="language-option type-button is-active" type="button" aria-pressed="true">ru</button>
+          <button class="language-option type-button" type="button" aria-pressed="false">en</button>
+        </div>
+      </header>
+
+      <div class="work-copy" data-work-copy>
+        <h1 class="type-body-l" id="malbert-title" data-work-title>Turk</h1>
+      </div>
+
+      <div class="work-carousel" data-work-carousel>
+        <article class="work-card is-active" data-title="Turk" data-primary-label="Пост">
+          <img src="./assets/cases/malbert-turk-card.png" alt="Turk" />
+        </article>
+        <article class="work-card" data-title="Icons Challenge" data-primary-label="Пост">
+          <img src="./assets/cases/malbert-icons-card.png" alt="Icons Challenge" />
+        </article>
+        <article class="work-card" data-title="OVERLOCK" data-primary-label="Пост">
+          <img src="./assets/cases/malbert-overlock-card.png" alt="OVERLOCK" />
+        </article>
+      </div>
+
+      <div class="work-actions type-body-l" data-work-actions>
+        <a href="#" data-work-primary>Пост</a>
+      </div>
+
+      <footer class="meta type-button" aria-label="Локация и локальное время">
+        <span>Saransk, Russia</span>
+        <span class="time">
+          <span class="clock">--:--:--</span>
+          <span class="period">--</span>
+        </span>
+      </footer>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

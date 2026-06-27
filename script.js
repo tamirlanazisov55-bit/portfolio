@@ -39,6 +39,7 @@ let workScrollFrame;
 const recentFooterArtifacts = [];
 const workCarouselState = new WeakMap();
 const footerArtifactImages = new Map();
+const isHomePage = location.pathname.endsWith("/") || location.pathname.endsWith("/index.html");
 
 function getFooterArtifactSrc(artifactNumber) {
   return `./assets/footer-artifacts/artifact-${String(artifactNumber).padStart(2, "0")}.png`;
@@ -299,7 +300,15 @@ function resetHomeState() {
   window.scrollTo(0, 0);
 }
 
-window.addEventListener("pageshow", resetHomeState);
+window.addEventListener("pageshow", () => {
+  if (isHomePage) {
+    resetHomeState();
+    return;
+  }
+
+  updateDisplayScale();
+  updateNavIndicator();
+});
 
 if (logoLink) {
   logoLink.addEventListener("pointerenter", () => {
@@ -312,8 +321,13 @@ if (logoLink) {
 
   logoLink.addEventListener("click", (event) => {
     event.preventDefault();
-    resetHomeState();
-    location.reload();
+    if (isHomePage) {
+      resetHomeState();
+      location.reload();
+      return;
+    }
+
+    location.href = "./index.html";
   });
 }
 
@@ -426,7 +440,7 @@ for (const link of navLinks) {
   link.addEventListener("click", (event) => {
     const opensAbout = link.dataset.panel === "about";
 
-    if (opensAbout) {
+    if (opensAbout && aboutPanel) {
       event.preventDefault();
     } else {
       closeAboutPanel();
