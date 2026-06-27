@@ -376,9 +376,7 @@ button {
   content: "";
   opacity: 0;
   transform: translateX(var(--nav-active-x));
-  transition: transform var(--motion-soft-blur) var(--ease-soft-blur-in),
-    width var(--motion-soft-blur) var(--ease-soft-blur-in),
-    opacity var(--motion-soft-blur) var(--ease-soft-blur-in);
+  transition: none;
 }
 
 .nav-pill.has-active::before {
@@ -1076,7 +1074,7 @@ button {
 .work-screen {
   --work-card-width: 796px;
   --work-card-height: 450px;
-  --work-card-gap: 20px;
+  --work-card-gap: 10px;
 }
 
 .work-copy,
@@ -1118,6 +1116,13 @@ button {
   width: 166px;
   transform-origin: right center;
   align-items: center;
+  font-size: 18px;
+  line-height: 1.1;
+  letter-spacing: -0.18px;
+}
+
+.work-actions.has-single-action {
+  width: 83px;
 }
 
 .work-actions a {
@@ -1129,8 +1134,8 @@ button {
   padding: 0 20px;
   border-radius: 999px;
   color: var(--muted-ink);
-  transition: color var(--motion-soft-blur) var(--ease-soft-blur-in),
-    background-color var(--motion-soft-blur) var(--ease-soft-blur-in);
+  transition: background-color var(--motion-fast) var(--ease-in-out-quart),
+    color var(--motion-fast) var(--ease-in-out-quart);
 }
 
 .work-actions a:first-child {
@@ -1139,6 +1144,7 @@ button {
 
 .work-actions a:hover,
 .work-actions a:focus-visible {
+  background: #fff;
   color: var(--ink);
 }
 
@@ -1327,7 +1333,7 @@ button {
   .work-screen {
     --work-card-width: calc(100vw - 32px);
     --work-card-height: calc((100vw - 32px) * 0.5653);
-    --work-card-gap: 16px;
+    --work-card-gap: 10px;
   }
 
   .work-copy {

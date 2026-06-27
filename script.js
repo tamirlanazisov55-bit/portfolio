@@ -23,7 +23,7 @@ const displayReferenceHeight = 810;
 const displayMaxScale = 2;
 const heroWideOffsetMinWidth = 1920;
 const heroWideOffsetMinHeight = 1080;
-const footerArtifactCount = 18;
+const footerArtifactCount = 34;
 const footerArtifactMaxActive = 7;
 const footerArtifactIntervalMs = 180;
 const footerArtifactRepeatGap = 7;
@@ -591,6 +591,12 @@ function updateWorkSection(section, activeIndex = 0, { animate = true } = {}) {
   if (secondary) {
     secondary.textContent = activeCard.dataset.secondaryLabel || "";
     secondary.hidden = !activeCard.dataset.secondaryLabel;
+  }
+
+  if (primary?.parentElement) {
+    const hasPrimaryAction = !primary.hidden && Boolean(primary.textContent);
+    const hasSecondaryAction = Boolean(secondary && !secondary.hidden && secondary.textContent);
+    primary.parentElement.classList.toggle("has-single-action", hasPrimaryAction && !hasSecondaryAction);
   }
 
   if (animate) {
