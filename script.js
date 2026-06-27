@@ -641,14 +641,19 @@ function initWorkSections() {
       (event) => {
         const currentState = workCarouselState.get(section);
         const now = Date.now();
+        const direction = Math.sign(event.deltaY);
 
-        if (!currentState || now - currentState.lastWheelAt < 520 || Math.abs(event.deltaY) < 18) return;
+        if (!currentState || !direction || Math.abs(event.deltaY) < 18) return;
 
-        const nextIndex = currentState.activeIndex + Math.sign(event.deltaY);
+        const nextIndex = currentState.activeIndex + direction;
+        const canMoveCards = nextIndex >= 0 && nextIndex < cards.length;
 
-        if (nextIndex < 0 || nextIndex >= cards.length) return;
+        if (!canMoveCards) return;
 
         event.preventDefault();
+
+        if (now - currentState.lastWheelAt < 520) return;
+
         currentState.lastWheelAt = now;
         setWorkActive(section, nextIndex);
       },
