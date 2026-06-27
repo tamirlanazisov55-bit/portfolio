@@ -35,6 +35,23 @@ let lastFooterArtifactAt = 0;
 let footerArtifactIndex = 0;
 let navLanguageTimer;
 const recentFooterArtifacts = [];
+const footerArtifactImages = new Map();
+
+function getFooterArtifactSrc(artifactNumber) {
+  return `./assets/footer-artifacts/artifact-${String(artifactNumber).padStart(2, "0")}.png`;
+}
+
+function preloadFooterArtifacts() {
+  for (let index = 1; index <= footerArtifactCount; index += 1) {
+    const image = document.createElement("img");
+    image.decoding = "async";
+    image.loading = "eager";
+    image.src = getFooterArtifactSrc(index);
+    footerArtifactImages.set(index, image);
+  }
+}
+
+preloadFooterArtifacts();
 
 function getDisplayScale() {
   return Math.max(
@@ -491,12 +508,16 @@ function pickFooterArtifactNumber() {
   const allowedArtifacts = [];
 
   for (let index = 1; index <= footerArtifactCount; index += 1) {
-    if (!blockedArtifacts.has(index)) {
+    const preloadedImage = footerArtifactImages.get(index);
+
+    if (!blockedArtifacts.has(index) && preloadedImage?.complete && preloadedImage.naturalWidth > 0) {
       allowedArtifacts.push(index);
     }
   }
 
-  const pool = allowedArtifacts.length ? allowedArtifacts : Array.from({ length: footerArtifactCount }, (_, index) => index + 1);
+  if (!allowedArtifacts.length) return null;
+
+  const pool = allowedArtifacts;
   const artifactNumber = pool[Math.floor(Math.random() * pool.length)];
 
   recentFooterArtifacts.push(artifactNumber);
@@ -612,6 +633,8 @@ function createFooterArtifact(event) {
 
   const { x, y, driftX, driftY } = position;
   const artifactNumber = pickFooterArtifactNumber();
+  if (!artifactNumber) return;
+
   const duration = Math.round(randomBetween(1450, 2300));
   const rotation = randomBetween(-13, 13);
 
@@ -627,7 +650,7 @@ function createFooterArtifact(event) {
   artifact.style.zIndex = String((footerArtifactIndex % 5) + 1);
 
   const image = document.createElement("img");
-  image.src = `./assets/footer-artifacts/artifact-${String(artifactNumber).padStart(2, "0")}.png`;
+  image.src = getFooterArtifactSrc(artifactNumber);
   image.alt = "";
   image.decoding = "async";
   image.draggable = false;
