@@ -13,7 +13,7 @@ const softBlurTexts = document.querySelectorAll("[data-soft-blur]");
 const i18nElements = document.querySelectorAll("[data-i18n]");
 const aboutRevealElements = aboutPanel ? aboutPanel.querySelectorAll("h2, p, .action-list button") : [];
 const aboutMotionMs = 420;
-const aboutCloseMotionMs = 280;
+const aboutCloseMotionMs = 380;
 let aboutCloseTimer;
 let aboutHoverCloseTimer;
 let currentLanguage = "ru";
@@ -158,6 +158,7 @@ for (const element of softBlurTexts) {
 aboutRevealElements.forEach((element, index) => {
   element.classList.add("about-reveal");
   element.style.setProperty("--about-reveal-index", index);
+  element.style.setProperty("--about-reveal-reverse-index", aboutRevealElements.length - index - 1);
 });
 
 if ("IntersectionObserver" in window) {

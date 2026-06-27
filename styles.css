@@ -43,7 +43,7 @@
   --ease-apple-panel: cubic-bezier(0.16, 1, 0.3, 1);
   --motion-fast: 160ms;
   --motion-about-panel: 420ms;
-  --motion-about-close: 280ms;
+  --motion-about-close: 380ms;
   --motion-about-text: 260ms;
   --motion-soft-blur: 900ms;
   --motion-avatar-hover-in: 900ms;
@@ -716,10 +716,10 @@ button {
 
 .about-dropdown.is-closing .about-reveal {
   animation-name: about-reveal-out;
-  animation-duration: 160ms;
+  animation-duration: 190ms;
   animation-timing-function: var(--ease-apple-panel);
   animation-fill-mode: both;
-  animation-delay: 0ms;
+  animation-delay: calc(var(--about-reveal-reverse-index) * 8ms);
 }
 
 @keyframes about-dropdown-in {
@@ -753,11 +753,24 @@ button {
     transform: translate3d(-50%, 0, 0) scale(1);
   }
 
+  22% {
+    clip-path: inset(0 0 0 0 round 12px);
+    opacity: 1;
+    filter: blur(0);
+    transform: translate3d(-50%, 0, 0) scale(1);
+  }
+
+  68% {
+    opacity: 0.88;
+    filter: blur(2px);
+    transform: translate3d(-50%, -4px, 0) scale(0.994, 0.985);
+  }
+
   100% {
     clip-path: inset(0 0 100% 0 round 12px);
     opacity: 0;
     filter: blur(8px);
-    transform: translate3d(-50%, -10px, 0) scale(0.985, 0.96);
+    transform: translate3d(-50%, -12px, 0) scale(0.985, 0.94);
   }
 }
 
