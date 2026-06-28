@@ -17,9 +17,12 @@
         document.documentElement.style.setProperty("--hero-top", isWideHero ? "50%" : `${181 * scale}px`);
         document.documentElement.style.setProperty("--hero-translate-y", isWideHero ? "-50%" : "0px");
         document.documentElement.style.setProperty("--hero-transform-origin", isWideHero ? "center" : "top center");
+        document.documentElement.style.setProperty("--work-card-width-scaled", `${796 * scale}px`);
+        document.documentElement.style.setProperty("--work-card-height-scaled", `${450 * scale}px`);
+        document.documentElement.style.setProperty("--work-card-gap-scaled", `${10 * scale}px`);
       })();
     </script>
-    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./styles.css?v=2k-layout" />
   </head>
   <body>
     <main class="hero screen" aria-label="Первый экран портфолио">
@@ -141,6 +144,6 @@
       </div>
     </section>
 
-    <script src="./script.js"></script>
+    <script src="./script.js?v=2k-layout"></script>
   </body>
 </html>

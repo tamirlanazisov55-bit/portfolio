@@ -54,6 +54,9 @@
   --hero-top: 181px;
   --hero-translate-y: 0px;
   --hero-transform-origin: top center;
+  --work-card-width-scaled: 796px;
+  --work-card-height-scaled: 450px;
+  --work-card-gap-scaled: 10px;
   --font-main: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-medium: 500;
 
@@ -1078,14 +1081,13 @@ button {
 }
 
 .work-screen {
-  --work-card-width: 796px;
-  --work-card-height: 450px;
-  --work-card-gap: 10px;
+  --work-card-width: var(--work-card-width-scaled);
+  --work-card-height: var(--work-card-height-scaled);
+  --work-card-gap: var(--work-card-gap-scaled);
 }
 
 .work-copy,
-.work-actions,
-.work-carousel {
+.work-actions {
   transform: scale(var(--display-scale));
 }
 
@@ -1164,7 +1166,6 @@ button {
   width: 100%;
   padding-block: calc((100svh - var(--work-card-height)) / 2);
   transform-origin: top center;
-  transform: scale(var(--display-scale));
   flex-direction: column;
   align-items: center;
   gap: var(--work-card-gap);

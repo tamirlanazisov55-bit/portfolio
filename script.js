@@ -88,6 +88,9 @@ function updateDisplayScale() {
   document.documentElement.style.setProperty("--hero-top", shouldOffsetHero ? "50%" : `${181 * scale}px`);
   document.documentElement.style.setProperty("--hero-translate-y", shouldOffsetHero ? "-50%" : "0px");
   document.documentElement.style.setProperty("--hero-transform-origin", shouldOffsetHero ? "center" : "top center");
+  document.documentElement.style.setProperty("--work-card-width-scaled", `${796 * scale}px`);
+  document.documentElement.style.setProperty("--work-card-height-scaled", `${450 * scale}px`);
+  document.documentElement.style.setProperty("--work-card-gap-scaled", `${10 * scale}px`);
 }
 
 updateDisplayScale();
