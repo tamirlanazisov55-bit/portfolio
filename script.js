@@ -534,7 +534,7 @@ for (const button of darkPillButtons) {
   });
 }
 
-const workWheelThreshold = 18;
+const workWheelIntentThreshold = 90;
 const workStepCooldownMs = 520;
 const workFooterUnlockMs = 820;
 const workFooterGestureGapMs = 620;
@@ -642,6 +642,7 @@ function setWorkActive(section, nextIndex, { animate = true } = {}) {
   if (activeIndex === state.activeIndex) return;
 
   state.activeIndex = activeIndex;
+  state.footerGestureReady = false;
   state.stepLockedUntil = Date.now() + workStepCooldownMs;
   state.footerReadyAt = activeIndex === cards.length - 1 ? Date.now() + workFooterUnlockMs : Infinity;
   workCarouselState.set(section, state);
@@ -679,15 +680,16 @@ function scrollWorkFooter(section) {
 function handleWorkWheel(event) {
   if (!workSections.length || event.ctrlKey || event.metaKey) return;
 
-  const direction = Math.sign(event.deltaY);
-  if (!direction || Math.abs(event.deltaY) < workWheelThreshold) return;
-
   const section = getControlledWorkSection();
   if (!section) return;
+
+  const direction = Math.sign(event.deltaY);
+  if (!direction) return;
 
   const cards = getWorkCards(section);
   const state = workCarouselState.get(section);
   if (!cards.length || !state) return;
+  if (state.isScrollingToFooter) return;
 
   const now = Date.now();
   const wheelGap = now - state.lastWheelAt;
@@ -700,13 +702,27 @@ function handleWorkWheel(event) {
   event.preventDefault();
   event.stopPropagation();
 
+  if (direction > 0 && state.activeIndex === lastIndex && wheelGap >= workFooterGestureGapMs) {
+    state.footerGestureReady = true;
+  }
+
+  state.wheelDelta = Math.sign(state.wheelDelta) === direction ? state.wheelDelta + event.deltaY : event.deltaY;
+
+  if (Math.abs(state.wheelDelta) < workWheelIntentThreshold) {
+    pinWorkSection(section);
+    return;
+  }
+
+  state.wheelDelta = 0;
+
   if (direction < 0 && state.activeIndex === 0) {
     pinWorkSection(section);
     return;
   }
 
   if (direction > 0 && state.activeIndex === lastIndex) {
-    if (now >= state.footerReadyAt && wheelGap >= workFooterGestureGapMs) {
+    if (now >= state.footerReadyAt && state.footerGestureReady) {
+      state.footerGestureReady = false;
       scrollWorkFooter(section);
     } else {
       pinWorkSection(section);
@@ -750,9 +766,11 @@ function initWorkSections() {
     const state = {
       activeIndex: 0,
       footerReadyAt: Infinity,
+      footerGestureReady: false,
       isScrollingToFooter: false,
       lastWheelAt: 0,
       stepLockedUntil: 0,
+      wheelDelta: 0,
     };
 
     workCarouselState.set(section, state);
