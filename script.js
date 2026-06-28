@@ -538,7 +538,7 @@ const workWheelIntentThreshold = 90;
 const workStepCooldownMs = 520;
 const workFooterUnlockMs = 820;
 const workFooterGestureGapMs = 620;
-const workGestureResetMs = 220;
+const workGestureResetMs = 180;
 const workPinTolerance = 3;
 
 function getWorkStep(section) {
@@ -643,14 +643,24 @@ function setWorkActive(section, nextIndex, { animate = true } = {}) {
   if (activeIndex === state.activeIndex) return;
 
   state.activeIndex = activeIndex;
-  state.gestureLocked = true;
+  lockWorkGesture(state);
   state.footerGestureReady = false;
   state.stepLockedUntil = Date.now() + workStepCooldownMs;
-  state.wheelDelta = 0;
   state.footerReadyAt = activeIndex === cards.length - 1 ? Date.now() + workFooterUnlockMs : Infinity;
   workCarouselState.set(section, state);
 
   updateWorkSection(section, activeIndex, { animate });
+}
+
+function lockWorkGesture(state) {
+  state.gestureLocked = true;
+  state.wheelDelta = 0;
+
+  window.clearTimeout(state.gestureUnlockTimer);
+  state.gestureUnlockTimer = window.setTimeout(() => {
+    state.gestureLocked = false;
+    state.wheelDelta = 0;
+  }, workGestureResetMs);
 }
 
 function pinWorkSection(section) {
@@ -692,13 +702,18 @@ function handleWorkWheel(event) {
   const cards = getWorkCards(section);
   const state = workCarouselState.get(section);
   if (!cards.length || !state) return;
-  if (state.isScrollingToFooter) return;
+  if (state.isScrollingToFooter) {
+    event.preventDefault();
+    event.stopPropagation();
+    return;
+  }
 
   const now = Date.now();
   const wheelGap = now - state.lastWheelAt;
   state.lastWheelAt = now;
 
   if (wheelGap >= workGestureResetMs) {
+    window.clearTimeout(state.gestureUnlockTimer);
     state.gestureLocked = false;
     state.wheelDelta = 0;
   }
@@ -715,7 +730,7 @@ function handleWorkWheel(event) {
   }
 
   if (state.gestureLocked) {
-    state.wheelDelta = 0;
+    lockWorkGesture(state);
     pinWorkSection(section);
     return;
   }
@@ -783,6 +798,7 @@ function initWorkSections() {
       footerReadyAt: Infinity,
       footerGestureReady: false,
       gestureLocked: false,
+      gestureUnlockTimer: 0,
       isScrollingToFooter: false,
       lastWheelAt: 0,
       stepLockedUntil: 0,
