@@ -42,9 +42,9 @@
   --ease-soft-blur-in: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-apple-panel: cubic-bezier(0.16, 1, 0.3, 1);
   --motion-fast: 160ms;
-  --motion-about-panel: 560ms;
-  --motion-about-close: 460ms;
-  --motion-about-text: 340ms;
+  --motion-about-panel: 1800ms;
+  --motion-about-close: 1800ms;
+  --motion-about-text: 1800ms;
   --motion-soft-blur: 900ms;
   --motion-avatar-hover-in: 900ms;
   --motion-avatar-hover-out: 600ms;
@@ -1245,7 +1245,7 @@ button {
 
 .work-screen.is-updating .work-copy,
 .work-screen.is-updating .work-actions {
-  animation: work-meta-in 900ms var(--ease-soft-blur-in) both;
+  animation: work-meta-in 1800ms var(--ease-soft-blur-in) both;
 }
 
 @keyframes work-meta-in {
