@@ -534,32 +534,12 @@ for (const button of darkPillButtons) {
   });
 }
 
-const workWheelIntentThreshold = 90;
-const workStepCooldownMs = 520;
-const workFooterUnlockMs = 820;
-const workFooterGestureGapMs = 620;
-const workGestureResetMs = 180;
-const workPinTolerance = 3;
-
 function getWorkStep(section) {
   const firstCard = section.querySelector(".work-card");
   const styles = getComputedStyle(section);
   const gap = Number.parseFloat(styles.getPropertyValue("--work-card-gap")) || 10;
 
   return firstCard ? firstCard.offsetHeight + gap : 460;
-}
-
-function getWorkCards(section) {
-  return Array.from(section.querySelectorAll(".work-card"));
-}
-
-function getWorkFooter(section) {
-  return section.nextElementSibling?.classList.contains("footer-screen") ? section.nextElementSibling : null;
-}
-
-function isWorkSectionInControl(section) {
-  const rect = section.getBoundingClientRect();
-  return rect.top <= window.innerHeight * 0.5 && rect.bottom >= window.innerHeight * 0.5;
 }
 
 function updateWorkMeta(section, activeCard) {
@@ -593,27 +573,26 @@ function updateWorkMeta(section, activeCard) {
   }
 }
 
-function updateWorkSection(section, activeIndex = 0, { animate = true } = {}) {
+function getWorkCards(section) {
+  return Array.from(section.querySelectorAll(".work-card"));
+}
+
+function getWorkActiveIndex(section) {
+  const carousel = section.querySelector("[data-work-carousel]");
+  if (!carousel) return 0;
+
+  return Math.round(carousel.scrollTop / getWorkStep(section));
+}
+
+function updateWorkSection(section, activeIndex = getWorkActiveIndex(section), { animate = true } = {}) {
   const carousel = section.querySelector("[data-work-carousel]");
   const cards = getWorkCards(section);
   const activeCard = cards[activeIndex];
 
-  if (!carousel || !cards.length || !activeCard) return;
+  if (!cards.length || !activeCard) return;
 
-  const step = getWorkStep(section);
-  const sectionTop = section.getBoundingClientRect().top;
-  const centeredY = window.innerHeight / 2 - sectionTop - activeCard.offsetHeight / 2;
-  const transform = `translateX(-50%) translateY(${centeredY - activeIndex * step}px) scale(var(--display-scale))`;
-
-  if (!animate) {
-    carousel.style.transition = "none";
-    carousel.style.transform = transform;
-    carousel.offsetHeight;
-    requestAnimationFrame(() => {
-      carousel.style.transition = "";
-    });
-  } else {
-    carousel.style.transform = transform;
+  if (carousel && !animate) {
+    carousel.scrollTop = activeIndex * getWorkStep(section);
   }
 
   cards.forEach((card, index) => {
@@ -634,190 +613,70 @@ function updateWorkSection(section, activeIndex = 0, { animate = true } = {}) {
   }
 }
 
-function setWorkActive(section, nextIndex, { animate = true } = {}) {
-  const cards = getWorkCards(section);
+function setWorkActive(section, nextIndex, { smooth = true } = {}) {
+  const carousel = section.querySelector("[data-work-carousel]");
   const state = workCarouselState.get(section);
-  if (!cards.length || !state) return;
+  if (!carousel || !state) return;
 
+  const cards = getWorkCards(section);
   const activeIndex = Math.min(cards.length - 1, Math.max(0, nextIndex));
-  if (activeIndex === state.activeIndex) return;
+  const top = activeIndex * getWorkStep(section);
 
   state.activeIndex = activeIndex;
-  lockWorkGesture(state);
-  state.footerGestureReady = false;
-  state.stepLockedUntil = Date.now() + workStepCooldownMs;
-  state.footerReadyAt = activeIndex === cards.length - 1 ? Date.now() + workFooterUnlockMs : Infinity;
-  workCarouselState.set(section, state);
-
-  updateWorkSection(section, activeIndex, { animate });
-}
-
-function lockWorkGesture(state) {
-  state.gestureLocked = true;
-  state.wheelDelta = 0;
-
-  window.clearTimeout(state.gestureUnlockTimer);
-  state.gestureUnlockTimer = window.setTimeout(() => {
-    state.gestureLocked = false;
-    state.wheelDelta = 0;
-  }, workGestureResetMs);
-}
-
-function pinWorkSection(section) {
-  const top = section.offsetTop;
-  if (Math.abs(window.scrollY - top) <= workPinTolerance) return;
-  const previousBehavior = document.documentElement.style.scrollBehavior;
-  document.documentElement.style.scrollBehavior = "auto";
-  window.scrollTo({ top, left: 0, behavior: "auto" });
-  document.documentElement.style.scrollBehavior = previousBehavior;
-}
-
-function getControlledWorkSection() {
-  return Array.from(workSections).find(isWorkSectionInControl);
-}
-
-function scrollWorkFooter(section) {
-  const footer = getWorkFooter(section);
-  if (!footer) return;
-
-  const state = workCarouselState.get(section);
-  if (state) state.isScrollingToFooter = true;
-
-  window.scrollTo({ top: footer.offsetTop, left: 0, behavior: "smooth" });
-
-  window.setTimeout(() => {
-    if (state) state.isScrollingToFooter = false;
-  }, 900);
+  carousel.scrollTo({ top, behavior: smooth ? "smooth" : "auto" });
+  updateWorkSection(section, activeIndex);
 }
 
 function handleWorkWheel(event) {
-  if (!workSections.length || event.ctrlKey || event.metaKey) return;
+  const section = event.currentTarget;
+  const carousel = section.querySelector("[data-work-carousel]");
+  if (!section || !carousel) return;
 
-  const section = getControlledWorkSection();
-  if (!section) return;
+  const maxScroll = carousel.scrollHeight - carousel.clientHeight;
+  const canScrollUp = event.deltaY < 0 && carousel.scrollTop > 0;
+  const canScrollDown = event.deltaY > 0 && carousel.scrollTop < maxScroll - 1;
+  const shouldScrollCarousel = canScrollUp || canScrollDown;
 
-  const direction = Math.sign(event.deltaY);
-  if (!direction) return;
-
-  const cards = getWorkCards(section);
-  const state = workCarouselState.get(section);
-  if (!cards.length || !state) return;
-  if (state.isScrollingToFooter) {
-    event.preventDefault();
-    event.stopPropagation();
-    return;
-  }
-
-  const now = Date.now();
-  const wheelGap = now - state.lastWheelAt;
-  state.lastWheelAt = now;
-
-  if (wheelGap >= workGestureResetMs) {
-    window.clearTimeout(state.gestureUnlockTimer);
-    state.gestureLocked = false;
-    state.wheelDelta = 0;
-  }
-
-  const lastIndex = cards.length - 1;
-  const isInWorkScreen = window.scrollY < section.offsetTop + window.innerHeight * 0.75;
-  if (!isInWorkScreen && direction > 0) return;
+  if (!shouldScrollCarousel) return;
 
   event.preventDefault();
-  event.stopPropagation();
-
-  if (direction > 0 && state.activeIndex === lastIndex && wheelGap >= workFooterGestureGapMs) {
-    state.footerGestureReady = true;
-  }
-
-  if (state.gestureLocked) {
-    lockWorkGesture(state);
-    pinWorkSection(section);
-    return;
-  }
-
-  state.wheelDelta = Math.sign(state.wheelDelta) === direction ? state.wheelDelta + event.deltaY : event.deltaY;
-
-  if (Math.abs(state.wheelDelta) < workWheelIntentThreshold) {
-    pinWorkSection(section);
-    return;
-  }
-
-  state.wheelDelta = 0;
-
-  if (direction < 0 && state.activeIndex === 0) {
-    pinWorkSection(section);
-    return;
-  }
-
-  if (direction > 0 && state.activeIndex === lastIndex) {
-    if (now >= state.footerReadyAt && state.footerGestureReady) {
-      state.footerGestureReady = false;
-      scrollWorkFooter(section);
-    } else {
-      pinWorkSection(section);
-    }
-    return;
-  }
-
-  if (now < state.stepLockedUntil) {
-    state.wheelDelta = 0;
-    pinWorkSection(section);
-    return;
-  }
-
-  pinWorkSection(section);
-  setWorkActive(section, state.activeIndex + direction);
-}
-
-function keepWorkSectionPinned() {
-  for (const section of workSections) {
-    const state = workCarouselState.get(section);
-    const cards = getWorkCards(section);
-    if (!state || !cards.length || state.isScrollingToFooter) continue;
-
-    const footer = getWorkFooter(section);
-    const footerIsVisible = footer ? footer.getBoundingClientRect().top < window.innerHeight * 0.9 : false;
-    const shouldLockBeforeFooter = state.activeIndex < cards.length - 1 || Date.now() < state.footerReadyAt;
-
-    if (shouldLockBeforeFooter && isWorkSectionInControl(section) && footerIsVisible) {
-      pinWorkSection(section);
-      return;
-    }
-  }
+  carousel.scrollBy({ top: event.deltaY, behavior: "auto" });
 }
 
 function initWorkSections() {
   if (!workSections.length) return;
 
-  document.documentElement.classList.add("has-work-carousel");
-
   for (const section of workSections) {
     const cards = getWorkCards(section);
-    const state = {
-      activeIndex: 0,
-      footerReadyAt: Infinity,
-      footerGestureReady: false,
-      gestureLocked: false,
-      gestureUnlockTimer: 0,
-      isScrollingToFooter: false,
-      lastWheelAt: 0,
-      stepLockedUntil: 0,
-      wheelDelta: 0,
-    };
+    const carousel = section.querySelector("[data-work-carousel]");
+    const state = { activeIndex: 0, scrollFrame: 0 };
 
     workCarouselState.set(section, state);
     updateWorkSection(section, 0, { animate: false });
 
     cards.forEach((card, index) => {
       card.addEventListener("click", () => {
-        pinWorkSection(section);
         setWorkActive(section, index);
       });
     });
-  }
 
-  window.addEventListener("wheel", handleWorkWheel, { passive: false, capture: true });
-  window.addEventListener("scroll", keepWorkSectionPinned, { passive: true });
+    carousel?.addEventListener("scroll", () => {
+      if (state.scrollFrame) return;
+
+      state.scrollFrame = requestAnimationFrame(() => {
+        const activeIndex = Math.min(cards.length - 1, Math.max(0, getWorkActiveIndex(section)));
+
+        if (activeIndex !== state.activeIndex) {
+          state.activeIndex = activeIndex;
+          updateWorkSection(section, activeIndex);
+        }
+
+        state.scrollFrame = 0;
+      });
+    });
+
+    section.addEventListener("wheel", handleWorkWheel, { passive: false });
+  }
 }
 
 initWorkSections();

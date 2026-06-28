@@ -100,10 +100,6 @@ html {
   scrollbar-width: none;
 }
 
-html.has-work-carousel {
-  scroll-snap-type: none;
-}
-
 html::-webkit-scrollbar {
   display: none;
 }
@@ -1158,12 +1154,22 @@ button {
   left: 50%;
   z-index: 0;
   display: flex;
+  height: 100svh;
   width: var(--work-card-width);
+  padding-block: calc((100svh - var(--work-card-height)) / 2);
   transform-origin: top center;
+  transform: translateX(-50%) scale(var(--display-scale));
   flex-direction: column;
   gap: var(--work-card-gap);
-  will-change: transform;
-  transition: transform var(--motion-soft-blur) var(--ease-soft-blur-in);
+  overflow-y: auto;
+  overscroll-behavior: auto;
+  scroll-padding-block: calc((100svh - var(--work-card-height)) / 2);
+  scroll-snap-type: y mandatory;
+  scrollbar-width: none;
+}
+
+.work-carousel::-webkit-scrollbar {
+  display: none;
 }
 
 .work-card {
@@ -1175,6 +1181,9 @@ button {
   border-radius: 12px;
   background: #fff;
   cursor: pointer;
+  flex: 0 0 auto;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
   transform-origin: center;
   transition: transform var(--motion-soft-blur) var(--ease-soft-blur-in);
 }
