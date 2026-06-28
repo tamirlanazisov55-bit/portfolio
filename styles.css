@@ -96,7 +96,7 @@ body {
 
 html {
   scroll-behavior: smooth;
-  scroll-snap-type: y mandatory;
+  scroll-snap-type: y proximity;
   scrollbar-width: none;
 }
 
@@ -1151,20 +1151,20 @@ button {
 .work-carousel {
   position: absolute;
   top: 0;
-  left: 50%;
+  left: 0;
   z-index: 0;
   display: flex;
   height: 100svh;
-  width: var(--work-card-width);
+  width: 100%;
   padding-block: calc((100svh - var(--work-card-height)) / 2);
   transform-origin: top center;
-  transform: translateX(-50%) scale(var(--display-scale));
+  transform: scale(var(--display-scale));
   flex-direction: column;
+  align-items: center;
   gap: var(--work-card-gap);
   overflow-y: auto;
   overscroll-behavior: auto;
   scroll-padding-block: calc((100svh - var(--work-card-height)) / 2);
-  scroll-snap-type: y mandatory;
   scrollbar-width: none;
 }
 
@@ -1182,8 +1182,6 @@ button {
   background: #fff;
   cursor: pointer;
   flex: 0 0 auto;
-  scroll-snap-align: center;
-  scroll-snap-stop: always;
   transform-origin: center;
   transition: transform var(--motion-soft-blur) var(--ease-soft-blur-in);
 }
@@ -1362,7 +1360,7 @@ button {
   }
 
   .work-carousel {
-    transform: translateX(-50%);
+    transform: none;
   }
 
   .work-card {

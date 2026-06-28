@@ -627,22 +627,6 @@ function setWorkActive(section, nextIndex, { smooth = true } = {}) {
   updateWorkSection(section, activeIndex);
 }
 
-function handleWorkWheel(event) {
-  const section = event.currentTarget;
-  const carousel = section.querySelector("[data-work-carousel]");
-  if (!section || !carousel) return;
-
-  const maxScroll = carousel.scrollHeight - carousel.clientHeight;
-  const canScrollUp = event.deltaY < 0 && carousel.scrollTop > 0;
-  const canScrollDown = event.deltaY > 0 && carousel.scrollTop < maxScroll - 1;
-  const shouldScrollCarousel = canScrollUp || canScrollDown;
-
-  if (!shouldScrollCarousel) return;
-
-  event.preventDefault();
-  carousel.scrollBy({ top: event.deltaY, behavior: "auto" });
-}
-
 function initWorkSections() {
   if (!workSections.length) return;
 
@@ -674,8 +658,6 @@ function initWorkSections() {
         state.scrollFrame = 0;
       });
     });
-
-    section.addEventListener("wheel", handleWorkWheel, { passive: false });
   }
 }
 
