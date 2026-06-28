@@ -51,6 +51,9 @@
   --motion-avatar-stagger: 70ms;
   --motion-soft-blur-stagger: 15ms;
   --display-scale: 1;
+  --hero-top: 181px;
+  --hero-translate-y: 0px;
+  --hero-transform-origin: top center;
   --font-main: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-medium: 500;
 
@@ -379,7 +382,7 @@ button {
   transition: none;
 }
 
-.nav-pill.has-active::before {
+.nav-pill.is-ready.has-active::before {
   opacity: 1;
 }
 
@@ -499,11 +502,11 @@ button {
 .intro {
   position: absolute;
   left: 50%;
-  top: var(--hero-top, 50%);
+  top: var(--hero-top);
   display: flex;
   width: 334px;
-  transform: translate(-50%, var(--hero-translate-y, -50%)) scale(var(--display-scale));
-  transform-origin: var(--hero-transform-origin, center);
+  transform: translate(-50%, var(--hero-translate-y)) scale(var(--display-scale));
+  transform-origin: var(--hero-transform-origin);
   flex-direction: column;
   align-items: center;
   text-align: center;

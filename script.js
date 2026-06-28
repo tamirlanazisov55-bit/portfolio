@@ -357,7 +357,7 @@ window.addEventListener("pageshow", () => {
   }
 
   updateDisplayScale();
-  updateNavIndicator();
+  setRouteNavActive();
 });
 
 if (logoLink) {
@@ -425,7 +425,10 @@ function updateNavIndicator() {
   const activeLink = navPill.querySelector("a.is-active");
   navPill.classList.toggle("has-active", Boolean(activeLink));
 
-  if (!activeLink) return;
+  if (!activeLink) {
+    navPill.classList.add("is-ready");
+    return;
+  }
 
   const navRect = navPill.getBoundingClientRect();
   const linkRect = activeLink.getBoundingClientRect();
@@ -434,12 +437,23 @@ function updateNavIndicator() {
 
   navPill.style.setProperty("--nav-active-x", `${activeX}px`);
   navPill.style.setProperty("--nav-active-width", `${linkRect.width / scale}px`);
+  navPill.classList.add("is-ready");
 }
 
-function setAboutNavActive(isActive) {
+function getRouteActiveHref() {
+  const page = location.pathname.split("/").pop() || "index.html";
+  if (page === "projects.html") return "./projects.html";
+  if (page === "malbert.html") return "./malbert.html";
+  return "";
+}
+
+function setRouteNavActive() {
+  const routeHref = getRouteActiveHref();
+
   for (const item of navLinks) {
-    item.classList.toggle("is-active", isActive && item.dataset.panel === "about");
+    item.classList.toggle("is-active", Boolean(routeHref) && item.getAttribute("href") === routeHref);
   }
+
   updateNavIndicator();
 }
 
@@ -447,7 +461,7 @@ function scheduleAboutClose() {
   clearTimeout(aboutHoverCloseTimer);
   aboutHoverCloseTimer = setTimeout(() => {
     closeAboutPanel();
-    setAboutNavActive(false);
+    setRouteNavActive();
   }, 120);
 }
 
@@ -459,7 +473,7 @@ function openAboutFromHover() {
   if (!aboutPanel) return;
 
   cancelAboutClose();
-  setAboutNavActive(true);
+  setRouteNavActive();
   openAboutPanel();
 }
 
@@ -512,10 +526,7 @@ document.addEventListener("keydown", (event) => {
   if (event.key !== "Escape" || !aboutPanel || aboutPanel.hidden) return;
 
   closeAboutPanel();
-  for (const item of navLinks) {
-    item.classList.remove("is-active");
-  }
-  updateNavIndicator();
+  setRouteNavActive();
 });
 
 document.addEventListener("pointerdown", (event) => {
@@ -524,10 +535,7 @@ document.addEventListener("pointerdown", (event) => {
   if (event.target.closest(".nav-pill")) return;
 
   closeAboutPanel();
-  for (const item of navLinks) {
-    item.classList.remove("is-active");
-  }
-  updateNavIndicator();
+  setRouteNavActive();
 });
 
 window.addEventListener("resize", () => {
