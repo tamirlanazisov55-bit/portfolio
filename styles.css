@@ -42,9 +42,9 @@
   --ease-soft-blur-in: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-apple-panel: cubic-bezier(0.16, 1, 0.3, 1);
   --motion-fast: 160ms;
-  --motion-about-panel: 420ms;
-  --motion-about-close: 380ms;
-  --motion-about-text: 260ms;
+  --motion-about-panel: 560ms;
+  --motion-about-close: 460ms;
+  --motion-about-text: 340ms;
   --motion-soft-blur: 900ms;
   --motion-avatar-hover-in: 900ms;
   --motion-avatar-hover-out: 600ms;
@@ -467,6 +467,9 @@ button {
   background: #fff;
   content: "";
   transform: translateX(0);
+}
+
+.language-switch.is-ready::before {
   transition: transform var(--motion-soft-blur) var(--ease-soft-blur-in);
 }
 
@@ -846,7 +849,7 @@ button {
   animation-duration: var(--motion-about-text);
   animation-timing-function: var(--ease-apple-panel);
   animation-fill-mode: both;
-  animation-delay: calc(55ms + var(--about-reveal-index) * 18ms);
+  animation-delay: calc(70ms + var(--about-reveal-index) * 22ms);
 }
 
 .about-dropdown.is-closing .about-reveal {
@@ -861,15 +864,15 @@ button {
   0% {
     clip-path: inset(0 0 100% 0 round 12px);
     opacity: 0;
-    filter: blur(10px);
-    transform: translate3d(-50%, -12px, 0) scale(0.985, 0.94);
+    filter: blur(7px);
+    transform: translate3d(-50%, -8px, 0) scale(0.99, 0.965);
   }
 
-  58% {
+  72% {
     clip-path: inset(0 0 0 0 round 12px);
     opacity: 1;
     filter: blur(0);
-    transform: translate3d(-50%, 1px, 0) scale(1.004, 1.006);
+    transform: translate3d(-50%, 0, 0) scale(1);
   }
 
   100% {
@@ -896,24 +899,24 @@ button {
   }
 
   68% {
-    opacity: 0.88;
-    filter: blur(2px);
-    transform: translate3d(-50%, -4px, 0) scale(0.994, 0.985);
+    opacity: 0.9;
+    filter: blur(1.5px);
+    transform: translate3d(-50%, -3px, 0) scale(0.996, 0.988);
   }
 
   100% {
     clip-path: inset(0 0 100% 0 round 12px);
     opacity: 0;
-    filter: blur(8px);
-    transform: translate3d(-50%, -12px, 0) scale(0.985, 0.94);
+    filter: blur(6px);
+    transform: translate3d(-50%, -8px, 0) scale(0.99, 0.965);
   }
 }
 
 @keyframes about-reveal-in {
   0% {
     opacity: 0;
-    filter: blur(8px);
-    transform: translate3d(0, 12px, 0);
+    filter: blur(6px);
+    transform: translate3d(0, 8px, 0);
   }
 
   100% {
@@ -1168,10 +1171,17 @@ button {
   overscroll-behavior: auto;
   scroll-padding-block: calc((100svh - var(--work-card-height)) / 2);
   scrollbar-width: none;
+  cursor: grab;
+  user-select: none;
 }
 
 .work-carousel::-webkit-scrollbar {
   display: none;
+}
+
+.work-carousel.is-dragging {
+  cursor: grabbing;
+  scroll-behavior: auto;
 }
 
 .work-card {
@@ -1232,18 +1242,18 @@ button {
 
 .work-screen.is-updating .work-copy,
 .work-screen.is-updating .work-actions {
-  animation: work-meta-in 680ms var(--ease-soft-blur-in) both;
+  animation: work-meta-in 860ms var(--ease-soft-blur-in) both;
 }
 
 @keyframes work-meta-in {
   0% {
-    opacity: 0.28;
-    filter: blur(6px);
+    opacity: 0.12;
+    filter: blur(7px);
   }
 
-  58% {
-    opacity: 1;
-    filter: blur(0.4px);
+  46% {
+    opacity: 0.88;
+    filter: blur(1.2px);
   }
 
   100% {

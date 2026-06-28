@@ -16,9 +16,11 @@ const workSections = document.querySelectorAll("[data-work-section]");
 const softBlurTexts = document.querySelectorAll("[data-soft-blur]");
 const i18nElements = document.querySelectorAll("[data-i18n]");
 const aboutRevealElements = aboutPanel ? aboutPanel.querySelectorAll("h2, p, .action-list button") : [];
-const aboutMotionMs = 420;
-const aboutCloseMotionMs = 380;
-const workMetaMotionMs = 680;
+const aboutMotionMs = 560;
+const aboutCloseMotionMs = 460;
+const workMetaMotionMs = 860;
+const workSnapDelayMs = 130;
+const workSnapMotionMs = 520;
 const displayReferenceWidth = 1440;
 const displayReferenceHeight = 810;
 const displayMaxScale = 2;
@@ -331,6 +333,9 @@ if ("IntersectionObserver" in window) {
 }
 
 applyLanguage(getSavedLanguage());
+requestAnimationFrame(() => {
+  languageSwitch?.classList.add("is-ready");
+});
 
 function resetHomeState() {
   updateDisplayScale();
@@ -637,29 +642,39 @@ function getWorkActiveIndex(section) {
   return Math.round(carousel.scrollTop / getWorkStep(section));
 }
 
+function clampWorkIndex(section, index) {
+  const cards = getWorkCards(section);
+  return Math.min(cards.length - 1, Math.max(0, index));
+}
+
+function getWorkSnapTop(section, index) {
+  return clampWorkIndex(section, index) * getWorkStep(section);
+}
+
 function updateWorkSection(section, activeIndex = getWorkActiveIndex(section), { animate = true } = {}) {
   const carousel = section.querySelector("[data-work-carousel]");
   const cards = getWorkCards(section);
-  const activeCard = cards[activeIndex];
+  const safeActiveIndex = clampWorkIndex(section, activeIndex);
+  const activeCard = cards[safeActiveIndex];
 
   if (!cards.length || !activeCard) return;
 
   if (carousel && !animate) {
-    carousel.scrollTop = activeIndex * getWorkStep(section);
+    carousel.scrollTop = getWorkSnapTop(section, safeActiveIndex);
   }
 
   cards.forEach((card, index) => {
-    const depthDirection = Math.sign(index - activeIndex);
-    const depthDistance = Math.abs(index - activeIndex);
+    const depthDirection = Math.sign(index - safeActiveIndex);
+    const depthDistance = Math.abs(index - safeActiveIndex);
     const depthFactor = depthDirection < 0 ? 0.07 : 0.09;
     const depthStackCompensation = depthDirection < 0 ? 0.02 : 0.029;
     const depthOffset =
       card.offsetHeight *
       (depthDistance * depthFactor + depthDistance * Math.max(0, depthDistance - 1) * depthStackCompensation);
 
-    card.classList.toggle("is-active", index === activeIndex);
-    card.classList.toggle("is-before", index < activeIndex);
-    card.classList.toggle("is-after", index > activeIndex);
+    card.classList.toggle("is-active", index === safeActiveIndex);
+    card.classList.toggle("is-before", index < safeActiveIndex);
+    card.classList.toggle("is-after", index > safeActiveIndex);
     card.style.setProperty("--work-depth-offset", `${depthOffset}px`);
   });
 
@@ -687,13 +702,100 @@ function setWorkActive(section, nextIndex, { smooth = true } = {}) {
   const state = workCarouselState.get(section);
   if (!carousel || !state) return;
 
-  const cards = getWorkCards(section);
-  const activeIndex = Math.min(cards.length - 1, Math.max(0, nextIndex));
-  const top = activeIndex * getWorkStep(section);
+  const activeIndex = clampWorkIndex(section, nextIndex);
+  const top = getWorkSnapTop(section, activeIndex);
 
   state.activeIndex = activeIndex;
+  state.isSnapping = smooth;
+  window.clearTimeout(state.snapTimer);
+  window.clearTimeout(state.snapEndTimer);
   carousel.scrollTo({ top, behavior: smooth ? "smooth" : "auto" });
   updateWorkSection(section, activeIndex);
+
+  if (smooth) {
+    state.snapEndTimer = window.setTimeout(() => {
+      state.isSnapping = false;
+    }, workSnapMotionMs);
+  }
+}
+
+function snapWorkToNearest(section, { smooth = true } = {}) {
+  const carousel = section.querySelector("[data-work-carousel]");
+  const state = workCarouselState.get(section);
+  if (!carousel || !state) return;
+
+  const activeIndex = clampWorkIndex(section, getWorkActiveIndex(section));
+  const targetTop = getWorkSnapTop(section, activeIndex);
+
+  state.activeIndex = activeIndex;
+  updateWorkSection(section, activeIndex);
+
+  if (Math.abs(carousel.scrollTop - targetTop) <= 1) return;
+
+  state.isSnapping = true;
+  carousel.scrollTo({ top: targetTop, behavior: smooth ? "smooth" : "auto" });
+  window.clearTimeout(state.snapEndTimer);
+  state.snapEndTimer = window.setTimeout(() => {
+    state.isSnapping = false;
+  }, workSnapMotionMs);
+}
+
+function scheduleWorkSnap(section) {
+  const state = workCarouselState.get(section);
+  if (!state || state.isDragging || state.isSnapping) return;
+
+  window.clearTimeout(state.snapTimer);
+  state.snapTimer = window.setTimeout(() => {
+    snapWorkToNearest(section);
+  }, workSnapDelayMs);
+}
+
+function startWorkDrag(section, event) {
+  const carousel = section.querySelector("[data-work-carousel]");
+  const state = workCarouselState.get(section);
+  if (!carousel || !state || event.button !== 0) return;
+
+  state.isDragging = true;
+  state.hasDragged = false;
+  state.dragStartY = event.clientY;
+  state.dragStartScrollTop = carousel.scrollTop;
+  window.clearTimeout(state.snapTimer);
+  carousel.classList.add("is-dragging");
+  carousel.setPointerCapture?.(event.pointerId);
+}
+
+function moveWorkDrag(section, event) {
+  const carousel = section.querySelector("[data-work-carousel]");
+  const state = workCarouselState.get(section);
+  if (!carousel || !state?.isDragging) return;
+
+  const deltaY = state.dragStartY - event.clientY;
+
+  if (Math.abs(deltaY) > 3) {
+    state.hasDragged = true;
+  }
+
+  carousel.scrollTop = state.dragStartScrollTop + deltaY;
+  event.preventDefault();
+}
+
+function endWorkDrag(section, event) {
+  const carousel = section.querySelector("[data-work-carousel]");
+  const state = workCarouselState.get(section);
+  if (!carousel || !state?.isDragging) return;
+
+  state.isDragging = false;
+  carousel.classList.remove("is-dragging");
+  carousel.releasePointerCapture?.(event.pointerId);
+
+  if (state.hasDragged) {
+    state.suppressClick = true;
+    window.setTimeout(() => {
+      state.suppressClick = false;
+    }, 120);
+  }
+
+  snapWorkToNearest(section);
 }
 
 function initWorkSections() {
@@ -702,7 +804,7 @@ function initWorkSections() {
   for (const section of workSections) {
     const cards = getWorkCards(section);
     const carousel = section.querySelector("[data-work-carousel]");
-    const state = { activeIndex: 0, scrollFrame: 0 };
+    const state = { activeIndex: 0, scrollFrame: 0, snapTimer: 0, snapEndTimer: 0, isDragging: false };
 
     workCarouselState.set(section, state);
     updateWorkSection(section, 0, { animate: false });
@@ -713,17 +815,34 @@ function initWorkSections() {
       });
     });
 
+    carousel?.addEventListener(
+      "click",
+      (event) => {
+        if (!state.suppressClick) return;
+        event.preventDefault();
+        event.stopPropagation();
+      },
+      true,
+    );
+
+    carousel?.addEventListener("pointerdown", (event) => startWorkDrag(section, event));
+    carousel?.addEventListener("pointermove", (event) => moveWorkDrag(section, event));
+    carousel?.addEventListener("pointerup", (event) => endWorkDrag(section, event));
+    carousel?.addEventListener("pointercancel", (event) => endWorkDrag(section, event));
+    carousel?.addEventListener("lostpointercapture", (event) => endWorkDrag(section, event));
+
     carousel?.addEventListener("scroll", () => {
       if (state.scrollFrame) return;
 
       state.scrollFrame = requestAnimationFrame(() => {
-        const activeIndex = Math.min(cards.length - 1, Math.max(0, getWorkActiveIndex(section)));
+        const activeIndex = clampWorkIndex(section, getWorkActiveIndex(section));
 
         if (activeIndex !== state.activeIndex) {
           state.activeIndex = activeIndex;
           updateWorkSection(section, activeIndex);
         }
 
+        scheduleWorkSnap(section);
         state.scrollFrame = 0;
       });
     });
