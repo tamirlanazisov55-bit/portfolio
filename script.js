@@ -538,6 +538,7 @@ const workWheelIntentThreshold = 90;
 const workStepCooldownMs = 520;
 const workFooterUnlockMs = 820;
 const workFooterGestureGapMs = 620;
+const workGestureResetMs = 220;
 const workPinTolerance = 3;
 
 function getWorkStep(section) {
@@ -642,8 +643,10 @@ function setWorkActive(section, nextIndex, { animate = true } = {}) {
   if (activeIndex === state.activeIndex) return;
 
   state.activeIndex = activeIndex;
+  state.gestureLocked = true;
   state.footerGestureReady = false;
   state.stepLockedUntil = Date.now() + workStepCooldownMs;
+  state.wheelDelta = 0;
   state.footerReadyAt = activeIndex === cards.length - 1 ? Date.now() + workFooterUnlockMs : Infinity;
   workCarouselState.set(section, state);
 
@@ -695,6 +698,11 @@ function handleWorkWheel(event) {
   const wheelGap = now - state.lastWheelAt;
   state.lastWheelAt = now;
 
+  if (wheelGap >= workGestureResetMs) {
+    state.gestureLocked = false;
+    state.wheelDelta = 0;
+  }
+
   const lastIndex = cards.length - 1;
   const isInWorkScreen = window.scrollY < section.offsetTop + window.innerHeight * 0.75;
   if (!isInWorkScreen && direction > 0) return;
@@ -704,6 +712,12 @@ function handleWorkWheel(event) {
 
   if (direction > 0 && state.activeIndex === lastIndex && wheelGap >= workFooterGestureGapMs) {
     state.footerGestureReady = true;
+  }
+
+  if (state.gestureLocked) {
+    state.wheelDelta = 0;
+    pinWorkSection(section);
+    return;
   }
 
   state.wheelDelta = Math.sign(state.wheelDelta) === direction ? state.wheelDelta + event.deltaY : event.deltaY;
@@ -731,6 +745,7 @@ function handleWorkWheel(event) {
   }
 
   if (now < state.stepLockedUntil) {
+    state.wheelDelta = 0;
     pinWorkSection(section);
     return;
   }
@@ -767,6 +782,7 @@ function initWorkSections() {
       activeIndex: 0,
       footerReadyAt: Infinity,
       footerGestureReady: false,
+      gestureLocked: false,
       isScrollingToFooter: false,
       lastWheelAt: 0,
       stepLockedUntil: 0,
