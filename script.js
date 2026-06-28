@@ -18,6 +18,7 @@ const i18nElements = document.querySelectorAll("[data-i18n]");
 const aboutRevealElements = aboutPanel ? aboutPanel.querySelectorAll("h2, p, .action-list button") : [];
 const aboutMotionMs = 420;
 const aboutCloseMotionMs = 380;
+const workMetaMotionMs = 680;
 const displayReferenceWidth = 1440;
 const displayReferenceHeight = 810;
 const displayMaxScale = 2;
@@ -40,6 +41,7 @@ const recentFooterArtifacts = [];
 const workCarouselState = new WeakMap();
 const footerArtifactImages = new Map();
 const isHomePage = location.pathname.endsWith("/") || location.pathname.endsWith("/index.html");
+const languageStorageKey = "portfolio-language";
 
 function getFooterArtifactSrc(artifactNumber) {
   return `./assets/footer-artifacts/artifact-${String(artifactNumber).padStart(2, "0")}.png`;
@@ -145,6 +147,35 @@ const copy = {
   },
 };
 
+function getSavedLanguage() {
+  try {
+    const savedLanguage = localStorage.getItem(languageStorageKey);
+    return copy[savedLanguage] ? savedLanguage : "ru";
+  } catch {
+    return "ru";
+  }
+}
+
+function saveLanguage(language) {
+  try {
+    localStorage.setItem(languageStorageKey, language);
+  } catch {
+    // Ignore storage failures and keep the in-page language switch working.
+  }
+}
+
+function setLanguageControls(language) {
+  if (languageSwitch) {
+    languageSwitch.dataset.active = language;
+  }
+
+  for (const item of languageOptions) {
+    const isActive = item.textContent.trim() === language;
+    item.classList.toggle("is-active", isActive);
+    item.setAttribute("aria-pressed", String(isActive));
+  }
+}
+
 function updateClock() {
   const parts = formatter.formatToParts(new Date());
   const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
@@ -198,9 +229,16 @@ function startSoftBlurText(element) {
   });
 }
 
-function applyLanguage(language) {
+function applyLanguage(language, { persist = false } = {}) {
+  if (!copy[language]) return;
+
   currentLanguage = language;
   document.documentElement.lang = language;
+  setLanguageControls(language);
+
+  if (persist) {
+    saveLanguage(language);
+  }
 
   for (const element of i18nElements) {
     const key = element.dataset.i18n;
@@ -218,6 +256,11 @@ function applyLanguage(language) {
     aboutPanel.setAttribute("aria-label", copy[language]["nav.about"]);
   }
 
+  for (const section of workSections) {
+    const state = workCarouselState.get(section);
+    updateWorkSection(section, state?.activeIndex || getWorkActiveIndex(section), { animate: false });
+  }
+
   requestAnimationFrame(updateNavIndicator);
 }
 
@@ -225,7 +268,7 @@ function animateNavLanguageChange(language) {
   clearTimeout(navLanguageTimer);
 
   if (!navPill || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    applyLanguage(language);
+    applyLanguage(language, { persist: true });
     return;
   }
 
@@ -239,7 +282,7 @@ function animateNavLanguageChange(language) {
   navPill.style.width = `${collapsedWidth}px`;
 
   navLanguageTimer = window.setTimeout(() => {
-    applyLanguage(language);
+    applyLanguage(language, { persist: true });
     const targetWidth = navPill.scrollWidth;
 
     navPill.classList.remove("is-language-collapsing");
@@ -286,6 +329,8 @@ if ("IntersectionObserver" in window) {
     startSoftBlurText(element);
   }
 }
+
+applyLanguage(getSavedLanguage());
 
 function resetHomeState() {
   updateDisplayScale();
@@ -398,7 +443,6 @@ function scheduleAboutClose() {
   aboutHoverCloseTimer = setTimeout(() => {
     closeAboutPanel();
     setAboutNavActive(false);
-    history.replaceState(null, "", location.pathname);
   }, 120);
 }
 
@@ -407,15 +451,17 @@ function cancelAboutClose() {
 }
 
 function openAboutFromHover() {
+  if (!aboutPanel) return;
+
   cancelAboutClose();
   setAboutNavActive(true);
   openAboutPanel();
-  history.replaceState(null, "", "#about");
 }
 
 for (const option of languageOptions) {
   option.addEventListener("click", () => {
     const language = option.textContent.trim();
+    if (language === currentLanguage) return;
 
     if (languageSwitch) {
       languageSwitch.dataset.active = language;
@@ -432,7 +478,7 @@ for (const option of languageOptions) {
 }
 
 for (const link of navLinks) {
-  if (link.dataset.panel === "about") {
+  if (link.dataset.panel === "about" && aboutPanel) {
     link.addEventListener("pointerenter", openAboutFromHover);
     link.addEventListener("pointerleave", scheduleAboutClose);
   }
@@ -440,7 +486,7 @@ for (const link of navLinks) {
   link.addEventListener("click", (event) => {
     const opensAbout = link.dataset.panel === "about";
 
-    if (opensAbout && aboutPanel) {
+    if (opensAbout) {
       event.preventDefault();
     } else {
       closeAboutPanel();
@@ -542,28 +588,35 @@ function getWorkStep(section) {
   return firstCard ? firstCard.offsetHeight + gap : 460;
 }
 
+function getWorkCardText(card, key) {
+  const languageKey = currentLanguage === "en" ? `${key}En` : key;
+  return card.dataset[languageKey] || card.dataset[key] || "";
+}
+
 function updateWorkMeta(section, activeCard) {
   const title = section.querySelector("[data-work-title]");
   const subtitle = section.querySelector("[data-work-subtitle]");
   const primary = section.querySelector("[data-work-primary]");
   const secondary = section.querySelector("[data-work-secondary]");
 
-  if (title) title.textContent = activeCard.dataset.title || "";
+  if (title) title.textContent = getWorkCardText(activeCard, "title");
 
   if (subtitle) {
-    const subtitleText = activeCard.dataset.subtitle || "";
+    const subtitleText = getWorkCardText(activeCard, "subtitle");
     subtitle.textContent = subtitleText;
     subtitle.hidden = !subtitleText;
   }
 
   if (primary) {
-    primary.textContent = activeCard.dataset.primaryLabel || "";
-    primary.hidden = !activeCard.dataset.primaryLabel;
+    const primaryText = getWorkCardText(activeCard, "primaryLabel");
+    primary.textContent = primaryText;
+    primary.hidden = !primaryText;
   }
 
   if (secondary) {
-    secondary.textContent = activeCard.dataset.secondaryLabel || "";
-    secondary.hidden = !activeCard.dataset.secondaryLabel;
+    const secondaryText = getWorkCardText(activeCard, "secondaryLabel");
+    secondary.textContent = secondaryText;
+    secondary.hidden = !secondaryText;
   }
 
   if (primary?.parentElement) {
@@ -597,19 +650,26 @@ function updateWorkSection(section, activeIndex = getWorkActiveIndex(section), {
 
   cards.forEach((card, index) => {
     card.classList.toggle("is-active", index === activeIndex);
+    card.classList.toggle("is-before", index < activeIndex);
+    card.classList.toggle("is-after", index > activeIndex);
   });
 
   updateWorkMeta(section, activeCard);
 
   if (animate) {
+    const state = workCarouselState.get(section);
+    clearTimeout(state?.metaTimer);
     section.classList.remove("is-updating");
     requestAnimationFrame(() => {
       section.classList.add("is-updating");
     });
 
-    window.setTimeout(() => {
+    const metaTimer = window.setTimeout(() => {
       section.classList.remove("is-updating");
-    }, 440);
+      if (state) state.metaTimer = 0;
+    }, workMetaMotionMs);
+
+    if (state) state.metaTimer = metaTimer;
   }
 }
 
