@@ -784,7 +784,7 @@ button {
   position: fixed;
   top: 73px;
   left: 50%;
-  z-index: 1;
+  z-index: 4;
   display: flex;
   width: 376px;
   min-height: 661px;
@@ -1175,6 +1175,7 @@ button {
 }
 
 .work-card {
+  --work-depth-offset: 0px;
   position: relative;
   width: var(--work-card-width);
   height: var(--work-card-height);
@@ -1199,11 +1200,11 @@ button {
 }
 
 .work-card.is-before {
-  transform: scale(0.8) rotateX(-8deg) translateZ(-90px);
+  transform: translateY(var(--work-depth-offset)) scale(0.8) rotateX(-8deg) translateZ(-90px);
 }
 
 .work-card.is-after {
-  transform: scale(0.8) rotateX(8deg) translateZ(-90px);
+  transform: translateY(calc(var(--work-depth-offset) * -1)) scale(0.8) rotateX(8deg) translateZ(-90px);
 }
 
 .work-card img {

@@ -649,9 +649,18 @@ function updateWorkSection(section, activeIndex = getWorkActiveIndex(section), {
   }
 
   cards.forEach((card, index) => {
+    const depthDirection = Math.sign(index - activeIndex);
+    const depthDistance = Math.abs(index - activeIndex);
+    const depthFactor = depthDirection < 0 ? 0.07 : 0.09;
+    const depthStackCompensation = depthDirection < 0 ? 0.02 : 0.029;
+    const depthOffset =
+      card.offsetHeight *
+      (depthDistance * depthFactor + depthDistance * Math.max(0, depthDistance - 1) * depthStackCompensation);
+
     card.classList.toggle("is-active", index === activeIndex);
     card.classList.toggle("is-before", index < activeIndex);
     card.classList.toggle("is-after", index > activeIndex);
+    card.style.setProperty("--work-depth-offset", `${depthOffset}px`);
   });
 
   updateWorkMeta(section, activeCard);
