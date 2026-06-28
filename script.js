@@ -18,7 +18,7 @@ const i18nElements = document.querySelectorAll("[data-i18n]");
 const aboutRevealElements = aboutPanel ? aboutPanel.querySelectorAll("h2, p, .action-list button") : [];
 const aboutMotionMs = 560;
 const aboutCloseMotionMs = 460;
-const workMetaMotionMs = 860;
+const workMetaMotionMs = 1720;
 const workSnapDelayMs = 130;
 const workSnapMotionMs = 520;
 const displayReferenceWidth = 1440;
@@ -662,8 +662,10 @@ function getWorkSnapTop(section, index) {
 function updateWorkSection(section, activeIndex = getWorkActiveIndex(section), { animate = true } = {}) {
   const carousel = section.querySelector("[data-work-carousel]");
   const cards = getWorkCards(section);
+  const state = workCarouselState.get(section);
   const safeActiveIndex = clampWorkIndex(section, activeIndex);
   const activeCard = cards[safeActiveIndex];
+  const shouldAnimateMeta = animate && state?.renderedActiveIndex !== safeActiveIndex;
 
   if (!cards.length || !activeCard) return;
 
@@ -688,8 +690,11 @@ function updateWorkSection(section, activeIndex = getWorkActiveIndex(section), {
 
   updateWorkMeta(section, activeCard);
 
-  if (animate) {
-    const state = workCarouselState.get(section);
+  if (state) {
+    state.renderedActiveIndex = safeActiveIndex;
+  }
+
+  if (shouldAnimateMeta) {
     clearTimeout(state?.metaTimer);
     section.classList.remove("is-updating");
     requestAnimationFrame(() => {

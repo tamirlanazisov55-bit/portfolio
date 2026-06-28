@@ -1245,7 +1245,7 @@ button {
 
 .work-screen.is-updating .work-copy,
 .work-screen.is-updating .work-actions {
-  animation: work-meta-in 860ms var(--ease-soft-blur-in) both;
+  animation: work-meta-in 1720ms var(--ease-soft-blur-in) both;
 }
 
 @keyframes work-meta-in {
