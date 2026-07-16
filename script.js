@@ -111,7 +111,7 @@ const copy = {
   ru: {
     "nav.about": "Обо мне",
     "nav.projects": "Проекты",
-    "nav.malbert": "Мальберт",
+    "nav.malbert": "Холст",
     "hero.name": "Азисов Тамирлан",
     "about.hello.title": "Привет",
     "about.hello.body1":
@@ -132,7 +132,7 @@ const copy = {
   en: {
     "nav.about": "About me",
     "nav.projects": "Projects",
-    "nav.malbert": "Malbert",
+    "nav.malbert": "Canvas",
     "hero.name": "Azisov Tamirlan",
     "about.hello.title": "Hello",
     "about.hello.body1":
