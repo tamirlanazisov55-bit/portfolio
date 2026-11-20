@@ -2887,3 +2887,89 @@ html[lang="ru"] .only-en {
     font-size: 13px;
   }
 }
+
+/* Hero logo marquee */
+.logo-marquee {
+  position: relative;
+  width: 260px;
+  max-width: 100%;
+  margin-top: 22px;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 26%, #000 74%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 26%, #000 74%, transparent 100%);
+  opacity: 0;
+  animation: logo-marquee-in 900ms ease 600ms forwards;
+}
+
+.logo-marquee::before,
+.logo-marquee::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  width: 34%;
+  pointer-events: none;
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+}
+
+.logo-marquee::before {
+  left: 0;
+  -webkit-mask-image: linear-gradient(90deg, #000, transparent);
+  mask-image: linear-gradient(90deg, #000, transparent);
+}
+
+.logo-marquee::after {
+  right: 0;
+  -webkit-mask-image: linear-gradient(270deg, #000, transparent);
+  mask-image: linear-gradient(270deg, #000, transparent);
+}
+
+.logo-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: logo-marquee-scroll 48s linear infinite;
+}
+
+.logo-marquee:hover .logo-marquee-track {
+  animation-play-state: paused;
+}
+
+.logo-marquee-list {
+  display: flex;
+  flex: none;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.logo-marquee-list li {
+  display: flex;
+  flex: none;
+  align-items: center;
+  height: 20px;
+  padding-right: 26px;
+}
+
+.logo-marquee-list img {
+  display: block;
+  max-width: none;
+  filter: brightness(0);
+  opacity: 0.42;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+@keyframes logo-marquee-scroll {
+  to { transform: translateX(-50%); }
+}
+
+@keyframes logo-marquee-in {
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-marquee-track { animation-duration: 120s; }
+}
