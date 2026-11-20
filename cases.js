@@ -5,6 +5,7 @@
   const ui = {
     case: { ru: "Кейс", en: "Case" },
     back: { ru: "Проекты", en: "Projects" },
+    backCanvas: { ru: "Холст", en: "Canvas" },
     year: { ru: "Год", en: "Year" },
     role: { ru: "Роль", en: "Role" },
     client: { ru: "Клиент", en: "Client" },
@@ -94,14 +95,20 @@
   /* ---------- Страница «Проекты» ---------- */
 
   function renderGrid(root) {
-    const count = document.querySelector("[data-cases-count]");
-    if (count) count.textContent = String(cases.length).padStart(2, "0");
+    const section = root.dataset.casesGrid || "projects";
+    const list = cases.filter((item) => (item.sections || ["projects"]).includes(section));
+    const count = document.querySelector(`[data-cases-count="${section}"]`) || document.querySelector("[data-cases-count]");
+    if (count) count.textContent = String(list.length).padStart(2, "0");
 
-    for (const item of cases) {
+    for (const item of list) {
       const card = el("a", "project-card", { href: `./cases/${item.slug}.html` });
 
       const media = el("div", "project-card-media");
-      media.append(el("img", "", { src: item.cover, alt: item.title, loading: "lazy", decoding: "async" }));
+      media.append(el("img", "project-card-cover", { src: item.cover, alt: item.title, loading: "lazy", decoding: "async" }));
+      if (item.hover) {
+        media.classList.add("has-hover");
+        media.append(el("img", "project-card-hover", { src: resolveSrc(item.hover), alt: "", loading: "lazy", decoding: "async", "aria-hidden": "true" }));
+      }
       media.append(i18n("span", "project-card-cta type-button", ui.case));
 
       const head = el("div", "project-card-head");
@@ -141,10 +148,11 @@
 
     // Hero
     const hero = el("section", "case-hero");
-    const back = el("a", "case-back type-button", { href: "./projects.html" });
+    const inProjects = (item.sections || ["projects"]).includes("projects");
+    const back = el("a", "case-back type-button", { href: inProjects ? "./index.html#projects" : "./malbert.html" });
     const arrow = el("span", "case-back-arrow", { "aria-hidden": "true" });
     arrow.textContent = "←";
-    back.append(arrow, i18n("span", "", ui.back));
+    back.append(arrow, i18n("span", "", inProjects ? ui.back : ui.backCanvas));
     const title = el("h1", "case-title");
     title.textContent = item.title;
     hero.append(back, title, i18n("p", "type-body-l case-subtitle", item.subtitle));
@@ -202,7 +210,8 @@
     }
 
     // Next project
-    const next = cases[(index + 1) % cases.length];
+    const group = cases.filter((entry) => (entry.sections || ["projects"]).includes(inProjects ? "projects" : "canvas"));
+    const next = group[(group.indexOf(item) + 1) % group.length];
     if (next && next !== item) {
       const nav = el("nav", "case-next", { "aria-label": "Next project" });
       nav.append(i18n("p", "type-body-s case-next-label", ui.next));

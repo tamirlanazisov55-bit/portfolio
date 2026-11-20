@@ -1932,3 +1932,52 @@ html.is-long-page {
     padding-bottom: var(--space-1000);
   }
 }
+
+/* ---------- Home projects, hover, experience ---------- */
+
+.home-projects {
+  min-height: auto;
+  padding-top: calc(120px * var(--display-scale));
+}
+
+.meta.meta-hero {
+  position: absolute;
+}
+
+.project-card-hover {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  filter: blur(8px);
+  transition: opacity var(--motion-soft-blur) var(--ease-soft-blur-in),
+    filter var(--motion-soft-blur) var(--ease-soft-blur-in),
+    transform var(--motion-soft-blur) var(--ease-soft-blur-in) !important;
+}
+
+.project-card:hover .project-card-hover,
+.project-card:focus-visible .project-card-hover {
+  opacity: 1;
+  filter: blur(0);
+}
+
+.project-card-cta {
+  z-index: 1;
+}
+
+.action-list button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.exp-dates {
+  color: var(--role);
+  white-space: nowrap;
+}
+
+@media (max-width: 760px) {
+  .home-projects {
+    padding-top: var(--space-800);
+  }
+}

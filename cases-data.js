@@ -8,10 +8,15 @@
     "./assets/cases/mellow/01.png" — локальная картинка из репозитория
     "v:953095448:1.753"            — видео Vimeo: id и соотношение сторон (ширина / высота)
     { type: "pair", items: [a, b] } — две картинки в ряд
+
+  sections — где показывать карточку: "projects" (главная) и/или "canvas" (Холст).
+  hover    — картинка, которая проявляется при наведении на карточку.
 */
 window.CASES = [
   {
     slug: "mellow",
+    sections: ["projects"],
+    hover: "fs_webp/977d93200129363.665da3c370101.png",
     title: "Mellow",
     year: "2024",
     cover: "./assets/cases-figma/project-mellow.png",
@@ -36,7 +41,6 @@ window.CASES = [
     media: [
       "max_3840_webp/4665af200129363.665da3c36de9f.png",
       "max_3840_webp/1f6fd6200129363.665dad099b3c2.png",
-      "v:953095448:1.753",
       "max_3840_webp/977d93200129363.665da3c370101.png",
       "fs/e164b1200129363.665da3c36ece3.gif",
       "max_3840_webp/3a3761200129363.665db07a9fe4b.png",
@@ -53,6 +57,8 @@ window.CASES = [
   },
   {
     slug: "comply-control",
+    sections: ["projects"],
+    hover: "fs_webp/2534fd226297935.683f1fcc7c975.png",
     title: "Comply Control",
     year: "2025",
     cover: "./assets/cases-figma/project-card-02-source.png",
@@ -73,7 +79,6 @@ window.CASES = [
       "max_3840_webp/2534fd226297935.683f1fcc7c975.png",
       "fs/42c2c2226297935.683f0df9b62e4.gif",
       "max_3840_webp/146bae226297935.683f1fcc7bea5.png",
-      "v:1090080950:1.563",
       "max_3840_webp/9f0c73226297935.683f29f07b819.png",
       "max_3840_webp/15c004226297935.683f1fcc77a63.png",
       "fs_webp/9b9cae226297935.683ee65599bb7.png",
@@ -83,7 +88,6 @@ window.CASES = [
       "max_3840_webp/9d052a226297935.683f29f07ab1c.png",
       "max_3840_webp/02439d226297935.683f1fcc7a01b.png",
       "max_3840_webp/3e6bbc226297935.683f1fcc79543.png",
-      "v:1090140761:1.865",
       "max_3840_webp/e002ed226297935.683f29f0799dc.png",
       "max_3840_webp/7ccfab226297935.683f29f07a34f.png",
       "max_3840_webp/9075c3226297935.683f1fcc7c418.png",
@@ -97,6 +101,8 @@ window.CASES = [
   },
   {
     slug: "haqq",
+    sections: ["projects"],
+    hover: "fs_webp/3e94f3219589137.67b4b4576ef76.png",
     title: "HAQQ",
     year: "2025",
     cover: "./assets/cases-figma/project-haqq.png",
@@ -120,13 +126,10 @@ window.CASES = [
       ["Case Production", "Maria Roshka, Almaz Zinnurov"],
     ],
     media: [
-      "v:1058937203:1.115",
       "max_3840_webp/50e05f219589137.67bc63aad23df.png",
-      "v:1059688991:1.600",
       "max_3840_webp/3e94f3219589137.67b4b4576ef76.png",
       "max_3840_webp/f817d7219589137.67b4b4577270b.png",
       "max_3840_webp/f05feb219589137.67bc61b39e766.png",
-      "v:1057908558:1.519",
       "max_3840_webp/92eea8219589137.67bc72378ee01.png",
       "max_3840_webp/a8ce57219589137.67b4b45771a69.png",
       "max_3840_webp/dc5f6a219589137.67bc71d329803.png",
@@ -135,12 +138,13 @@ window.CASES = [
       "max_3840_webp/7c14db219589137.67b4b45771590.png",
       "max_3840_webp/fee801219589137.67b4b4577042d.png",
       "max_3840_webp/b94d98219589137.67b4b45770e00.png",
-      "v:1057911324:1.549",
       "max_3840_webp/ac934e219589137.67b4b45773b78.png",
     ],
   },
   {
     slug: "isptech",
+    sections: ["projects"],
+    hover: "",
     title: "ISPTECH",
     year: "",
     cover: "./assets/cases-figma/project-isptech.png",
@@ -159,6 +163,8 @@ window.CASES = [
   },
   {
     slug: "overlock",
+    sections: ["projects", "canvas"],
+    hover: "fs_webp/8d969c225316107.681b1c4ad2ebd.png",
     title: "OVERLOCK",
     year: "2025",
     cover: "./assets/cases/malbert-overlock-card.png",
@@ -186,7 +192,6 @@ window.CASES = [
       "fs_webp/2ea472225316107.681b1c4ad2323.png",
       "fs_webp/dadbfd225316107.681b1c4ad15c9.png",
       "fs_webp/e2a7d0225316107.681b1c4ad3aa1.png",
-      "v:1082101994:1.778",
       "fs_webp/ca1b36225316107.681b254850c0f.png",
       "fs_webp/7090f8225316107.681b1c4ad1126.png",
       "fs_webp/7f0efc225316107.681b1c4acd2b1.png",
@@ -195,5 +200,45 @@ window.CASES = [
       "fs_webp/4e4f36225316107.681b1c4ad3354.png",
       "fs_webp/b350ad225316107.681b1c4ace8a9.png",
     ],
+  },
+  {
+    slug: "turk",
+    sections: ["canvas"],
+    hover: "",
+    title: "Turk",
+    year: "",
+    cover: "./assets/cases/malbert-turk-card.png",
+    subtitle: { ru: "Иллюстрация", en: "Illustration" },
+    tags: { ru: ["Личный проект", "Иллюстрация"], en: ["Personal", "Illustration"] },
+    role: { ru: "Автор проекта", en: "Solo project" },
+    client: { ru: "Личный проект", en: "Personal project" },
+    website: "",
+    behance: "",
+    summary: {
+      ru: "Цифровая иллюстрация. Описание и процесс появятся здесь позже.",
+      en: "Digital illustration. The story and process will be added here soon.",
+    },
+    credits: [],
+    media: ["./assets/cases/malbert-turk-card.png"],
+  },
+  {
+    slug: "icons-challenge",
+    sections: ["canvas"],
+    hover: "",
+    title: "Icons Challenge",
+    year: "",
+    cover: "./assets/cases/malbert-icons-card.png",
+    subtitle: { ru: "Иконки приложений", en: "App icons" },
+    tags: { ru: ["Личный проект", "Иконки"], en: ["Personal", "Icons"] },
+    role: { ru: "Автор проекта", en: "Solo project" },
+    client: { ru: "Личный проект", en: "Personal project" },
+    website: "",
+    behance: "",
+    summary: {
+      ru: "Челлендж: 30 иконок приложений в разных стилях. Описание и процесс появятся здесь позже.",
+      en: "A challenge: 30 app icons in different styles. The story and process will be added here soon.",
+    },
+    credits: [],
+    media: ["./assets/cases/malbert-icons-card.png"],
   },
 ];

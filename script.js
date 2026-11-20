@@ -358,6 +358,13 @@ function resetHomeState() {
 }
 
 window.addEventListener("pageshow", () => {
+  if (isHomePage && location.hash) {
+    updateDisplayScale();
+    const target = document.querySelector(location.hash);
+    if (target) requestAnimationFrame(() => target.scrollIntoView());
+    return;
+  }
+
   if (isHomePage) {
     resetHomeState();
     return;
@@ -449,8 +456,8 @@ function updateNavIndicator() {
 
 function getRouteActiveHref() {
   const page = location.pathname.split("/").pop() || "index.html";
-  if (page === "projects.html" || document.body.dataset.route === "projects") return "./projects.html";
-  if (page === "malbert.html") return "./malbert.html";
+  if (document.body.dataset.route === "projects") return "./index.html#projects";
+  if (page === "malbert.html" || document.body.dataset.route === "canvas") return "./malbert.html";
   return "";
 }
 

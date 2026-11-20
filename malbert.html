@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ru">
+<html lang="ru" class="is-long-page">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -22,10 +22,11 @@
         document.documentElement.style.setProperty("--work-card-gap-scaled", `${10 * scale}px`);
       })();
     </script>
-    <link rel="stylesheet" href="./styles.css?v=cases-1" />
+    <link rel="stylesheet" href="./styles.css?v=cases-2" />
   </head>
-  <body>
-    <main class="work-screen screen" id="malbert" aria-labelledby="malbert-title" data-work-section>
+  <body data-route="canvas">
+    <div class="page-fade" aria-hidden="true"></div>
+    <main class="projects-page" id="canvas">
       <header class="topbar" aria-label="Навигация">
         <a class="pill logo-pill" href="./index.html" aria-label="Азисов Тамирлан">
           <img src="./assets/logotype-hover-bg.png" alt="" class="logo-hover-bg" aria-hidden="true" />
@@ -34,8 +35,8 @@
 
         <nav class="pill nav-pill" aria-label="Основные разделы">
           <a class="type-button" href="#" data-panel="about" data-i18n="nav.about">Обо мне</a>
-          <a class="type-button" href="./projects.html" data-i18n="nav.projects">Проекты</a>
-          <a class="type-button is-active" href="./malbert.html" data-i18n="nav.malbert">Холст</a>
+          <a class="type-button" href="./index.html#projects" data-i18n="nav.projects">Проекты</a>
+          <a class="type-button" href="./malbert.html" data-i18n="nav.malbert">Холст</a>
         </nav>
 
         <div class="pill language-switch" aria-label="Выбор языка" data-active="ru">
@@ -70,9 +71,9 @@
         <section class="about-section">
           <h2 class="type-section-title" data-i18n="about.experience.title">Опыт</h2>
           <div class="action-list type-button">
-            <button type="button">Embacy — digital brand designer</button>
-            <button type="button" data-i18n="about.experience.item2">Only digital — ui/ux designer</button>
-            <button type="button">Vipavenue — motion designer</button>
+            <button type="button"><span>Embacy — digital brand designer</span><span class="exp-dates" data-ru="фев 2024 — сейчас" data-en="Feb 2024 — now">фев 2024 — сейчас</span></button>
+            <button type="button"><span data-i18n="about.experience.item2">Only digital — ui/ux designer</span><span class="exp-dates" data-ru="авг — ноя 2023" data-en="Aug — Nov 2023">авг — ноя 2023</span></button>
+            <button type="button"><span>Vipavenue — motion designer</span><span class="exp-dates" data-ru="авг — дек 2022" data-en="Aug — Dec 2022">авг — дек 2022</span></button>
           </div>
         </section>
 
@@ -87,34 +88,14 @@
         </section>
       </aside>
 
-      <div class="work-copy" data-work-copy>
-        <h1 class="type-body-l" id="malbert-title" data-work-title>Turk</h1>
+      <div class="projects-head">
+        <h1 class="type-body-l"><span data-i18n="nav.malbert">Холст</span> <span class="projects-count" data-cases-count="canvas"></span></h1>
+        <p class="type-body-s projects-lead" data-ru="Личные проекты, эксперименты и челленджи — то, что делаю для себя." data-en="Personal projects, experiments and challenges — things I make for myself.">Личные проекты, эксперименты и челленджи — то, что делаю для себя.</p>
       </div>
 
-      <div class="work-carousel" data-work-carousel>
-        <article class="work-card is-active" data-title="Turk" data-primary-label="Пост" data-primary-label-en="Post">
-          <img src="./assets/cases/malbert-turk-card.png" alt="Turk" />
-        </article>
-        <article class="work-card" data-title="Icons Challenge" data-primary-label="Пост" data-primary-label-en="Post">
-          <img src="./assets/cases/malbert-icons-card.png" alt="Icons Challenge" />
-        </article>
-        <article
-          class="work-card"
-          data-title="OVERLOCK"
-          data-subtitle="Game Branding &amp; UI"
-          data-primary-label="Кейс"
-          data-primary-label-en="Case"
-          data-primary-href="./cases/overlock.html"
-        >
-          <img src="./assets/cases/malbert-overlock-card.png" alt="OVERLOCK" />
-        </article>
-      </div>
+      <div class="projects-grid" data-cases-grid="canvas"></div>
 
-      <div class="work-actions type-body-l" data-work-actions>
-        <a href="#" data-work-primary>Пост</a>
-      </div>
-
-      <footer class="meta type-button" aria-label="Локация и локальное время">
+      <footer class="meta meta-inline type-button" aria-label="Локация и локальное время">
         <span>Saransk, Russia</span>
         <span class="time">
           <span class="clock">--:--:--</span>
@@ -138,6 +119,8 @@
       </div>
     </section>
 
-    <script src="./script.js?v=cases-1"></script>
+    <script src="./cases-data.js?v=cases-2"></script>
+    <script src="./cases.js?v=cases-2"></script>
+    <script src="./script.js?v=cases-2"></script>
   </body>
 </html>

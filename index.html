@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ru">
+<html lang="ru" class="is-long-page">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -22,9 +22,10 @@
         document.documentElement.style.setProperty("--work-card-gap-scaled", `${10 * scale}px`);
       })();
     </script>
-    <link rel="stylesheet" href="./styles.css?v=cases-1" />
+    <link rel="stylesheet" href="./styles.css?v=cases-2" />
   </head>
   <body>
+    <div class="page-fade" aria-hidden="true"></div>
     <main class="hero screen" aria-label="Первый экран портфолио">
       <header class="topbar" aria-label="Навигация">
         <a class="pill logo-pill" href="/" aria-label="Азисов Тамирлан">
@@ -34,7 +35,7 @@
 
         <nav class="pill nav-pill" aria-label="Основные разделы">
           <a class="type-button" href="#" data-panel="about" data-i18n="nav.about">Обо мне</a>
-          <a class="type-button" href="./projects.html" data-i18n="nav.projects">Проекты</a>
+          <a class="type-button" href="./index.html#projects" data-i18n="nav.projects">Проекты</a>
           <a class="type-button" href="./malbert.html" data-i18n="nav.malbert">Холст</a>
         </nav>
 
@@ -103,9 +104,9 @@
         <section class="about-section">
           <h2 class="type-section-title" data-i18n="about.experience.title">Опыт</h2>
           <div class="action-list type-button">
-            <button type="button">Embacy — digital brand designer</button>
-            <button type="button" data-i18n="about.experience.item2">Only digital — ui/ux designer</button>
-            <button type="button">Vipavenue — motion designer</button>
+            <button type="button"><span>Embacy — digital brand designer</span><span class="exp-dates" data-ru="фев 2024 — сейчас" data-en="Feb 2024 — now">фев 2024 — сейчас</span></button>
+            <button type="button"><span data-i18n="about.experience.item2">Only digital — ui/ux designer</span><span class="exp-dates" data-ru="авг — ноя 2023" data-en="Aug — Nov 2023">авг — ноя 2023</span></button>
+            <button type="button"><span>Vipavenue — motion designer</span><span class="exp-dates" data-ru="авг — дек 2022" data-en="Aug — Dec 2022">авг — дек 2022</span></button>
           </div>
         </section>
 
@@ -120,7 +121,7 @@
         </section>
       </aside>
 
-      <footer class="meta type-button" aria-label="Локация и локальное время">
+      <footer class="meta meta-hero type-button" aria-label="Локация и локальное время">
         <span>Saransk, Russia</span>
         <span class="time">
           <span class="clock">--:--:--</span>
@@ -128,6 +129,16 @@
         </span>
       </footer>
     </main>
+
+    <section class="projects-page home-projects" id="projects">
+      <div class="projects-head">
+        <h1 class="type-body-l"><span data-i18n="nav.projects">Проекты</span> <span class="projects-count" data-cases-count="projects"></span></h1>
+        <p class="type-body-s projects-lead" data-ru="Айдентика, сайты и интерфейсы для tech-продуктов. Большая часть проектов сделана в команде Embacy." data-en="Identities, websites and interfaces for tech products. Most of the projects were made with the Embacy team.">Айдентика, сайты и интерфейсы для tech-продуктов. Большая часть проектов сделана в команде Embacy.</p>
+      </div>
+
+      <div class="projects-grid" data-cases-grid="projects"></div>
+
+    </section>
 
     <section class="footer-screen screen" aria-labelledby="footer-title">
       <div class="footer-artifacts" aria-hidden="true"></div>
@@ -144,6 +155,8 @@
       </div>
     </section>
 
-    <script src="./script.js?v=cases-1"></script>
+    <script src="./cases-data.js?v=cases-2"></script>
+    <script src="./cases.js?v=cases-2"></script>
+    <script src="./script.js?v=cases-2"></script>
   </body>
 </html>

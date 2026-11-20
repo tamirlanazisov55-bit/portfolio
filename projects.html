@@ -1,126 +1,13 @@
 <!doctype html>
-<html lang="ru" class="is-long-page">
+<html lang="ru">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="refresh" content="0; url=./index.html#projects" />
+    <link rel="canonical" href="./index.html#projects" />
     <title>Проекты — Азисов Тамирлан</title>
-    <script>
-      (() => {
-        const scale = Math.max(1, Math.min(window.innerWidth / 1440, window.innerHeight / 810, 1.5));
-        const isWideHero =
-          window.innerWidth > 1920 &&
-          window.innerHeight > 1080 &&
-          window.screen.width > 1920 &&
-          window.screen.height > 1080;
-
-        document.documentElement.style.setProperty("--display-scale", scale.toFixed(4));
-        document.documentElement.style.setProperty("--hero-top", isWideHero ? "50%" : `${181 * scale}px`);
-        document.documentElement.style.setProperty("--hero-translate-y", isWideHero ? "-50%" : "0px");
-        document.documentElement.style.setProperty("--hero-transform-origin", isWideHero ? "center" : "top center");
-        document.documentElement.style.setProperty("--work-card-width-scaled", `${796 * scale}px`);
-        document.documentElement.style.setProperty("--work-card-height-scaled", `${450 * scale}px`);
-        document.documentElement.style.setProperty("--work-card-gap-scaled", `${10 * scale}px`);
-      })();
-    </script>
-    <link rel="stylesheet" href="./styles.css?v=cases-1" />
+    <script>location.replace("./index.html#projects");</script>
   </head>
   <body>
-    <div class="page-fade" aria-hidden="true"></div>
-    <main class="projects-page" id="projects">
-      <header class="topbar" aria-label="Навигация">
-        <a class="pill logo-pill" href="./index.html" aria-label="Азисов Тамирлан">
-          <img src="./assets/logotype-hover-bg.png" alt="" class="logo-hover-bg" aria-hidden="true" />
-          <img src="./assets/logotype.svg" alt="" class="logo-mark logo-mark-default" />
-        </a>
-
-        <nav class="pill nav-pill" aria-label="Основные разделы">
-          <a class="type-button" href="#" data-panel="about" data-i18n="nav.about">Обо мне</a>
-          <a class="type-button is-active" href="./projects.html" data-i18n="nav.projects">Проекты</a>
-          <a class="type-button" href="./malbert.html" data-i18n="nav.malbert">Холст</a>
-        </nav>
-
-        <div class="pill language-switch" aria-label="Выбор языка" data-active="ru">
-          <button class="language-option type-button is-active" type="button" aria-pressed="true">ru</button>
-          <button class="language-option type-button" type="button" aria-pressed="false">en</button>
-        </div>
-      </header>
-
-      <aside class="about-dropdown" id="about-panel" aria-label="Обо мне" hidden>
-        <section class="about-section">
-          <h2 class="type-section-title" data-i18n="about.hello.title">Привет</h2>
-          <p class="type-body-s" data-i18n="about.hello.body1">
-            Digital brand designer с 3+ годами опыта в digital. Занимаюсь айдентикой, сайтами и интерфейсами
-            для продуктов, которым нужна ясная структура, характер и визуальная система.
-          </p>
-          <p class="type-body-s" data-i18n="about.hello.body2">
-            Хорошо чувствую себя в новых контекстах: там, где нужно разобраться в задаче, найти подход и
-            довести идею до рабочего дизайна.
-          </p>
-        </section>
-
-        <section class="about-section">
-          <h2 class="type-section-title" data-i18n="about.education.title">Образование</h2>
-          <div class="about-list type-body-s">
-            <p data-i18n="about.education.item1">UpRock — Веб-дизайн</p>
-            <p data-i18n="about.education.item2">Наука дизайна — Композиция и сетки</p>
-            <p data-i18n="about.education.item3">videosmile — Супер Illustrator</p>
-            <p data-i18n="about.education.item4">МГУ им. Н. П. Огарёва — высшее экономическое образование</p>
-          </div>
-        </section>
-
-        <section class="about-section">
-          <h2 class="type-section-title" data-i18n="about.experience.title">Опыт</h2>
-          <div class="action-list type-button">
-            <button type="button">Embacy — digital brand designer</button>
-            <button type="button" data-i18n="about.experience.item2">Only digital — ui/ux designer</button>
-            <button type="button">Vipavenue — motion designer</button>
-          </div>
-        </section>
-
-        <section class="about-section contacts-section">
-          <h2 class="type-section-title" data-i18n="about.contacts.title">Контакты</h2>
-          <div class="action-list type-button">
-            <button type="button">Telegram</button>
-            <button type="button">Instagram</button>
-            <button type="button">Behance</button>
-            <button type="button" data-i18n="about.contacts.linkedin">Linkedin</button>
-          </div>
-        </section>
-      </aside>
-
-      <div class="projects-head">
-        <h1 class="type-body-l"><span data-i18n="nav.projects">Проекты</span> <span class="projects-count" data-cases-count></span></h1>
-        <p class="type-body-s projects-lead" data-ru="Айдентика, сайты и интерфейсы для tech-продуктов. Большая часть проектов сделана в команде Embacy." data-en="Identities, websites and interfaces for tech products. Most of the projects were made with the Embacy team.">Айдентика, сайты и интерфейсы для tech-продуктов. Большая часть проектов сделана в команде Embacy.</p>
-      </div>
-
-      <div class="projects-grid" data-cases-grid></div>
-
-      <footer class="meta meta-inline type-button" aria-label="Локация и локальное время">
-        <span>Saransk, Russia</span>
-        <span class="time">
-          <span class="clock">--:--:--</span>
-          <span class="period">--</span>
-        </span>
-      </footer>
-    </main>
-
-    <section class="footer-screen screen" aria-labelledby="footer-title">
-      <div class="footer-artifacts" aria-hidden="true"></div>
-      <div class="footer-message">
-        <h2 class="type-body-l soft-blur-text" id="footer-title" data-soft-blur data-i18n="footer.title">Есть проект или вопрос?</h2>
-        <a
-          class="email-button type-body-l soft-blur-text"
-          href="mailto:tamirlanazisov55@gmail.com?subject=%D0%9F%D1%80%D0%BE%D0%B5%D0%BA%D1%82%20%2F%20%D0%B2%D0%BE%D0%BF%D1%80%D0%BE%D1%81"
-          aria-label="Написать на tamirlanazisov55@gmail.com"
-          data-soft-blur
-        >
-          tamirlanazisov55@gmail.com
-        </a>
-      </div>
-    </section>
-
-    <script src="./cases-data.js?v=cases-1"></script>
-    <script src="./cases.js?v=cases-1"></script>
-    <script src="./script.js?v=cases-1"></script>
+    <a href="./index.html#projects">Проекты</a>
   </body>
 </html>
