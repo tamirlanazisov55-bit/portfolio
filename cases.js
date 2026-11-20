@@ -156,7 +156,7 @@
     if (count) count.textContent = String(list.length).padStart(2, "0");
 
     for (const item of list) {
-      const card = el("a", "project-card", { href: `./cases/${item.slug}.html` });
+      const card = el("a", "project-card", { href: `./cases/${item.slug}` });
 
       const media = el("div", "project-card-media");
       media.append(el("img", "project-card-cover", { src: resolveSrc(item.cover), alt: item.title, loading: "lazy", decoding: "async" }));
@@ -295,7 +295,7 @@
     if (next && next !== item) {
       const nav = el("nav", "case-next", { "aria-label": "Next project" });
       nav.append(i18n("p", "type-body-s case-next-label", ui.next));
-      const card = el("a", "case-next-card", { href: `./cases/${next.slug}.html` });
+      const card = el("a", "case-next-card", { href: `./cases/${next.slug}` });
       const text = el("div", "case-next-text");
       const nextTitle = el("span", "case-next-title");
       nextTitle.textContent = next.title;
@@ -319,6 +319,11 @@
     }
 
     document.title = `${item.title} — Азисов Тамирлан`;
+
+    // Чистый адрес без .html
+    if (location.protocol !== "file:" && location.pathname.endsWith(".html")) {
+      history.replaceState(null, "", location.pathname.slice(0, -5) + location.search + location.hash);
+    }
   }
 
   document.querySelectorAll("[data-cases-grid]").forEach(renderGrid);
