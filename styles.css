@@ -1976,3 +1976,21 @@ html.is-long-page {
     padding-top: var(--space-800);
   }
 }
+
+/* ---------- Smooth active states ---------- */
+
+.nav-pill.is-ready::before {
+  transition: transform 640ms var(--ease-soft-blur-in),
+    width 640ms var(--ease-soft-blur-in),
+    opacity 420ms var(--ease-soft-blur-in);
+}
+
+.nav-pill.is-ready.is-indicator-entering::before {
+  transition: opacity 420ms var(--ease-soft-blur-in);
+}
+
+.case-back,
+.case-link {
+  transition: background-color var(--motion-soft-blur) var(--ease-soft-blur-in),
+    color var(--motion-soft-blur) var(--ease-soft-blur-in);
+}

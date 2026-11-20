@@ -437,6 +437,7 @@ function updateNavIndicator() {
   if (!navPill) return;
 
   const activeLink = navPill.querySelector("a.is-active");
+  const wasActive = navPill.classList.contains("has-active");
   navPill.classList.toggle("has-active", Boolean(activeLink));
 
   if (!activeLink) {
@@ -450,8 +451,12 @@ function updateNavIndicator() {
   const activeX = (linkRect.left - navRect.left + navPill.scrollLeft) / scale;
 
   navPill.style.setProperty("--nav-active-x", `${activeX}px`);
+  if (!wasActive) navPill.classList.add("is-indicator-entering");
   navPill.style.setProperty("--nav-active-width", `${linkRect.width / scale}px`);
   navPill.classList.add("is-ready");
+  if (!wasActive) {
+    requestAnimationFrame(() => requestAnimationFrame(() => navPill.classList.remove("is-indicator-entering")));
+  }
 }
 
 const homeSections = isHomePage ? [...document.querySelectorAll(".home-projects[id]")] : [];
