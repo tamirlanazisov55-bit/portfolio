@@ -2043,3 +2043,27 @@ html.is-long-page {
     transform: none;
   }
 }
+
+/* ---------- Location & time pinned to the bottom ---------- */
+
+.meta.meta-hero,
+.meta.meta-inline {
+  position: fixed;
+  bottom: calc(34px * var(--display-scale));
+  left: 50%;
+  z-index: 2;
+  margin: 0;
+  padding: 0;
+  font-size: var(--type-button-size);
+  transform: translateX(-50%) scale(var(--display-scale));
+}
+
+@media (max-width: 760px) {
+  .meta.meta-hero,
+  .meta.meta-inline {
+    bottom: 88px;
+    margin: 0;
+    padding: 0;
+    transform: translateX(-50%);
+  }
+}
