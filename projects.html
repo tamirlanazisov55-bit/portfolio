@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ru">
+<html lang="ru" class="is-long-page">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -22,10 +22,11 @@
         document.documentElement.style.setProperty("--work-card-gap-scaled", `${10 * scale}px`);
       })();
     </script>
-    <link rel="stylesheet" href="./styles.css?v=dropdown-2k" />
+    <link rel="stylesheet" href="./styles.css?v=cases-1" />
   </head>
   <body>
-    <main class="work-screen screen" id="projects" aria-labelledby="projects-title" data-work-section>
+    <div class="page-fade" aria-hidden="true"></div>
+    <main class="projects-page" id="projects">
       <header class="topbar" aria-label="Навигация">
         <a class="pill logo-pill" href="./index.html" aria-label="Азисов Тамирлан">
           <img src="./assets/logotype-hover-bg.png" alt="" class="logo-hover-bg" aria-hidden="true" />
@@ -87,62 +88,14 @@
         </section>
       </aside>
 
-      <div class="work-copy" data-work-copy>
-        <h1 class="type-body-l" id="projects-title" data-work-title>Mellow</h1>
-        <p class="type-body-s" data-work-subtitle>Brand Identity &amp; Website</p>
+      <div class="projects-head">
+        <h1 class="type-body-l"><span data-i18n="nav.projects">Проекты</span> <span class="projects-count" data-cases-count></span></h1>
+        <p class="type-body-s projects-lead" data-ru="Айдентика, сайты и интерфейсы для tech-продуктов. Большая часть проектов сделана в команде Embacy." data-en="Identities, websites and interfaces for tech products. Most of the projects were made with the Embacy team.">Айдентика, сайты и интерфейсы для tech-продуктов. Большая часть проектов сделана в команде Embacy.</p>
       </div>
 
-      <div class="work-carousel" data-work-carousel>
-        <article
-          class="work-card is-active"
-          data-title="Mellow"
-          data-subtitle="Brand Identity &amp; Website"
-          data-primary-label="Сайт"
-          data-primary-label-en="Website"
-          data-secondary-label="Кейс"
-          data-secondary-label-en="Case"
-        >
-          <img src="./assets/cases-figma/project-mellow.png" alt="Mellow" />
-        </article>
-        <article
-          class="work-card"
-          data-title="Comply Control"
-          data-subtitle="Brand Identity, Website &amp; UI/UX"
-          data-primary-label="Сайт"
-          data-primary-label-en="Website"
-          data-secondary-label="Кейс"
-          data-secondary-label-en="Case"
-        >
-          <img src="./assets/cases-figma/project-card-02-source.png" alt="Comply Control" />
-        </article>
-        <article
-          class="work-card"
-          data-title="HAQQ"
-          data-subtitle="Brand Identity &amp; Website"
-          data-primary-label="Сайт"
-          data-primary-label-en="Website"
-          data-secondary-label="Кейс"
-          data-secondary-label-en="Case"
-        >
-          <img src="./assets/cases-figma/project-haqq.png" alt="HAQQ" />
-        </article>
-        <article
-          class="work-card"
-          data-title="ISPTECH"
-          data-subtitle="Brand Identity &amp; Website"
-          data-primary-label="Сайт"
-          data-primary-label-en="Website"
-        >
-          <img src="./assets/cases-figma/project-isptech.png" alt="ISPTECH" />
-        </article>
-      </div>
+      <div class="projects-grid" data-cases-grid></div>
 
-      <div class="work-actions type-body-l" data-work-actions>
-        <a href="#" data-work-primary>Сайт</a>
-        <a href="#" data-work-secondary>Кейс</a>
-      </div>
-
-      <footer class="meta type-button" aria-label="Локация и локальное время">
+      <footer class="meta meta-inline type-button" aria-label="Локация и локальное время">
         <span>Saransk, Russia</span>
         <span class="time">
           <span class="clock">--:--:--</span>
@@ -166,6 +119,8 @@
       </div>
     </section>
 
-    <script src="./script.js?v=max-scale-150"></script>
+    <script src="./cases-data.js?v=cases-1"></script>
+    <script src="./cases.js?v=cases-1"></script>
+    <script src="./script.js?v=cases-1"></script>
   </body>
 </html>

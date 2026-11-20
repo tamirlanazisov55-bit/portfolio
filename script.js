@@ -257,6 +257,10 @@ function applyLanguage(language, { persist = false } = {}) {
     }
   }
 
+  for (const element of document.querySelectorAll("[data-ru]")) {
+    element.textContent = element.dataset[language] || element.dataset.ru;
+  }
+
   if (aboutPanel) {
     aboutPanel.setAttribute("aria-label", copy[language]["nav.about"]);
   }
@@ -445,7 +449,7 @@ function updateNavIndicator() {
 
 function getRouteActiveHref() {
   const page = location.pathname.split("/").pop() || "index.html";
-  if (page === "projects.html") return "./projects.html";
+  if (page === "projects.html" || document.body.dataset.route === "projects") return "./projects.html";
   if (page === "malbert.html") return "./malbert.html";
   return "";
 }
@@ -627,12 +631,14 @@ function updateWorkMeta(section, activeCard) {
     const primaryText = getWorkCardText(activeCard, "primaryLabel");
     primary.textContent = primaryText;
     primary.hidden = !primaryText;
+    primary.setAttribute("href", activeCard.dataset.primaryHref || "#");
   }
 
   if (secondary) {
     const secondaryText = getWorkCardText(activeCard, "secondaryLabel");
     secondary.textContent = secondaryText;
     secondary.hidden = !secondaryText;
+    secondary.setAttribute("href", activeCard.dataset.secondaryHref || "#");
   }
 
   if (primary?.parentElement) {
