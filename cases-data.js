@@ -250,7 +250,7 @@ window.CASES = [
     hover: "./assets/video/luminous-watch.mp4",
     title: "Luminous Labs",
     year: "2024",
-    cover: "fs_webp/177954215296101.67689b0d869b7.png",
+    cover: "fs_webp/e0989f215296101.67689b0d861b5.png",
     subtitle: { ru: "Айдентика и сайт", en: "Brand Identity & Website" },
     tags: { ru: ["Айдентика", "Сайт", "3D", "Health tech"], en: ["Identity", "Website", "3D", "Health tech"] },
     role: { ru: "Дизайнер в команде Embacy", en: "Designer at Embacy" },
