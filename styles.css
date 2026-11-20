@@ -2203,3 +2203,168 @@ html.is-long-page {
   margin-right: auto;
   margin-left: auto;
 }
+
+/* ---------- Slider inside a case ---------- */
+
+.case-slider {
+  position: relative;
+  background: #000;
+  outline: none;
+}
+
+.case-slider-track {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+
+.case-slider-track::-webkit-scrollbar {
+  display: none;
+}
+
+.case-slider-slide {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.case-slider-bar {
+  position: absolute;
+  right: calc(16px * var(--display-scale));
+  bottom: calc(16px * var(--display-scale));
+  left: calc(16px * var(--display-scale));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  pointer-events: none;
+}
+
+.case-slider-title,
+.case-slider-controls {
+  display: inline-flex;
+  align-items: center;
+  height: calc(36px * var(--display-scale));
+  padding: 0 calc(14px * var(--display-scale));
+  border-radius: 999px;
+  background: rgba(20, 20, 20, 0.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #fff;
+  font-size: calc(var(--type-body-s-size) * var(--display-scale));
+  pointer-events: auto;
+}
+
+.case-slider-controls {
+  gap: calc(6px * var(--display-scale));
+  padding: 0 calc(4px * var(--display-scale));
+}
+
+.case-slider-count {
+  min-width: 5.2em;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.case-slider-btn {
+  display: grid;
+  place-items: center;
+  width: calc(28px * var(--display-scale));
+  height: calc(28px * var(--display-scale));
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+  transition: background-color 250ms ease, opacity 250ms ease;
+}
+
+.case-slider-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.case-slider-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+@media (max-width: 760px) {
+  .case-slider-bar {
+    right: 8px;
+    bottom: 8px;
+    left: 8px;
+  }
+
+  .case-slider-title {
+    display: none;
+  }
+
+  .case-slider-bar {
+    justify-content: flex-end;
+  }
+}
+
+/* ---------- Behance ribbons ---------- */
+
+.ribbons {
+  display: inline-flex;
+  gap: calc(4px * var(--display-scale));
+}
+
+.ribbon {
+  display: inline-grid;
+  place-items: center;
+  width: calc(24px * var(--display-scale));
+  height: calc(24px * var(--display-scale));
+  border-radius: 50%;
+  background: var(--ribbon-color);
+  color: #fff;
+  font-size: calc(10px * var(--display-scale));
+  font-weight: var(--font-medium);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.project-card-ribbons {
+  position: absolute;
+  top: calc(12px * var(--display-scale));
+  right: calc(12px * var(--display-scale));
+  z-index: 3;
+  pointer-events: auto;
+}
+
+.case-title-ribbons {
+  margin-left: calc(12px * var(--display-scale));
+  vertical-align: 0.55em;
+}
+
+.case-title-ribbons .ribbon {
+  width: calc(28px * var(--display-scale));
+  height: calc(28px * var(--display-scale));
+  font-size: calc(11px * var(--display-scale));
+  letter-spacing: -0.02em;
+}
+
+.case-ribbon-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.case-ribbon-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.case-ribbon-dot {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--ribbon-color);
+}

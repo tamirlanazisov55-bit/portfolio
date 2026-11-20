@@ -110,7 +110,50 @@
     return video;
   }
 
+  function mediaSlider(item) {
+    const root = el("div", "case-slider");
+    const track = el("div", "case-slider-track");
+    item.items.forEach((src) => {
+      const slide = el("div", "case-slider-slide");
+      slide.append(mediaImage(src, { alt: "" }));
+      track.append(slide);
+    });
+    const bar = el("div", "case-slider-bar");
+    if (item.title) bar.append(i18n("span", "case-slider-title", item.title));
+    const controls = el("div", "case-slider-controls");
+    const prev = el("button", "case-slider-btn", { type: "button", "aria-label": "Previous" });
+    prev.textContent = "←";
+    const counter = el("span", "case-slider-count");
+    const next = el("button", "case-slider-btn", { type: "button", "aria-label": "Next" });
+    next.textContent = "→";
+    controls.append(prev, counter, next);
+    bar.append(controls);
+    root.append(track, bar);
+
+    const total = item.items.length;
+    const pad = (n) => String(n).padStart(2, "0");
+    const current = () => Math.round(track.scrollLeft / Math.max(1, track.clientWidth));
+    const update = () => {
+      const i = current();
+      counter.textContent = `${pad(i + 1)} / ${pad(total)}`;
+      prev.disabled = i <= 0;
+      next.disabled = i >= total - 1;
+    };
+    const go = (step) => track.scrollTo({ left: (current() + step) * track.clientWidth, behavior: "smooth" });
+    prev.addEventListener("click", () => go(-1));
+    next.addEventListener("click", () => go(1));
+    track.addEventListener("scroll", () => requestAnimationFrame(update), { passive: true });
+    root.tabIndex = 0;
+    root.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowLeft") { event.preventDefault(); go(-1); }
+      if (event.key === "ArrowRight") { event.preventDefault(); go(1); }
+    });
+    update();
+    return root;
+  }
+
   function renderMediaItem(item, index, title) {
+    if (typeof item === "object" && item.type === "slider") return mediaSlider(item);
     if (typeof item === "object" && item.type === "pair") {
       const row = el("div", "case-media-pair");
       item.items.forEach((src) => row.append(mediaImage(src, { alt: title })));
@@ -149,6 +192,27 @@
 
   /* ---------- Страница «Проекты» ---------- */
 
+  /* ---------- Ленточки Behance ---------- */
+
+  const RIBBONS = {
+    "ui-ux": { color: "#ad9058", label: { ru: "Галерея Behance UI/UX", en: "Featured in Behance UI/UX" } },
+    best: { color: "#004fff", label: { ru: "Лучшее из Behance", en: "Best of Behance" } },
+  };
+
+  function ribbonBadges(item, className) {
+    const keys = (item.ribbons || []).filter((key) => RIBBONS[key]);
+    if (!keys.length) return null;
+    const wrap = el("span", `ribbons ${className}`);
+    for (const key of keys) {
+      const ribbon = RIBBONS[key];
+      const badge = el("span", "ribbon", { title: ribbon.label.ru, "aria-label": ribbon.label.ru });
+      badge.style.setProperty("--ribbon-color", ribbon.color);
+      badge.textContent = "Gr";
+      wrap.append(badge);
+    }
+    return wrap;
+  }
+
   function renderGrid(root) {
     const section = root.dataset.casesGrid || "projects";
     const list = cases.filter((item) => (item.sections || ["projects"]).includes(section));
@@ -176,6 +240,8 @@
         media.classList.add("has-hover");
         media.append(el("img", "project-card-hover", { src: resolveSrc(item.hover), alt: "", loading: "lazy", decoding: "async", "aria-hidden": "true" }));
       }
+      const badges = ribbonBadges(item, "project-card-ribbons");
+      if (badges) media.append(badges);
       if (item.chips && item.chips.ru.length) {
         const tags = el("div", "project-card-tags");
         item.chips.ru.forEach((label, i) => {
@@ -230,6 +296,8 @@
     back.append(arrow, i18n("span", "", inProjects ? ui.back : ui.backCanvas));
     const title = el("h1", "case-title");
     title.textContent = item.title;
+    const titleBadges = ribbonBadges(item, "case-title-ribbons");
+    if (titleBadges) title.append(titleBadges);
     hero.append(back, title, i18n("p", "type-body-l case-subtitle", item.subtitle));
 
     // Info: summary + meta
@@ -268,6 +336,18 @@
       links.append(a);
     }
     if (links.childNodes.length) meta.append(metaRow(ui.links, links));
+    const ribbonKeys = (item.ribbons || []).filter((key) => RIBBONS[key]);
+    if (ribbonKeys.length) {
+      const list = el("span", "case-ribbon-list");
+      for (const key of ribbonKeys) {
+        const row = el("span", "case-ribbon-item");
+        const dot = el("span", "case-ribbon-dot", { "aria-hidden": "true" });
+        dot.style.setProperty("--ribbon-color", RIBBONS[key].color);
+        row.append(dot, i18n("span", "", RIBBONS[key].label));
+        list.append(row);
+      }
+      meta.append(metaRow({ ru: "Behance", en: "Behance" }, list));
+    }
     info.append(summary, meta);
 
     // Media
