@@ -1994,3 +1994,52 @@ html.is-long-page {
   transition: background-color var(--motion-soft-blur) var(--ease-soft-blur-in),
     color var(--motion-soft-blur) var(--ease-soft-blur-in);
 }
+
+/* ---------- Card tags ---------- */
+
+.project-card-tags {
+  position: absolute;
+  left: calc(12px * var(--display-scale));
+  bottom: calc(12px * var(--display-scale));
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(6px * var(--display-scale));
+  pointer-events: none;
+}
+
+.project-card-tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: calc(28px * var(--display-scale));
+  padding: 0 calc(12px * var(--display-scale));
+  border-radius: 999px;
+  background: rgb(28 28 28 / 72%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: var(--pill-shadow);
+  color: #fff;
+  font-size: calc(13px * var(--display-scale));
+  opacity: 0;
+  filter: blur(4px);
+  transform: translate3d(0, 6px, 0);
+  transition: opacity var(--motion-soft-blur) var(--ease-soft-blur-in),
+    filter var(--motion-soft-blur) var(--ease-soft-blur-in),
+    transform var(--motion-soft-blur) var(--ease-soft-blur-in);
+  transition-delay: calc(var(--tag-index, 0) * 60ms);
+}
+
+.project-card:hover .project-card-tag,
+.project-card:focus-visible .project-card-tag {
+  opacity: 1;
+  filter: blur(0);
+  transform: translate3d(0, 0, 0);
+}
+
+@media (max-width: 760px) {
+  .project-card-tag {
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+}

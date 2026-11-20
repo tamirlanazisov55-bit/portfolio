@@ -104,12 +104,20 @@
       const card = el("a", "project-card", { href: `./cases/${item.slug}.html` });
 
       const media = el("div", "project-card-media");
-      media.append(el("img", "project-card-cover", { src: item.cover, alt: item.title, loading: "lazy", decoding: "async" }));
+      media.append(el("img", "project-card-cover", { src: resolveSrc(item.cover), alt: item.title, loading: "lazy", decoding: "async" }));
       if (item.hover) {
         media.classList.add("has-hover");
         media.append(el("img", "project-card-hover", { src: resolveSrc(item.hover), alt: "", loading: "lazy", decoding: "async", "aria-hidden": "true" }));
       }
-      media.append(i18n("span", "project-card-cta type-button", ui.case));
+      if (item.chips && item.chips.ru.length) {
+        const tags = el("div", "project-card-tags");
+        item.chips.ru.forEach((label, i) => {
+          const tag = i18n("span", "project-card-tag type-button", { ru: label, en: item.chips.en[i] || label });
+          tag.style.setProperty("--tag-index", i);
+          tags.append(tag);
+        });
+        media.append(tags);
+      }
 
       const head = el("div", "project-card-head");
       const name = el("h2", "type-body-s");
@@ -221,7 +229,7 @@
       nextTitle.textContent = next.title;
       text.append(nextTitle, i18n("span", "type-body-l case-next-subtitle", next.subtitle));
       const thumb = el("div", "case-next-thumb");
-      thumb.append(el("img", "", { src: next.cover, alt: next.title, loading: "lazy", decoding: "async" }));
+      thumb.append(el("img", "", { src: resolveSrc(next.cover), alt: next.title, loading: "lazy", decoding: "async" }));
       card.append(text, thumb);
       nav.append(card);
       root.append(nav);

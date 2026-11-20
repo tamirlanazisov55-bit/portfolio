@@ -10,11 +10,14 @@
     { type: "pair", items: [a, b] } — две картинки в ряд
 
   sections — где показывать карточку: "projects" и/или "canvas" — секции главной страницы.
+  cover    — обложка карточки (лучше всего логотип проекта).
   hover    — картинка, которая проявляется при наведении на карточку.
+  chips    — 2–3 коротких тега, которые всплывают на карточке при наведении.
 */
 window.CASES = [
   {
     slug: "mellow",
+    chips: { ru: ["Айдентика", "Веб"], en: ["Identity", "Web"] },
     sections: ["projects"],
     hover: "fs_webp/977d93200129363.665da3c370101.png",
     title: "Mellow",
@@ -57,6 +60,7 @@ window.CASES = [
   },
   {
     slug: "comply-control",
+    chips: { ru: ["Айдентика", "Веб", "UI/UX"], en: ["Identity", "Web", "UI/UX"] },
     sections: ["projects"],
     hover: "fs_webp/2534fd226297935.683f1fcc7c975.png",
     title: "Comply Control",
@@ -101,11 +105,12 @@ window.CASES = [
   },
   {
     slug: "haqq",
+    chips: { ru: ["Айдентика", "Веб", "Motion"], en: ["Identity", "Web", "Motion"] },
     sections: ["projects"],
-    hover: "fs_webp/3e94f3219589137.67b4b4576ef76.png",
+    hover: "./assets/cases-figma/project-haqq.png",
     title: "HAQQ",
     year: "2025",
-    cover: "./assets/cases-figma/project-haqq.png",
+    cover: "fs_webp/3e94f3219589137.67b4b4576ef76.png",
     subtitle: { ru: "Айдентика и сайт", en: "Brand Identity & Website" },
     tags: { ru: ["Айдентика", "Сайт", "Web3"], en: ["Identity", "Website", "Web3"] },
     role: { ru: "Дизайнер в команде Embacy", en: "Designer at Embacy" },
@@ -143,6 +148,7 @@ window.CASES = [
   },
   {
     slug: "isptech",
+    chips: { ru: ["Айдентика", "Веб"], en: ["Identity", "Web"] },
     sections: ["projects"],
     hover: "",
     title: "ISPTECH",
@@ -163,11 +169,12 @@ window.CASES = [
   },
   {
     slug: "overlock",
+    chips: { ru: ["Брендинг", "UI", "AI"], en: ["Branding", "UI", "AI"] },
     sections: ["canvas"],
-    hover: "fs_webp/8d969c225316107.681b1c4ad2ebd.png",
+    hover: "./assets/cases/malbert-overlock-card.png",
     title: "OVERLOCK",
     year: "2025",
-    cover: "./assets/cases/malbert-overlock-card.png",
+    cover: "fs_webp/e0ca6e225316107.681b1c4acfe13.png",
     subtitle: { ru: "Брендинг игры и UI", en: "Game Branding & UI" },
     tags: { ru: ["Личный проект", "Брендинг", "UI", "AI"], en: ["Personal", "Branding", "UI", "AI"] },
     role: { ru: "Автор проекта", en: "Solo project" },
@@ -203,6 +210,7 @@ window.CASES = [
   },
   {
     slug: "turk",
+    chips: { ru: ["Иллюстрация"], en: ["Illustration"] },
     sections: ["canvas"],
     hover: "",
     title: "Turk",
@@ -223,6 +231,7 @@ window.CASES = [
   },
   {
     slug: "icons-challenge",
+    chips: { ru: ["Иконки"], en: ["Icons"] },
     sections: ["canvas"],
     hover: "",
     title: "Icons Challenge",
