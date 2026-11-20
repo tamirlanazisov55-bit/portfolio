@@ -198,7 +198,7 @@
     // Hero
     const hero = el("section", "case-hero");
     const inProjects = (item.sections || ["projects"]).includes("projects");
-    const back = el("a", "case-back type-button", { href: inProjects ? "./index.html#projects" : "./index.html#canvas" });
+    const back = el("a", "case-back type-button", { href: inProjects ? "./#projects" : "./#canvas" });
     const arrow = el("span", "case-back-arrow", { "aria-hidden": "true" });
     arrow.textContent = "←";
     back.append(arrow, i18n("span", "", inProjects ? ui.back : ui.backCanvas));

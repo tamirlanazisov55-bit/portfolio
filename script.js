@@ -393,7 +393,7 @@ if (logoLink) {
       return;
     }
 
-    location.href = "./index.html";
+    location.href = "./";
   });
 }
 
@@ -479,13 +479,13 @@ function getHomeSectionHref() {
     const rect = section.getBoundingClientRect();
     return rect.top <= line && rect.bottom > line;
   });
-  return current ? `./index.html#${current.id}` : "";
+  return current ? `./#${current.id}` : "";
 }
 
 function getRouteActiveHref() {
   if (isHomePage) return getHomeSectionHref();
   const route = document.body.dataset.route;
-  if (route === "projects" || route === "canvas") return `./index.html#${route}`;
+  if (route === "projects" || route === "canvas") return `./#${route}`;
   return "";
 }
 
