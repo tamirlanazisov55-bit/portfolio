@@ -23,7 +23,7 @@ window.CASES = [
     hover: "fs_webp/92aeac257775127.6ae336d74c64f.png",
     title: "PT1",
     year: "2026",
-    cover: "fs_webp/36fcb6257775127.6ae33eefc53dd.png",
+    cover: "./assets/cases/pt1-logo.webp",
     subtitle: { ru: "Айдентика, сайт и разработка", en: "Brand Identity, Website & Development" },
     tags: { ru: ["Айдентика", "Сайт", "Разработка", "VC"], en: ["Identity", "Website", "Development", "VC"] },
     role: { ru: "Дизайнер в команде Embacy", en: "Designer at Embacy" },
