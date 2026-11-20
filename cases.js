@@ -262,6 +262,11 @@
       a.textContent = "Medium ↗";
       links.append(a);
     }
+    if (item.telegram) {
+      const a = el("a", "case-link", { href: item.telegram, target: "_blank", rel: "noopener" });
+      a.textContent = "Telegram ↗";
+      links.append(a);
+    }
     if (links.childNodes.length) meta.append(metaRow(ui.links, links));
     info.append(summary, meta);
 
@@ -309,7 +314,7 @@
 
     // Кнопка в меню: «Сайт», если у проекта есть сайт, иначе «Кейс» (Behance / Medium)
     const navPill = document.querySelector(".nav-pill");
-    const extraHref = item.website || item.behance || item.medium;
+    const extraHref = item.website || item.behance || item.medium || item.telegram;
     if (navPill && extraHref) {
       const extra = i18n("a", "type-button nav-extra", item.website ? ui.website : ui.case);
       extra.href = extraHref;
