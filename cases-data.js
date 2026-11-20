@@ -6,6 +6,7 @@
   media — лента кейса сверху вниз. Каждый элемент:
     "max_3840_webp/abc.png"        — картинка с Behance (путь после /project_modules/)
     "./assets/cases/mellow/01.png" — локальная картинка из репозитория
+    "./assets/video/name.mp4"      — видео из репозитория (рядом лежит name.jpg — первый кадр)
     "v:953095448:1.753"            — видео Vimeo: id и соотношение сторон (ширина / высота)
     { type: "pair", items: [a, b] } — две картинки в ряд
 
@@ -61,7 +62,7 @@ window.CASES = [
     slug: "kinescope",
     chips: { ru: ["Айдентика", "Веб"], en: ["Identity", "Web"] },
     sections: ["projects"],
-    hover: "fs_webp/1ca5a2240130525.6939e03c308be.png",
+    hover: "./assets/video/kinescope-hero.mp4",
     title: "Kinescope 2.0",
     year: "2025",
     cover: "https://mir-s3-cdn-cf.behance.net/projects/max_808_webp/38daba240130525.Y3JvcCwxNjE2LDEyNjQsMCww.png",
@@ -78,6 +79,7 @@ window.CASES = [
     credits: [],
     media: [
       "max_3840_webp/e24be4240130525.69382c95b15d2.png",
+      "./assets/video/kinescope-hero.mp4",
       "max_3840_webp/9f81e1240130525.69382c95b7170.png",
       "max_3840_webp/e10d34240130525.69382c95b5ae4.png",
       "max_3840_webp/1ca5a2240130525.6939e03c308be.png",
@@ -100,7 +102,7 @@ window.CASES = [
     slug: "comply-control",
     chips: { ru: ["Айдентика", "Веб", "UI/UX"], en: ["Identity", "Web", "UI/UX"] },
     sections: ["projects"],
-    hover: "fs_webp/2534fd226297935.683f1fcc7c975.png",
+    hover: "./assets/video/comply-display.mp4",
     title: "Comply Control",
     year: "2025",
     cover: "./assets/cases-figma/project-card-02-source.png",
@@ -117,14 +119,18 @@ window.CASES = [
     credits: [],
     media: [
       "max_3840_webp/e0223c226297935.683f1fcc7af4b.png",
+      "./assets/video/comply-logo.mp4",
       "max_3840_webp/bf2a2c226297935.683f1fcc76d43.png",
       "max_3840_webp/2534fd226297935.683f1fcc7c975.png",
+      "./assets/video/comply-display.mp4",
       "fs/42c2c2226297935.683f0df9b62e4.gif",
       "max_3840_webp/146bae226297935.683f1fcc7bea5.png",
       "max_3840_webp/9f0c73226297935.683f29f07b819.png",
+      "./assets/video/comply-generate.mp4",
       "max_3840_webp/15c004226297935.683f1fcc77a63.png",
       "fs_webp/9b9cae226297935.683ee65599bb7.png",
       "max_3840_webp/ef7ed4226297935.683f29f07b253.png",
+      "./assets/video/comply-gradient.mp4",
       "fs/edc630226297935.683f0df9b6b3e.gif",
       "max_3840_webp/2e8849226297935.683f1fcc7a7d5.png",
       "max_3840_webp/9d052a226297935.683f29f07ab1c.png",
@@ -145,7 +151,7 @@ window.CASES = [
     slug: "haqq",
     chips: { ru: ["Айдентика", "Веб", "Motion"], en: ["Identity", "Web", "Motion"] },
     sections: ["projects"],
-    hover: "./assets/cases-figma/project-haqq.png",
+    hover: "./assets/video/haqq-screen.mp4",
     title: "HAQQ",
     year: "2025",
     cover: "fs_webp/3e94f3219589137.67b4b4576ef76.png",
@@ -170,9 +176,11 @@ window.CASES = [
     ],
     media: [
       "max_3840_webp/50e05f219589137.67bc63aad23df.png",
+      "./assets/video/haqq-cube.mp4",
       "max_3840_webp/3e94f3219589137.67b4b4576ef76.png",
       "max_3840_webp/f817d7219589137.67b4b4577270b.png",
       "max_3840_webp/f05feb219589137.67bc61b39e766.png",
+      "./assets/video/haqq-screen.mp4",
       "max_3840_webp/92eea8219589137.67bc72378ee01.png",
       "max_3840_webp/a8ce57219589137.67b4b45771a69.png",
       "max_3840_webp/dc5f6a219589137.67bc71d329803.png",
@@ -188,7 +196,7 @@ window.CASES = [
     slug: "monite",
     chips: { ru: ["Айдентика", "Веб", "Motion"], en: ["Identity", "Web", "Motion"] },
     sections: ["projects"],
-    hover: "fs_webp/fdd2f2208382331.66ed797f34eff.png",
+    hover: "./assets/video/monite-logo.mp4",
     title: "Monite",
     year: "2024",
     cover: "https://mir-s3-cdn-cf.behance.net/projects/max_808_webp/af7179208382331.Y3JvcCwzMjMyLDI1MjgsMCww.png",
@@ -211,6 +219,7 @@ window.CASES = [
     ],
     media: [
       "max_3840_webp/183a3b208382331.670fb1ffdeb1c.png",
+      "./assets/video/monite-logo.mp4",
       "max_3840_webp/44fb8a208382331.670fb1ffde5d8.png",
       "max_3840_webp/54c3d7208382331.670fb1ffdde54.png",
       "max_3840_webp/fdd2f2208382331.66ed797f34eff.png",
@@ -231,7 +240,7 @@ window.CASES = [
     slug: "mellow",
     chips: { ru: ["Айдентика", "Веб"], en: ["Identity", "Web"] },
     sections: ["projects"],
-    hover: "fs_webp/977d93200129363.665da3c370101.png",
+    hover: "./assets/video/mellow-logo.mp4",
     title: "Mellow",
     year: "2024",
     cover: "./assets/cases-figma/project-mellow.png",
@@ -255,6 +264,7 @@ window.CASES = [
     ],
     media: [
       "max_3840_webp/4665af200129363.665da3c36de9f.png",
+      "./assets/video/mellow-logo.mp4",
       "max_3840_webp/1f6fd6200129363.665dad099b3c2.png",
       "max_3840_webp/977d93200129363.665da3c370101.png",
       "fs/e164b1200129363.665da3c36ece3.gif",

@@ -2074,3 +2074,19 @@ html.is-long-page {
     padding-left: 10px;
   }
 }
+
+/* ---------- Videos ---------- */
+
+.project-card-media video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.case-media-file {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #000;
+}

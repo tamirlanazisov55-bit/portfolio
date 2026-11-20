@@ -82,12 +82,41 @@
     return wrap;
   }
 
+  const isVideoFile = (src) => /\.mp4$/i.test(src);
+  const posterOf = (src) => src.replace(/\.mp4$/i, ".jpg");
+
+  const videoObserver = "IntersectionObserver" in window
+    ? new IntersectionObserver((entries) => {
+        for (const entry of entries) {
+          const video = entry.target;
+          if (entry.isIntersecting) {
+            if (!video.src) video.src = video.dataset.src;
+            video.play().catch(() => {});
+          } else {
+            video.pause();
+          }
+        }
+      }, { rootMargin: "200px 0px" })
+    : null;
+
+  function mediaFile(src) {
+    const video = el("video", "case-media-file", { poster: resolveSrc(posterOf(src)), preload: "none", "aria-hidden": "true" });
+    video.muted = true;
+    video.loop = true;
+    video.playsInline = true;
+    video.dataset.src = resolveSrc(src);
+    if (videoObserver) videoObserver.observe(video);
+    else { video.src = video.dataset.src; video.autoplay = true; }
+    return video;
+  }
+
   function renderMediaItem(item, index, title) {
     if (typeof item === "object" && item.type === "pair") {
       const row = el("div", "case-media-pair");
       item.items.forEach((src) => row.append(mediaImage(src, { alt: title })));
       return row;
     }
+    if (isVideoFile(item)) return mediaFile(item);
     if (item.startsWith("v:")) return mediaVideo(item);
     return mediaImage(item, { eager: index < 2, alt: index === 0 ? title : "" });
   }
@@ -105,7 +134,19 @@
 
       const media = el("div", "project-card-media");
       media.append(el("img", "project-card-cover", { src: resolveSrc(item.cover), alt: item.title, loading: "lazy", decoding: "async" }));
-      if (item.hover) {
+      if (item.hover && isVideoFile(item.hover)) {
+        media.classList.add("has-hover");
+        const video = el("video", "project-card-hover", { poster: resolveSrc(posterOf(item.hover)), preload: "none", "aria-hidden": "true" });
+        video.muted = true;
+        video.loop = true;
+        video.playsInline = true;
+        media.append(video);
+        card.addEventListener("pointerenter", () => {
+          if (!video.src) video.src = resolveSrc(item.hover);
+          video.play().catch(() => {});
+        });
+        card.addEventListener("pointerleave", () => video.pause());
+      } else if (item.hover) {
         media.classList.add("has-hover");
         media.append(el("img", "project-card-hover", { src: resolveSrc(item.hover), alt: "", loading: "lazy", decoding: "async", "aria-hidden": "true" }));
       }
