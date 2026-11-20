@@ -164,6 +164,33 @@
     return mediaImage(item, { eager: index < 2, alt: index === 0 ? title : "" });
   }
 
+  // Сетка небольших картинок с увеличением по клику
+  function renderGrid3(entry) {
+    const grid = el("section", "case-grid");
+    entry.items.forEach((src) => {
+      const button = el("button", "case-grid-item", { type: "button" });
+      button.append(mediaImage(src, { alt: "" }));
+      button.addEventListener("click", () => openLightbox(src));
+      grid.append(button);
+    });
+    return grid;
+  }
+
+  function openLightbox(src) {
+    const box = el("div", "case-lightbox", { role: "dialog", "aria-modal": "true" });
+    box.append(el("img", "", { src: resolveSrc(src), alt: "" }));
+    const close = () => {
+      box.classList.remove("is-open");
+      document.removeEventListener("keydown", onKey);
+      setTimeout(() => box.remove(), 250);
+    };
+    const onKey = (event) => { if (event.key === "Escape") close(); };
+    box.addEventListener("click", close);
+    document.addEventListener("keydown", onKey);
+    document.body.append(box);
+    requestAnimationFrame(() => box.classList.add("is-open"));
+  }
+
   function renderArticle(item) {
     const wrap = el("section", "case-article");
     for (const block of item.article) {
@@ -195,8 +222,8 @@
   /* ---------- Ленточки Behance ---------- */
 
   const RIBBONS = {
-    "ui-ux": { color: "#ad9058", label: { ru: "Галерея Behance UI/UX", en: "Featured in Behance UI/UX" } },
-    best: { color: "#004fff", label: { ru: "Лучшее из Behance", en: "Best of Behance" } },
+    "ui-ux": { color: "#ad9058", text: "UI", label: { ru: "Польз. интерфейс", en: "UI/UX" } },
+    best: { color: "#004fff", text: "Bē", label: { ru: "Лучшее из Behance", en: "Best of Behance" } },
   };
 
   function ribbonBadges(item, className) {
@@ -207,7 +234,7 @@
       const ribbon = RIBBONS[key];
       const badge = el("span", "ribbon", { title: ribbon.label.ru, "aria-label": ribbon.label.ru });
       badge.style.setProperty("--ribbon-color", ribbon.color);
-      badge.textContent = "Gr";
+      badge.textContent = ribbon.text;
       wrap.append(badge);
     }
     return wrap;
@@ -352,9 +379,13 @@
 
     // Media
     const media = el("section", "case-media");
-    item.media.forEach((entry, i) => media.append(renderMediaItem(entry, i, item.title)));
+    const grids = [];
+    item.media.forEach((entry, i) => {
+      if (typeof entry === "object" && entry.type === "grid") grids.push(renderGrid3(entry));
+      else media.append(renderMediaItem(entry, i, item.title));
+    });
 
-    root.append(hero, info, item.article ? renderArticle(item) : media);
+    root.append(hero, info, item.article ? renderArticle(item) : media, ...grids);
 
     // Credits
     if (item.credits && item.credits.length) {

@@ -16,8 +16,8 @@ const workSections = document.querySelectorAll("[data-work-section]");
 const softBlurTexts = document.querySelectorAll("[data-soft-blur]");
 const i18nElements = document.querySelectorAll("[data-i18n]");
 const aboutRevealElements = aboutPanel ? aboutPanel.querySelectorAll("h2, p, .action-list button") : [];
-const aboutMotionMs = 1800;
-const aboutCloseMotionMs = 1800;
+const aboutMotionMs = 1000;
+const aboutCloseMotionMs = 700;
 const workMetaMotionMs = 1800;
 const workSnapDelayMs = 130;
 const workSnapMotionMs = 520;
@@ -236,6 +236,15 @@ function startSoftBlurText(element) {
   });
 }
 
+// Мягкая смена текста при переключении языка — только для видимых элементов
+function softSwap(element) {
+  if (!element.animate || element.closest(".nav-pill, .language-switch")) return;
+  const rect = element.getBoundingClientRect();
+  if (!rect.width || rect.bottom < 0 || rect.top > window.innerHeight) return;
+  if (Number(getComputedStyle(element).opacity) === 0) return;
+  element.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 320, easing: "cubic-bezier(0.22, 1, 0.36, 1)" });
+}
+
 function applyLanguage(language, { persist = false } = {}) {
   if (!copy[language]) return;
 
@@ -252,7 +261,9 @@ function applyLanguage(language, { persist = false } = {}) {
     const value = copy[language][key];
     if (!value) continue;
 
+    const changed = element.textContent !== value;
     setElementText(element, value);
+    if (changed && !element.matches("[data-soft-blur]")) softSwap(element);
 
     if (element.matches("[data-soft-blur]")) {
       startSoftBlurText(element);
@@ -260,7 +271,10 @@ function applyLanguage(language, { persist = false } = {}) {
   }
 
   for (const element of document.querySelectorAll("[data-ru]")) {
-    element.textContent = element.dataset[language] || element.dataset.ru;
+    const next = element.dataset[language] || element.dataset.ru;
+    if (element.textContent === next) continue;
+    element.textContent = next;
+    softSwap(element);
   }
 
   if (aboutPanel) {
@@ -407,6 +421,7 @@ function openAboutPanel() {
   clearTimeout(aboutCloseTimer);
   aboutPanel.hidden = false;
   aboutPanel.classList.remove("is-visible", "is-opening", "is-closing");
+  setAboutRevealPositions();
 
   requestAnimationFrame(() => {
     aboutPanel.classList.add("is-visible", "is-opening");
@@ -414,6 +429,18 @@ function openAboutPanel() {
       aboutPanel.classList.remove("is-opening");
     }, aboutMotionMs);
   });
+}
+
+// Положение каждого блока по высоте панели (0 — верх, 1 — низ),
+// чтобы текст появлялся и исчезал вместе с краем раскрывающейся панели.
+function setAboutRevealPositions() {
+  const panelRect = aboutPanel.getBoundingClientRect();
+  const height = panelRect.height || 1;
+  for (const element of aboutRevealElements) {
+    const rect = element.getBoundingClientRect();
+    const pos = Math.min(1, Math.max(0, (rect.top + rect.height / 2 - panelRect.top) / height));
+    element.style.setProperty("--about-pos", pos.toFixed(3));
+  }
 }
 
 function closeAboutPanel({ immediate = false } = {}) {

@@ -2368,3 +2368,170 @@ html.is-long-page {
   border-radius: 50%;
   background: var(--ribbon-color);
 }
+
+/* ---------- Grid of small images + lightbox ---------- */
+
+.case-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: calc(10px * var(--display-scale));
+  margin-top: calc(10px * var(--display-scale));
+}
+
+.case-grid-item {
+  display: block;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--card-radius);
+  background: #000;
+  cursor: zoom-in;
+}
+
+.case-grid-item .case-media-img {
+  transition: transform 600ms var(--ease-soft-blur-in, ease), opacity 300ms ease;
+}
+
+.case-grid-item:hover .case-media-img {
+  transform: scale(1.03);
+}
+
+.case-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 4vmin;
+  background: rgba(10, 10, 10, 0.88);
+  cursor: zoom-out;
+  opacity: 0;
+  transition: opacity 250ms ease;
+}
+
+.case-lightbox.is-open {
+  opacity: 1;
+}
+
+.case-lightbox img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: var(--card-radius);
+}
+
+@media (max-width: 1000px) {
+  .case-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .case-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Smoother language switch ---------- */
+
+.nav-pill {
+  transition: width 420ms var(--ease-soft-blur-in);
+}
+
+.nav-pill.is-language-collapsing {
+  opacity: 1;
+  filter: none;
+}
+
+.nav-pill.is-language-collapsing a {
+  opacity: 0;
+  filter: none;
+  transform: translateY(3px);
+  transition: opacity 200ms ease, transform 200ms ease;
+}
+
+.nav-pill.is-language-expanding {
+  animation: none;
+}
+
+.nav-pill.is-language-expanding a {
+  animation-name: nav-language-link-in-lite;
+}
+
+@keyframes nav-language-link-in-lite {
+  0% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.soft-blur-char {
+  will-change: auto;
+}
+
+/* ---------- About panel: text unfolds together with the panel ---------- */
+
+.about-dropdown {
+  will-change: clip-path, opacity, transform;
+}
+
+.about-dropdown.is-opening {
+  animation-duration: 1000ms;
+  animation-timing-function: cubic-bezier(0.65, 0, 0.25, 1);
+}
+
+.about-dropdown.is-closing {
+  animation-name: about-dropdown-out-even;
+  animation-duration: 700ms;
+  animation-timing-function: cubic-bezier(0.55, 0, 0.35, 1);
+}
+
+.about-reveal {
+  will-change: auto;
+}
+
+.about-dropdown.is-opening .about-reveal {
+  animation-duration: 560ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-delay: calc(80ms + var(--about-pos, 0) * 620ms);
+}
+
+.about-dropdown.is-closing .about-reveal {
+  animation-duration: 260ms;
+  animation-timing-function: ease-in;
+  animation-delay: calc((1 - var(--about-pos, 0)) * 420ms);
+}
+
+@keyframes about-dropdown-out-even {
+  0% {
+    clip-path: inset(0 0 0 0 round 12px);
+    opacity: 1;
+    transform: translate3d(var(--about-dropdown-x), 0, 0)
+      scale(var(--about-dropdown-scale), var(--about-dropdown-scale));
+  }
+
+  85% {
+    opacity: 1;
+  }
+
+  100% {
+    clip-path: inset(0 0 100% 0 round 12px);
+    opacity: 0;
+    transform: translate3d(var(--about-dropdown-x), -6px, 0)
+      scale(var(--about-dropdown-scale), calc(var(--about-dropdown-scale) * 0.98));
+  }
+}
+
+/* About panel moves as one piece: text is revealed and hidden only by the panel edge */
+
+.about-dropdown.is-opening .about-reveal,
+.about-dropdown.is-closing .about-reveal {
+  animation: none;
+  opacity: 1;
+  filter: none;
+  transform: none;
+}
