@@ -112,6 +112,7 @@ const copy = {
     "nav.about": "Обо мне",
     "nav.projects": "Проекты",
     "nav.malbert": "Холст",
+    "nav.contact": "Связь со мной",
     "hero.name": "Азисов Тамирлан",
     "about.hello.title": "Привет",
     "about.hello.body1":
@@ -133,6 +134,7 @@ const copy = {
     "nav.about": "About me",
     "nav.projects": "Projects",
     "nav.malbert": "Canvas",
+    "nav.contact": "Contact me",
     "hero.name": "Azisov Tamirlan",
     "about.hello.title": "Hello",
     "about.hello.body1":
@@ -459,7 +461,17 @@ function updateNavIndicator() {
   }
 }
 
-const homeSections = isHomePage ? [...document.querySelectorAll(".home-projects[id]")] : [];
+const homeSections = isHomePage ? [...document.querySelectorAll(".home-projects[id], .footer-screen[id]")] : [];
+
+for (const link of navLinks) {
+  if (!link.getAttribute("href").endsWith("#contact")) continue;
+  link.addEventListener("click", (event) => {
+    const target = document.getElementById("contact");
+    if (!target || isHomePage) return;
+    event.preventDefault();
+    target.scrollIntoView({ behavior: "smooth" });
+  });
+}
 
 function getHomeSectionHref() {
   const line = window.innerHeight * 0.4;

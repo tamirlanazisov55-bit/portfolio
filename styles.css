@@ -2067,3 +2067,10 @@ html.is-long-page {
     transform: translateX(-50%);
   }
 }
+
+@media (max-width: 420px) {
+  .nav-pill a {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+}
