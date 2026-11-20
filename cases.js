@@ -149,7 +149,7 @@
     // Hero
     const hero = el("section", "case-hero");
     const inProjects = (item.sections || ["projects"]).includes("projects");
-    const back = el("a", "case-back type-button", { href: inProjects ? "./index.html#projects" : "./malbert.html" });
+    const back = el("a", "case-back type-button", { href: inProjects ? "./index.html#projects" : "./index.html#canvas" });
     const arrow = el("span", "case-back-arrow", { "aria-hidden": "true" });
     arrow.textContent = "←";
     back.append(arrow, i18n("span", "", inProjects ? ui.back : ui.backCanvas));
@@ -230,8 +230,7 @@
     document.title = `${item.title} — Азисов Тамирлан`;
   }
 
-  const grid = document.querySelector("[data-cases-grid]");
-  if (grid) renderGrid(grid);
+  document.querySelectorAll("[data-cases-grid]").forEach(renderGrid);
 
   const caseRoot = document.querySelector("[data-case-root]");
   if (caseRoot) renderCase(caseRoot, document.body.dataset.case);

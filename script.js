@@ -454,12 +454,33 @@ function updateNavIndicator() {
   navPill.classList.add("is-ready");
 }
 
+const homeSections = isHomePage ? [...document.querySelectorAll(".home-projects[id]")] : [];
+
+function getHomeSectionHref() {
+  const line = window.innerHeight * 0.4;
+  const current = homeSections.find((section) => {
+    const rect = section.getBoundingClientRect();
+    return rect.top <= line && rect.bottom > line;
+  });
+  return current ? `./index.html#${current.id}` : "";
+}
+
 function getRouteActiveHref() {
-  const page = location.pathname.split("/").pop() || "index.html";
-  if (document.body.dataset.route === "projects") return "./index.html#projects";
-  if (page === "malbert.html" || document.body.dataset.route === "canvas") return "./malbert.html";
+  if (isHomePage) return getHomeSectionHref();
+  const route = document.body.dataset.route;
+  if (route === "projects" || route === "canvas") return `./index.html#${route}`;
   return "";
 }
+
+let homeSpyFrame;
+window.addEventListener("scroll", () => {
+  if (!homeSections.length || homeSpyFrame) return;
+  homeSpyFrame = requestAnimationFrame(() => {
+    homeSpyFrame = null;
+    if (aboutPanel && !aboutPanel.hidden) return;
+    setRouteNavActive();
+  });
+});
 
 function setRouteNavActive() {
   const routeHref = getRouteActiveHref();

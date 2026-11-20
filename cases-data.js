@@ -9,7 +9,7 @@
     "v:953095448:1.753"            — видео Vimeo: id и соотношение сторон (ширина / высота)
     { type: "pair", items: [a, b] } — две картинки в ряд
 
-  sections — где показывать карточку: "projects" (главная) и/или "canvas" (Холст).
+  sections — где показывать карточку: "projects" и/или "canvas" — секции главной страницы.
   hover    — картинка, которая проявляется при наведении на карточку.
 */
 window.CASES = [
@@ -163,7 +163,7 @@ window.CASES = [
   },
   {
     slug: "overlock",
-    sections: ["projects", "canvas"],
+    sections: ["canvas"],
     hover: "fs_webp/8d969c225316107.681b1c4ad2ebd.png",
     title: "OVERLOCK",
     year: "2025",
