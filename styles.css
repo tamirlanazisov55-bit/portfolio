@@ -2181,3 +2181,25 @@ html.is-long-page {
     font-size: 16px;
   }
 }
+
+/* ---------- Case link in the nav ---------- */
+
+.nav-pill a.nav-extra {
+  animation: nav-language-link-in 700ms var(--ease-soft-blur-in) 250ms both;
+}
+
+@media (max-width: 420px) {
+  .nav-pill a {
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+}
+
+/* Article images after the first one follow the text column */
+
+.case-article-figure ~ .case-article-figure {
+  width: 100%;
+  max-width: calc(760px * var(--display-scale));
+  margin-right: auto;
+  margin-left: auto;
+}

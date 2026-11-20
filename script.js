@@ -555,6 +555,7 @@ for (const link of navLinks) {
   }
 
   link.addEventListener("click", (event) => {
+    if (link.target === "_blank") return;
     const opensAbout = link.dataset.panel === "about";
 
     if (opensAbout) {

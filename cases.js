@@ -307,6 +307,17 @@
       root.append(nav);
     }
 
+    // Кнопка в меню: «Сайт», если у проекта есть сайт, иначе «Кейс» (Behance / Medium)
+    const navPill = document.querySelector(".nav-pill");
+    const extraHref = item.website || item.behance || item.medium;
+    if (navPill && extraHref) {
+      const extra = i18n("a", "type-button nav-extra", item.website ? ui.website : ui.case);
+      extra.href = extraHref;
+      extra.target = "_blank";
+      extra.rel = "noopener";
+      navPill.append(extra);
+    }
+
     document.title = `${item.title} — Азисов Тамирлан`;
   }
 
