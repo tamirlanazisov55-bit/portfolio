@@ -1129,3 +1129,17 @@ function createFooterArtifact(event) {
 if (footerScreen && footerArtifactsLayer) {
   footerScreen.addEventListener("pointermove", createFooterArtifact);
 }
+
+// Hero logo marquee width follows the nav pill
+(() => {
+  const marquee = document.querySelector(".logo-marquee");
+  const pill = document.querySelector(".nav-pill");
+  if (!marquee || !pill) return;
+  const sync = () => {
+    const scale = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--display-scale")) || 1;
+    marquee.style.setProperty("--marquee-w", `${Math.round(pill.offsetWidth / scale)}px`);
+  };
+  sync();
+  window.addEventListener("resize", sync);
+  if ("ResizeObserver" in window) new ResizeObserver(sync).observe(pill);
+})();
