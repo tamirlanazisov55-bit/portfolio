@@ -513,6 +513,7 @@ function getRouteActiveHref() {
   if (isHomePage) return getHomeSectionHref();
   const route = document.body.dataset.route;
   if (route === "projects" || route === "canvas") return `./#${route}`;
+  if (route === "cv") return "./cv";
   return "";
 }
 

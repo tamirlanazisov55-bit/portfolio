@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="ru" class="is-long-page">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CV — Тамирлан Азисов, бренд-дизайнер</title>
+    <script>
+      (() => {
+        const scale = Math.max(1, Math.min(window.innerWidth / 1440, window.innerHeight / 810, 1.5));
+        const isWideHero =
+          window.innerWidth > 1920 &&
+          window.innerHeight > 1080 &&
+          window.screen.width > 1920 &&
+          window.screen.height > 1080;
+
+        document.documentElement.style.setProperty("--display-scale", scale.toFixed(4));
+        document.documentElement.style.setProperty("--hero-top", isWideHero ? "50%" : `${181 * scale}px`);
+        document.documentElement.style.setProperty("--hero-translate-y", isWideHero ? "-50%" : "0px");
+        document.documentElement.style.setProperty("--hero-transform-origin", isWideHero ? "center" : "top center");
+        document.documentElement.style.setProperty("--work-card-width-scaled", `${796 * scale}px`);
+        document.documentElement.style.setProperty("--work-card-height-scaled", `${450 * scale}px`);
+        document.documentElement.style.setProperty("--work-card-gap-scaled", `${10 * scale}px`);
+      })();
+    </script>
+    <link rel="stylesheet" href="./styles.css?v=cases-16" />
+  </head>
+  <body class="cv-body-page" data-route="cv">
+    <div class="page-fade" aria-hidden="true"></div>
+    <main class="case-main">
+      <header class="topbar" aria-label="Навигация">
+        <a class="pill logo-pill" href="./" aria-label="Азисов Тамирлан">
+          <img src="./assets/logotype-hover-bg.png" alt="" class="logo-hover-bg" aria-hidden="true" />
+          <img src="./assets/logotype.svg" alt="" class="logo-mark logo-mark-default" />
+        </a>
+
+        <nav class="pill nav-pill" aria-label="Основные разделы">
+          <a class="type-button" href="#" data-panel="about" data-i18n="nav.about">Обо мне</a>
+          <a class="type-button" href="./#projects" data-i18n="nav.projects">Проекты</a>
+          <a class="type-button" href="./#canvas" data-i18n="nav.malbert">Холст</a>
+          <a class="type-button" href="./cv">CV</a>
+          <a class="type-button" href="./#contact" data-i18n="nav.contact">Связь со мной</a>
+        </nav>
+
+        <div class="pill language-switch" aria-label="Выбор языка" data-active="ru">
+          <button class="language-option type-button is-active" type="button" aria-pressed="true">ru</button>
+          <button class="language-option type-button" type="button" aria-pressed="false">en</button>
+        </div>
+      </header>
+
+      <aside class="about-dropdown" id="about-panel" aria-label="Обо мне" hidden>
+        <section class="about-section">
+          <h2 class="type-section-title" data-i18n="about.hello.title">Привет</h2>
+          <p class="type-body-s" data-i18n="about.hello.body1">
+            Digital brand designer с 3+ годами опыта в digital. Занимаюсь айдентикой, сайтами и интерфейсами
+            для продуктов, которым нужна ясная структура, характер и визуальная система.
+          </p>
+          <p class="type-body-s" data-i18n="about.hello.body2">
+            Хорошо чувствую себя в новых контекстах: там, где нужно разобраться в задаче, найти подход и
+            довести идею до рабочего дизайна.
+          </p>
+        </section>
+
+        <section class="about-section">
+          <h2 class="type-section-title" data-i18n="about.education.title">Образование</h2>
+          <div class="about-list type-body-s">
+            <p data-i18n="about.education.item1">UpRock — Веб-дизайн</p>
+            <p data-i18n="about.education.item2">Наука дизайна — Композиция и сетки</p>
+            <p data-i18n="about.education.item3">videosmile — Супер Illustrator</p>
+            <p data-i18n="about.education.item4">МГУ им. Н. П. Огарёва — высшее экономическое образование</p>
+          </div>
+        </section>
+
+        <section class="about-section">
+          <h2 class="type-section-title" data-i18n="about.experience.title">Опыт</h2>
+          <div class="action-list type-button">
+            <button type="button"><span>Embacy — digital brand designer</span><span class="exp-dates" data-ru="фев 2024 — сейчас" data-en="Feb 2024 — now">фев 2024 — сейчас</span></button>
+            <button type="button"><span data-i18n="about.experience.item2">Only digital — ui/ux designer</span><span class="exp-dates" data-ru="авг — ноя 2023" data-en="Aug — Nov 2023">авг — ноя 2023</span></button>
+            <button type="button"><span>Vipavenue — motion designer</span><span class="exp-dates" data-ru="авг — дек 2022" data-en="Aug — Dec 2022">авг — дек 2022</span></button>
+          </div>
+        </section>
+
+        <section class="about-section contacts-section">
+          <h2 class="type-section-title" data-i18n="about.contacts.title">Контакты</h2>
+          <div class="action-list type-button">
+            <button type="button">Telegram</button>
+            <button type="button">Instagram</button>
+            <button type="button">Behance</button>
+            <button type="button" data-i18n="about.contacts.linkedin">Linkedin</button>
+          </div>
+        </section>
+      </aside>
+
+      <article class="cv-page">
+<header class="cv-head">
+  <p class="cv-kicker" data-ru="CV" data-en="CV">CV</p>
+  <h1 class="cv-name" data-ru="Тамирлан Азисов" data-en="Tamirlan Azisov">Тамирлан Азисов</h1>
+  <p class="cv-role" data-ru="Бренд-дизайнер" data-en="Brand Designer">Бренд-дизайнер</p>
+  <p class="cv-location" data-ru="Саранск, Россия · удалённо" data-en="Saransk, Russia · Remote">Саранск, Россия · удалённо</p>
+  <div class="cv-actions">
+    <a class="cv-button only-ru" href="./assets/cv/tamirlan-azisov-cv-ru.pdf" target="_blank" rel="noopener">Скачать PDF ↓</a>
+    <a class="cv-button only-en" href="./assets/cv/tamirlan-azisov-cv-en.pdf" target="_blank" rel="noopener">Download PDF ↓</a>
+  </div>
+</header>
+<dl class="cv-contacts"><div><dt>Email</dt><dd><a class="cv-link" href="mailto:tamirlanazisov55@gmail.com">tamirlanazisov55@gmail.com</a></dd></div><div><dt>Telegram</dt><dd><a class="cv-link" href="https://t.me/p1ca_at" target="_blank" rel="noopener">t.me/p1ca_at</a></dd></div><div><dt>LinkedIn</dt><dd><a class="cv-link" href="https://www.linkedin.com/in/tamirlan-azisov/" target="_blank" rel="noopener">linkedin.com/in/tamirlan-azisov</a></dd></div><div><dt>Behance</dt><dd><a class="cv-link" href="https://www.behance.net/tamirlanaz4ceb" target="_blank" rel="noopener">behance.net/tamirlanaz4ceb</a></dd></div><div><dt data-ru="Портфолио" data-en="Portfolio">Портфолио</dt><dd><a class="cv-link" href="http://tamirlan.space" target="_blank" rel="noopener">tamirlan.space</a></dd></div></dl>
+<div class="cv-row"><h2 class="cv-label" data-ru="Обо мне" data-en="About">Обо мне</h2><div class="cv-body"><p class="cv-lead" data-ru="Бренд-дизайнер с 4+ годами в digital. Делаю айдентику, сайты и интерфейсы для tech-продуктов — от визуальной идеи до гайдлайнов и дизайн-систем, с которыми команды и AI-инструменты развивают продукт дальше." data-en="Brand designer with 4+ years in digital. I create identities, websites and interfaces for tech products — from the visual idea to guidelines and design systems that teams and AI tools use to grow the product.">Бренд-дизайнер с 4+ годами в digital. Делаю айдентику, сайты и интерфейсы для tech-продуктов — от визуальной идеи до гайдлайнов и дизайн-систем, с которыми команды и AI-инструменты развивают продукт дальше.</p></div></div>
+<div class="cv-row"><h2 class="cv-label" data-ru="Признание" data-en="Recognition">Признание</h2><div class="cv-body"><ul class="cv-stats"><li data-ru="100K+ просмотров и 9K+ оценок на Behance" data-en="100K+ views and 9K+ appreciations on Behance">100K+ просмотров и 9K+ оценок на Behance</li><li data-ru="«Лучшее из Behance» — Luminous Labs" data-en="Best of Behance — Luminous Labs">«Лучшее из Behance» — Luminous Labs</li><li data-ru="Галерея Behance UI/UX — Comply Control, HAQQ" data-en="Behance UI/UX gallery — Comply Control, HAQQ">Галерея Behance UI/UX — Comply Control, HAQQ</li></ul></div></div>
+<div class="cv-row"><h2 class="cv-label" data-ru="Опыт" data-en="Experience">Опыт</h2><div class="cv-body"><div class="cv-item"><div class="cv-item-head"><p class="cv-item-title">Brand &amp; Web Designer <span class="cv-muted">· </span><span class="cv-muted" data-ru="Embacy, удалённо" data-en="Embacy, remote">Embacy, удалённо</span></p><span class="cv-dates" data-ru="фев 2024 — сейчас" data-en="Feb 2024 — now">фев 2024 — сейчас</span></div><ul class="cv-list"><li data-ru="Айдентика, сайты и UI для tech-продуктов: health tech, fintech, Web3, space tech, B2B SaaS." data-en="Identities, websites and UI for tech products: health tech, fintech, Web3, space tech, B2B SaaS.">Айдентика, сайты и UI для tech-продуктов: health tech, fintech, Web3, space tech, B2B SaaS.</li><li data-ru="AI-ready дизайн-системы: токены, компоненты и правила, по которым команда клиента собирает новые экраны вместе с AI." data-en="AI-ready design systems: tokens, components and rules client teams use to build new screens with AI.">AI-ready дизайн-системы: токены, компоненты и правила, по которым команда клиента собирает новые экраны вместе с AI.</li><li data-ru="CJM и продуктовые интерфейсы для нескольких ролей пользователей, веб и мобильные приложения." data-en="CJM and product interfaces for multiple user roles, web and mobile apps.">CJM и продуктовые интерфейсы для нескольких ролей пользователей, веб и мобильные приложения.</li></ul></div><div class="cv-item"><div class="cv-item-head"><p class="cv-item-title">UX/UI Designer <span class="cv-muted">· </span><span class="cv-muted" data-ru="Only, удалённо" data-en="Only, remote">Only, удалённо</span></p><span class="cv-dates" data-ru="авг — ноя 2023" data-en="Aug — Nov 2023">авг — ноя 2023</span></div><ul class="cv-list"><li data-ru="Концепции, айдентика и сайты с адаптивом, дизайн-системы и UI-киты, презентации." data-en="Concepts, identities and responsive websites, design systems and UI kits, presentations.">Концепции, айдентика и сайты с адаптивом, дизайн-системы и UI-киты, презентации.</li><li data-ru="Конкурентный анализ, проверка гипотез, подбор референсов и мудборды." data-en="Competitive analysis, hypothesis testing, references and moodboards.">Конкурентный анализ, проверка гипотез, подбор референсов и мудборды.</li></ul></div><div class="cv-item"><div class="cv-item-head"><p class="cv-item-title">Graphic &amp; Motion Designer <span class="cv-muted">· </span><span class="cv-muted" data-ru="VIP Avenue, Казань" data-en="VIP Avenue, Kazan">VIP Avenue, Казань</span></p><span class="cv-dates" data-ru="авг — дек 2022" data-en="Aug — Dec 2022">авг — дек 2022</span></div><ul class="cv-list"><li data-ru="SMM- и баннерный дизайн, motion-креативы, презентации и прототипы." data-en="SMM and banner design, motion creatives, presentations and prototypes.">SMM- и баннерный дизайн, motion-креативы, презентации и прототипы.</li></ul></div></div></div>
+<div class="cv-row"><h2 class="cv-label" data-ru="Проекты" data-en="Selected work">Проекты</h2><div class="cv-body"><ul class="cv-projects"><li class="cv-project"><span class="cv-dates">2026</span><span><a class="cv-link" href="http://tamirlan.space/cases/redgevity">Redgevity Master</a> <span class="cv-muted">— </span><span class="cv-muted" data-ru="UI/UX и AI-ready дизайн-система" data-en="UI/UX &amp; AI-ready design system">UI/UX и AI-ready дизайн-система</span></span></li><li class="cv-project"><span class="cv-dates">2025</span><span><a class="cv-link" href="http://tamirlan.space/cases/comply-control">Comply Control</a> <span class="ribbon cv-ribbon" style="--ribbon-color:#ad9058" title="Behance UI/UX">UI</span> <span class="cv-muted">— </span><span class="cv-muted" data-ru="айдентика, сайт и UI/UX" data-en="identity, website &amp; UI/UX">айдентика, сайт и UI/UX</span></span></li><li class="cv-project"><span class="cv-dates">2025</span><span><a class="cv-link" href="http://tamirlan.space/cases/haqq">HAQQ</a> <span class="ribbon cv-ribbon" style="--ribbon-color:#ad9058" title="Behance UI/UX">UI</span> <span class="cv-muted">— </span><span class="cv-muted" data-ru="айдентика и сайт" data-en="identity &amp; website">айдентика и сайт</span></span></li><li class="cv-project"><span class="cv-dates">2024</span><span><a class="cv-link" href="http://tamirlan.space/cases/luminous-labs">Luminous Labs</a> <span class="ribbon cv-ribbon" style="--ribbon-color:#004fff" title="Best of Behance">Bē</span> <span class="cv-muted">— </span><span class="cv-muted" data-ru="айдентика, сайт и 3D" data-en="identity, website &amp; 3D">айдентика, сайт и 3D</span></span></li><li class="cv-project"><span class="cv-dates">2024</span><span><a class="cv-link" href="http://tamirlan.space/cases/mellow">Mellow</a> <span class="cv-muted">— </span><span class="cv-muted" data-ru="айдентика и сайт" data-en="identity &amp; website">айдентика и сайт</span></span></li></ul></div></div>
+<div class="cv-row"><h2 class="cv-label" data-ru="Навыки" data-en="Skills">Навыки</h2><div class="cv-body"><dl class="cv-skills"><div><dt data-ru="Брендинг" data-en="Branding">Брендинг</dt><dd data-ru="Айдентика, логотипы, визуальные системы, гайдлайны, motion" data-en="Identity, logos, visual systems, guidelines, motion">Айдентика, логотипы, визуальные системы, гайдлайны, motion</dd></div><div><dt data-ru="Веб и продукт" data-en="Web &amp; product">Веб и продукт</dt><dd data-ru="Сайты, UI/UX, CJM, дизайн-системы и токены, адаптив" data-en="Websites, UI/UX, CJM, design systems &amp; tokens, responsive">Сайты, UI/UX, CJM, дизайн-системы и токены, адаптив</dd></div><div><dt data-ru="Инструменты" data-en="Tools">Инструменты</dt><dd>Figma, Illustrator, Photoshop, After Effects, Blender, Webflow</dd></div><div><dt>AI</dt><dd data-ru="Midjourney, Nano Banana, Seedance — визуал и motion; Claude, Cursor — прототипы и свои дизайн-инструменты" data-en="Midjourney, Nano Banana, Seedance — visuals and motion; Claude, Cursor — prototypes and custom design tools">Midjourney, Nano Banana, Seedance — визуал и motion; Claude, Cursor — прототипы и свои дизайн-инструменты</dd></div><div><dt data-ru="Языки" data-en="Languages">Языки</dt><dd data-ru="Русский — родной, английский — Advanced" data-en="Russian — native, English — advanced">Русский — родной, английский — Advanced</dd></div></dl></div></div>
+<div class="cv-row"><h2 class="cv-label" data-ru="Образование" data-en="Education">Образование</h2><div class="cv-body"><ul class="cv-edu"><li><span class="cv-item-title" data-ru="МГУ им. Н. П. Огарёва" data-en="Ogarev Mordovia State University">МГУ им. Н. П. Огарёва</span> <span class="cv-muted" data-ru="— высшее экономическое" data-en="— degree in economics">— высшее экономическое</span></li><li><span class="cv-item-title" data-ru="UpRock" data-en="UpRock">UpRock</span> <span class="cv-muted" data-ru="— веб-дизайн" data-en="— web design">— веб-дизайн</span></li><li><span class="cv-item-title" data-ru="Наука дизайна" data-en="Science of Design">Наука дизайна</span> <span class="cv-muted" data-ru="— композиция и сетки" data-en="— composition and grids">— композиция и сетки</span></li><li><span class="cv-item-title" data-ru="videosmile" data-en="videosmile">videosmile</span> <span class="cv-muted" data-ru="— Adobe Illustrator" data-en="— Adobe Illustrator">— Adobe Illustrator</span></li></ul></div></div>
+</article>
+
+      <footer class="meta meta-inline type-button" aria-label="Локация и локальное время">
+        <span>Saransk, Russia</span>
+        <span class="time">
+          <span class="clock">--:--:--</span>
+          <span class="period">--</span>
+        </span>
+      </footer>
+    </main>
+
+    <section class="footer-screen screen" id="contact" aria-labelledby="footer-title">
+      <div class="footer-artifacts" aria-hidden="true"></div>
+      <div class="footer-message">
+        <h2 class="type-body-l soft-blur-text" id="footer-title" data-soft-blur data-i18n="footer.title">Есть проект или вопрос?</h2>
+        <a
+          class="email-button type-body-l soft-blur-text"
+          href="mailto:tamirlanazisov55@gmail.com?subject=%D0%9F%D1%80%D0%BE%D0%B5%D0%BA%D1%82%20%2F%20%D0%B2%D0%BE%D0%BF%D1%80%D0%BE%D1%81"
+          aria-label="Написать на tamirlanazisov55@gmail.com"
+          data-soft-blur
+        >
+          tamirlanazisov55@gmail.com
+        </a>
+      </div>
+    </section>
+
+    <script src="./script.js?v=cases-16"></script>
+  </body>
+</html>
