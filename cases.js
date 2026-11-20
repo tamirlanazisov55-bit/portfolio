@@ -121,6 +121,32 @@
     return mediaImage(item, { eager: index < 2, alt: index === 0 ? title : "" });
   }
 
+  function renderArticle(item) {
+    const wrap = el("section", "case-article");
+    for (const block of item.article) {
+      if (block.img) {
+        const fig = el("figure", "case-article-figure");
+        fig.append(isVideoFile(block.img) ? mediaFile(block.img) : mediaImage(block.img, { alt: "" }));
+        if (block.cap) fig.append(i18n("figcaption", "type-body-s", block.cap));
+        wrap.append(fig);
+      } else if (block.h) {
+        wrap.append(i18n("h2", "case-article-h", block.h));
+      } else if (block.p) {
+        wrap.append(i18n("p", "case-article-p", block.p));
+      } else if (block.list) {
+        const list = el("ul", "case-article-list");
+        block.list.ru.forEach((text, i) => list.append(i18n("li", "", { ru: text, en: block.list.en[i] || text })));
+        wrap.append(list);
+      } else if (block.quote) {
+        const quote = el("blockquote", "case-article-quote");
+        quote.append(i18n("p", "", block.quote));
+        if (block.by) quote.append(i18n("cite", "type-body-s", block.by));
+        wrap.append(quote);
+      }
+    }
+    return wrap;
+  }
+
   /* ---------- Страница «Проекты» ---------- */
 
   function renderGrid(root) {
@@ -210,7 +236,7 @@
     const info = el("section", "case-info");
     const summary = el("div", "case-summary");
     summary.append(i18n("p", "type-body-l", item.summary));
-    if (item.media.length <= 1 && item.website) summary.append(i18n("p", "type-body-s case-note", ui.soon));
+    if (!item.article && item.media.length <= 1 && item.website) summary.append(i18n("p", "type-body-s case-note", ui.soon));
 
     const meta = el("dl", "case-meta");
     if (item.year) meta.append(metaRow(ui.year, document.createTextNode(item.year)));
@@ -231,6 +257,11 @@
       a.textContent = "Behance ↗";
       links.append(a);
     }
+    if (item.medium) {
+      const a = el("a", "case-link", { href: item.medium, target: "_blank", rel: "noopener" });
+      a.textContent = "Medium ↗";
+      links.append(a);
+    }
     if (links.childNodes.length) meta.append(metaRow(ui.links, links));
     info.append(summary, meta);
 
@@ -238,7 +269,7 @@
     const media = el("section", "case-media");
     item.media.forEach((entry, i) => media.append(renderMediaItem(entry, i, item.title)));
 
-    root.append(hero, info, media);
+    root.append(hero, info, item.article ? renderArticle(item) : media);
 
     // Credits
     if (item.credits && item.credits.length) {

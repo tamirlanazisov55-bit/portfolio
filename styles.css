@@ -2090,3 +2090,94 @@ html.is-long-page {
   height: auto;
   background: #000;
 }
+
+/* ---------- Article-style case ---------- */
+
+.case-article {
+  display: flex;
+  flex-direction: column;
+  gap: calc(24px * var(--display-scale));
+}
+
+.case-article-h,
+.case-article-p,
+.case-article-list,
+.case-article-quote {
+  width: 100%;
+  max-width: calc(760px * var(--display-scale));
+  margin: 0 auto;
+  color: var(--ink);
+}
+
+.case-article-h {
+  margin-top: calc(32px * var(--display-scale));
+  font-size: calc(28px * var(--display-scale));
+  font-weight: var(--font-medium);
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+}
+
+.case-article-p,
+.case-article-list {
+  font-size: calc(18px * var(--display-scale));
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+}
+
+.case-article-list {
+  padding-left: 1.2em;
+}
+
+.case-article-list li + li {
+  margin-top: calc(6px * var(--display-scale));
+}
+
+.case-article-quote {
+  margin-top: calc(16px * var(--display-scale));
+  margin-bottom: calc(16px * var(--display-scale));
+  padding-left: calc(20px * var(--display-scale));
+  border-left: 2px solid var(--ink);
+}
+
+.case-article-quote p {
+  margin: 0;
+  font-size: calc(var(--type-body-l-size) * var(--display-scale));
+  line-height: 1.35;
+  letter-spacing: var(--type-body-l-tracking);
+}
+
+.case-article-quote cite {
+  display: block;
+  margin-top: calc(10px * var(--display-scale));
+  color: var(--muted-ink);
+  font-style: normal;
+  font-size: calc(var(--type-body-s-size) * var(--display-scale));
+}
+
+.case-article-figure {
+  margin: calc(8px * var(--display-scale)) 0;
+}
+
+.case-article-figure .case-media-img,
+.case-article-figure .case-media-file {
+  overflow: hidden;
+  border-radius: var(--card-radius);
+}
+
+.case-article-figure figcaption {
+  margin-top: calc(10px * var(--display-scale));
+  color: var(--muted-ink);
+  text-align: center;
+  font-size: calc(var(--type-body-s-size) * var(--display-scale));
+}
+
+@media (max-width: 760px) {
+  .case-article-h {
+    font-size: 24px;
+  }
+
+  .case-article-p,
+  .case-article-list {
+    font-size: 16px;
+  }
+}
