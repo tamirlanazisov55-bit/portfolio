@@ -117,8 +117,6 @@ const copy = {
     "about.hello.title": "Привет",
     "about.hello.body1":
       "Бренд-дизайнер с 4+ годами в digital. Делаю айдентику, сайты и интерфейсы для tech-продуктов — от визуальной идеи до гайдлайнов и дизайн-систем, с которыми команды и AI-инструменты развивают продукт дальше.",
-    "about.hello.body2":
-      "В работе использую AI: Midjourney, Nano Banana и Seedance — для визуала и motion, Claude и Cursor — для прототипов и своих дизайн-инструментов.",
     "about.education.title": "Образование",
     "about.education.item1": "UpRock — веб-дизайн",
     "about.education.item2": "Наука дизайна — композиция и сетки",
@@ -139,8 +137,6 @@ const copy = {
     "about.hello.title": "Hello",
     "about.hello.body1":
       "Brand designer with 4+ years in digital. I create identities, websites and interfaces for tech products — from the visual idea to guidelines and design systems that teams and AI tools use to grow the product.",
-    "about.hello.body2":
-      "I use AI in my work: Midjourney, Nano Banana and Seedance for visuals and motion, Claude and Cursor for prototypes and custom design tools.",
     "about.education.title": "Education",
     "about.education.item1": "UpRock — web design",
     "about.education.item2": "Science of Design — composition and grids",
