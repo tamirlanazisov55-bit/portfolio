@@ -164,30 +164,71 @@
     return mediaImage(item, { eager: index < 2, alt: index === 0 ? title : "" });
   }
 
-  // Сетка небольших картинок с увеличением по клику
+  // Сетка небольших картинок с увеличением по клику и слайдером
   function renderGrid3(entry) {
-    const grid = el("section", "case-grid");
-    entry.items.forEach((src) => {
-      const button = el("button", "case-grid-item", { type: "button" });
+    const grid = el("section", "case-grid" + (entry.variant ? ` case-grid-${entry.variant}` : ""));
+    if (entry.cols) grid.style.setProperty("--grid-cols", entry.cols);
+    entry.items.forEach((src, index) => {
+      const button = el("button", "case-grid-item", { type: "button", "aria-label": `${index + 1} / ${entry.items.length}` });
       button.append(mediaImage(src, { alt: "" }));
-      button.addEventListener("click", () => openLightbox(src));
+      button.addEventListener("click", () => openLightbox(entry.items, index));
       grid.append(button);
     });
     return grid;
   }
 
-  function openLightbox(src) {
+  function openLightbox(items, start = 0) {
+    const list = Array.isArray(items) ? items : [items];
+    let current = start;
     const box = el("div", "case-lightbox", { role: "dialog", "aria-modal": "true" });
-    box.append(el("img", "", { src: resolveSrc(src), alt: "" }));
+    const stage = el("div", "case-lightbox-stage");
+    const img = el("img", "", { src: resolveSrc(list[current]), alt: "" });
+    stage.append(img);
+    box.append(stage);
+    const multi = list.length > 1;
+    let counter;
+    const show = (next) => {
+      current = (next + list.length) % list.length;
+      img.classList.remove("is-in");
+      img.src = resolveSrc(list[current]);
+      requestAnimationFrame(() => img.classList.add("is-in"));
+      if (counter) counter.textContent = `${current + 1} / ${list.length}`;
+      // предзагрузка соседей
+      [current + 1, current - 1].forEach((i) => { const p = new Image(); p.src = resolveSrc(list[(i + list.length) % list.length]); });
+    };
+    if (multi) {
+      const prev = el("button", "case-lightbox-btn case-lightbox-prev", { type: "button", "aria-label": "Previous" });
+      prev.textContent = "←";
+      const next = el("button", "case-lightbox-btn case-lightbox-next", { type: "button", "aria-label": "Next" });
+      next.textContent = "→";
+      counter = el("span", "case-lightbox-count");
+      prev.addEventListener("click", (e) => { e.stopPropagation(); show(current - 1); });
+      next.addEventListener("click", (e) => { e.stopPropagation(); show(current + 1); });
+      box.append(prev, next, counter);
+      let x0 = null;
+      box.addEventListener("touchstart", (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+      box.addEventListener("touchend", (e) => {
+        if (x0 === null) return;
+        const dx = e.changedTouches[0].clientX - x0;
+        if (Math.abs(dx) > 40) show(current + (dx < 0 ? 1 : -1));
+        x0 = null;
+      });
+    }
     const close = () => {
       box.classList.remove("is-open");
       document.removeEventListener("keydown", onKey);
       setTimeout(() => box.remove(), 250);
     };
-    const onKey = (event) => { if (event.key === "Escape") close(); };
+    const onKey = (event) => {
+      if (event.key === "Escape") close();
+      if (multi && event.key === "ArrowRight") show(current + 1);
+      if (multi && event.key === "ArrowLeft") show(current - 1);
+    };
+    img.addEventListener("click", (e) => { if (multi) { e.stopPropagation(); show(current + 1); } });
     box.addEventListener("click", close);
     document.addEventListener("keydown", onKey);
     document.body.append(box);
+    show(current);
     requestAnimationFrame(() => box.classList.add("is-open"));
   }
 

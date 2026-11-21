@@ -2373,7 +2373,7 @@ html.is-long-page {
 
 .case-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--grid-cols, 3), minmax(0, 1fr));
   gap: calc(10px * var(--display-scale));
   margin-top: calc(10px * var(--display-scale));
 }
@@ -2988,4 +2988,95 @@ p.cv-item-title {
 
 @media (prefers-reduced-motion: reduce) {
   .logo-marquee-track { animation-duration: 120s; }
+}
+
+/* ---------- Lightbox slider + icon grid ---------- */
+.case-lightbox-stage {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+.case-lightbox-stage img {
+  max-width: min(100%, 78vmin);
+  max-height: min(100%, 78vmin);
+  opacity: 0;
+  transform: scale(0.985);
+  transition: opacity 220ms ease, transform 320ms var(--ease-soft-blur-in, ease);
+  cursor: default;
+}
+
+.case-lightbox-stage img.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+.case-lightbox-btn {
+  position: absolute;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: 47px;
+  height: 47px;
+  margin-top: -23px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 12%);
+  color: #fff;
+  font: inherit;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background 200ms ease;
+}
+
+.case-lightbox-btn:hover {
+  background: rgb(255 255 255 / 22%);
+}
+
+.case-lightbox-prev { left: 3vmin; }
+.case-lightbox-next { right: 3vmin; }
+
+.case-lightbox-count {
+  position: absolute;
+  bottom: 3vmin;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgb(255 255 255 / 60%);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.case-grid-icons {
+  width: min(100%, calc(720px * var(--display-scale)));
+  margin-right: auto;
+  margin-left: auto;
+  gap: calc(6px * var(--display-scale));
+}
+
+.case-grid-icons .case-grid-item {
+  aspect-ratio: 1;
+  background: #f4f4f4;
+  border-radius: calc(var(--card-radius) * 0.6);
+}
+
+.case-grid-icons .case-media-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.7);
+}
+
+.case-grid-icons .case-grid-item:hover .case-media-img {
+  transform: scale(1.82);
+}
+
+@media (max-width: 1000px) {
+  .case-grid-icons { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+}
+
+@media (max-width: 560px) {
+  .case-grid-icons { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
