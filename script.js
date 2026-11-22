@@ -133,10 +133,10 @@ const copy = {
     "footer.title": "Есть проект или вопрос?",
   },
   en: {
-    "nav.about": "About me",
+    "nav.about": "About",
     "nav.projects": "Projects",
     "nav.malbert": "Canvas",
-    "nav.contact": "Contact me",
+    "nav.contact": "Contacts",
     "hero.name": "Azisov Tamirlan",
     "about.hello.title": "Hello",
     "about.hello.body1":
@@ -177,7 +177,7 @@ function setLanguageControls(language) {
   }
 
   for (const item of languageOptions) {
-    const isActive = item.textContent.trim() === language;
+    const isActive = item.textContent.trim().toLowerCase() === language;
     item.classList.toggle("is-active", isActive);
     item.setAttribute("aria-pressed", String(isActive));
   }
@@ -559,7 +559,7 @@ function openAboutFromHover() {
 
 for (const option of languageOptions) {
   option.addEventListener("click", () => {
-    const language = option.textContent.trim();
+    const language = option.textContent.trim().toLowerCase();
     if (language === currentLanguage) return;
 
     if (languageSwitch) {
