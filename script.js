@@ -5,6 +5,10 @@ const languageSwitch = document.querySelector(".language-switch");
 const navPill = document.querySelector(".nav-pill");
 const navLinks = document.querySelectorAll(".nav-pill a");
 const aboutPanel = document.getElementById("about-panel");
+const menuToggle = document.querySelector(".menu-toggle");
+const aboutCloseButton = document.querySelector(".about-close");
+const mobileNavQuery = window.matchMedia("(max-width: 760px)");
+const isMobileNav = () => mobileNavQuery.matches;
 const actionButtons = document.querySelectorAll(".action-list button, .action-list a");
 const darkPillButtons = document.querySelectorAll(".nav-pill a, .language-option");
 const logoLink = document.querySelector(".logo-pill");
@@ -288,7 +292,7 @@ function applyLanguage(language, { persist = false } = {}) {
 function animateNavLanguageChange(language) {
   clearTimeout(navLanguageTimer);
 
-  if (!navPill || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  if (!navPill || isMobileNav() || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     applyLanguage(language, { persist: true });
     return;
   }
@@ -572,18 +576,64 @@ for (const option of languageOptions) {
   });
 }
 
+function setMenuOpen(open) {
+  document.body.classList.toggle("is-menu-open", open);
+  if (menuToggle) {
+    menuToggle.setAttribute("aria-expanded", String(open));
+    menuToggle.setAttribute("aria-label", open ? (currentLanguage === "en" ? "Close menu" : "Закрыть меню") : (currentLanguage === "en" ? "Menu" : "Меню"));
+  }
+}
+
+if (menuToggle) {
+  menuToggle.addEventListener("click", () => {
+    const open = !document.body.classList.contains("is-menu-open");
+    if (open) closeAboutPanel();
+    setMenuOpen(open);
+  });
+}
+
+mobileNavQuery.addEventListener?.("change", () => setMenuOpen(false));
+
+if (aboutCloseButton) {
+  aboutCloseButton.addEventListener("click", () => {
+    closeAboutPanel();
+    setRouteNavActive();
+  });
+}
+
+const isMousePointer = (event) => event.pointerType === "mouse";
+let lastNavPointerType = "mouse";
+
 for (const link of navLinks) {
   if (link.dataset.panel === "about" && aboutPanel) {
-    link.addEventListener("pointerenter", openAboutFromHover);
-    link.addEventListener("pointerleave", scheduleAboutClose);
+    link.addEventListener("pointerenter", (event) => {
+      if (isMousePointer(event) && !isMobileNav()) openAboutFromHover();
+    });
+    link.addEventListener("pointerleave", (event) => {
+      if (isMousePointer(event) && !isMobileNav()) scheduleAboutClose();
+    });
+    link.addEventListener("pointerdown", (event) => {
+      lastNavPointerType = event.pointerType || "mouse";
+    });
   }
 
   link.addEventListener("click", (event) => {
+    if (isMobileNav()) setMenuOpen(false);
     if (link.target === "_blank") return;
     const opensAbout = link.dataset.panel === "about";
 
     if (opensAbout) {
       event.preventDefault();
+      if (isMobileNav() || lastNavPointerType !== "mouse") {
+        cancelAboutClose();
+        if (isAboutPanelOpen() && !isMobileNav()) {
+          closeAboutPanel();
+          setRouteNavActive();
+        } else {
+          openAboutPanel();
+        }
+      }
+      lastNavPointerType = "mouse";
     } else {
       closeAboutPanel();
       for (const item of navLinks) {
@@ -595,11 +645,16 @@ for (const link of navLinks) {
 }
 
 if (aboutPanel) {
-  aboutPanel.addEventListener("pointerenter", cancelAboutClose);
-  aboutPanel.addEventListener("pointerleave", scheduleAboutClose);
+  aboutPanel.addEventListener("pointerenter", (event) => {
+    if (isMousePointer(event)) cancelAboutClose();
+  });
+  aboutPanel.addEventListener("pointerleave", (event) => {
+    if (isMousePointer(event) && !isMobileNav()) scheduleAboutClose();
+  });
 }
 
 document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && document.body.classList.contains("is-menu-open")) setMenuOpen(false);
   if (event.key !== "Escape" || !aboutPanel || aboutPanel.hidden) return;
 
   closeAboutPanel();
@@ -607,6 +662,12 @@ document.addEventListener("keydown", (event) => {
 });
 
 document.addEventListener("pointerdown", (event) => {
+  if (
+    document.body.classList.contains("is-menu-open") &&
+    !event.target.closest(".nav-pill, .menu-toggle")
+  ) {
+    setMenuOpen(false);
+  }
   if (!aboutPanel || aboutPanel.hidden) return;
   if (aboutPanel.contains(event.target)) return;
   if (event.target.closest(".nav-pill")) return;
