@@ -601,22 +601,14 @@ if (aboutCloseButton) {
   });
 }
 
-const isMousePointer = (event) => event.pointerType === "mouse";
-let lastNavPointerType = "mouse";
+function setAboutNavActive() {
+  for (const item of navLinks) {
+    item.classList.toggle("is-active", item.dataset.panel === "about");
+  }
+  updateNavIndicator();
+}
 
 for (const link of navLinks) {
-  if (link.dataset.panel === "about" && aboutPanel) {
-    link.addEventListener("pointerenter", (event) => {
-      if (isMousePointer(event) && !isMobileNav()) openAboutFromHover();
-    });
-    link.addEventListener("pointerleave", (event) => {
-      if (isMousePointer(event) && !isMobileNav()) scheduleAboutClose();
-    });
-    link.addEventListener("pointerdown", (event) => {
-      lastNavPointerType = event.pointerType || "mouse";
-    });
-  }
-
   link.addEventListener("click", (event) => {
     if (isMobileNav()) setMenuOpen(false);
     if (link.target === "_blank") return;
@@ -624,16 +616,14 @@ for (const link of navLinks) {
 
     if (opensAbout) {
       event.preventDefault();
-      if (isMobileNav() || lastNavPointerType !== "mouse") {
-        cancelAboutClose();
-        if (isAboutPanelOpen() && !isMobileNav()) {
-          closeAboutPanel();
-          setRouteNavActive();
-        } else {
-          openAboutPanel();
-        }
+      cancelAboutClose();
+      if (isAboutPanelOpen() && !aboutPanel.classList.contains("is-closing")) {
+        closeAboutPanel();
+        setRouteNavActive();
+      } else {
+        openAboutPanel();
+        setAboutNavActive();
       }
-      lastNavPointerType = "mouse";
     } else {
       closeAboutPanel();
       for (const item of navLinks) {
@@ -641,15 +631,6 @@ for (const link of navLinks) {
       }
       updateNavIndicator();
     }
-  });
-}
-
-if (aboutPanel) {
-  aboutPanel.addEventListener("pointerenter", (event) => {
-    if (isMousePointer(event)) cancelAboutClose();
-  });
-  aboutPanel.addEventListener("pointerleave", (event) => {
-    if (isMousePointer(event) && !isMobileNav()) scheduleAboutClose();
   });
 }
 
