@@ -23,7 +23,7 @@
       })();
     </script>
     <base href="../" />
-    <link rel="stylesheet" href="./styles.css?v=cases-23" />
+    <link rel="stylesheet" href="./styles.css?v=cases-24" />
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="./favicon-32.png" sizes="32x32" type="image/png" />
     <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
@@ -37,7 +37,7 @@
           <img src="./assets/logotype.svg" alt="" class="logo-mark logo-mark-default" />
         </a>
 
-        <nav class="pill nav-pill" aria-label="Основные разделы">
+        <nav class="pill nav-pill" id="site-nav" aria-label="Основные разделы">
           <a class="type-button" href="#" data-panel="about" data-i18n="nav.about">Обо мне</a>
           <a class="type-button" href="./#projects" data-i18n="nav.projects">Проекты</a>
           <a class="type-button" href="./#canvas" data-i18n="nav.malbert">Холст</a>
@@ -49,9 +49,11 @@
           <button class="language-option type-button is-active" type="button" aria-pressed="true">ru</button>
           <button class="language-option type-button" type="button" aria-pressed="false">en</button>
         </div>
+        <button class="pill menu-toggle" type="button" aria-label="Меню" aria-expanded="false" aria-controls="site-nav"><span></span><span></span><span></span></button>
       </header>
 
       <aside class="about-dropdown" id="about-panel" aria-label="Обо мне" hidden>
+        <button class="about-close" type="button" aria-label="Закрыть"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
         <section class="about-section">
           <h2 class="type-section-title" data-i18n="about.hello.title">Привет</h2>
           <p class="type-body-s" data-i18n="about.hello.body1">
@@ -116,8 +118,8 @@
       </div>
     </section>
 
-    <script src="./cases-data.js?v=cases-23"></script>
-    <script src="./cases.js?v=cases-23"></script>
-    <script src="./script.js?v=cases-23"></script>
+    <script src="./cases-data.js?v=cases-24"></script>
+    <script src="./cases.js?v=cases-24"></script>
+    <script src="./script.js?v=cases-24"></script>
   </body>
 </html>
