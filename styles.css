@@ -1574,8 +1574,8 @@ html.is-long-page {
 .project-card-head {
   display: flex;
   align-items: baseline;
-  justify-content: space-between;
-  gap: var(--spacing-gap-md);
+  justify-content: flex-start;
+  gap: calc(8px * var(--display-scale));
 }
 
 .project-card h2,
@@ -2952,10 +2952,6 @@ p.cv-item-title {
   display: flex;
   width: max-content;
   animation: logo-marquee-scroll 48s linear infinite;
-}
-
-.logo-marquee:hover .logo-marquee-track {
-  animation-play-state: paused;
 }
 
 .logo-marquee-list {
