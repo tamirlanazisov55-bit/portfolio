@@ -1317,8 +1317,10 @@ button {
   width: 100%;
 }
 
-.action-list button {
+.action-list button,
+.action-list a {
   cursor: pointer;
+  text-decoration: none;
   background: transparent;
   color: inherit;
   font: inherit;
@@ -1331,7 +1333,10 @@ button {
 .action-list button:hover,
 .action-list button.is-hovered,
 .action-list button:focus,
-.action-list button:focus-visible {
+.action-list button:focus-visible,
+.action-list a:hover,
+.action-list a.is-hovered,
+.action-list a:focus-visible {
   color: var(--ink);
 }
 
@@ -1959,7 +1964,8 @@ html.is-long-page {
   z-index: 1;
 }
 
-.action-list button {
+.action-list button,
+.action-list a {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
