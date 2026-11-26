@@ -3378,31 +3378,28 @@ p.cv-item-title {
 }
 .case-film-tile:hover .case-media-img { transform: scale(1.03); }
 .case-film-tile:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; }
-.case-film-caption {
-  position: absolute;
-  inset: auto 0 0;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 46px 18px 18px;
-  background: linear-gradient(transparent, rgb(0 0 0 / 70%));
-  font-size: 14px;
-  line-height: 1.3;
-}
 .case-film-play {
-  display: grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  flex: 0 0 32px;
-  border: 1px solid rgb(255 255 255 / 65%);
-  border-radius: 50%;
-  font-size: 11px;
-  padding-left: 2px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-size: 32px;
+  line-height: 1;
+  text-shadow: 0 2px 12px rgb(0 0 0 / 45%);
+  pointer-events: none;
 }
-.case-film-duration { margin-left: auto; font-variant-numeric: tabular-nums; opacity: .8; }
-.case-film-tile.is-portrait .case-film-caption { flex-wrap: wrap; padding-inline: 12px; }
-.case-film-tile.is-portrait .case-film-name { width: 100%; order: 2; }
+.film-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
 .film-player {
   width: min(1200px, calc(100vw - 40px));
   max-width: none;
@@ -3417,7 +3414,7 @@ p.cv-item-title {
 }
 .film-player::backdrop { background: rgb(0 0 0 / 88%); }
 .film-player-bar, .film-player-navigation { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-.film-player-bar { margin-bottom: 12px; }
+.film-player-bar { justify-content: flex-end; margin-bottom: 12px; }
 .film-player-title { margin: 0; font-size: 18px; font-weight: 500; }
 .film-player-button {
   min-height: 44px;
@@ -3447,8 +3444,6 @@ p.cv-item-title {
   .case-film-grid { grid-template-columns: 1fr; }
   .case-film-tile, .case-film-tile.is-featured, .case-film-tile.is-portrait { grid-column: 1; }
   .case-film-tile.is-portrait { max-height: 75svh; }
-  .case-film-tile.is-portrait .case-film-caption { flex-wrap: nowrap; padding-inline: 18px; }
-  .case-film-tile.is-portrait .case-film-name { width: auto; order: 0; }
   .film-player { width: calc(100vw - 16px); max-height: calc(100dvh - 16px); padding: 12px; border-radius: 14px; }
   .film-player-title { font-size: 16px; }
   .film-player-bar, .film-player-navigation { gap: 8px; }

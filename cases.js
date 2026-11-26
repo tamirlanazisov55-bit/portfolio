@@ -184,12 +184,10 @@
       const button = el("button", "case-film-tile" + (film.portrait ? " is-portrait" : "") + (index === 0 ? " is-featured" : ""), { type: "button" });
       const image = mediaImage(film.poster, { eager: index === 0, alt: "" });
       image.sizes = "(max-width: 560px) 100vw, (max-width: 1000px) 50vw, 65vw";
-      const caption = el("span", "case-film-caption");
       const play = el("span", "case-film-play", { "aria-hidden": "true" });
       play.textContent = "▶";
-      caption.append(play, i18n("span", "case-film-name", film.title), el("span", "case-film-duration"));
-      caption.lastChild.textContent = film.duration;
-      button.append(image, caption);
+      const label = i18n("span", "film-visually-hidden", { ru: `Воспроизвести видео: ${film.title.ru}`, en: `Play video: ${film.title.en}` });
+      button.append(image, play, label);
       button.addEventListener("click", () => openFilmPlayer(entry.items, index, button));
       grid.append(button);
     });
@@ -201,7 +199,7 @@
     const copy = (ru, en) => lang === "en" ? en : ru;
     const dialog = el("dialog", "film-player", { "aria-labelledby": "film-player-title" });
     const bar = el("div", "film-player-bar");
-    const title = el("h2", "film-player-title", { id: "film-player-title" });
+    const title = el("h2", "film-player-title film-visually-hidden", { id: "film-player-title" });
     const close = el("button", "film-player-button", { type: "button", autofocus: "autofocus" });
     close.textContent = copy("Закрыть", "Close");
     bar.append(title, close);
