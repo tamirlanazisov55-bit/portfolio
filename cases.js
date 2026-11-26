@@ -385,7 +385,7 @@
       media.append(el("img", "project-card-cover", { src: resolveSrc(item.cover), alt: item.title, loading: "lazy", decoding: "async" }));
       if (item.hover && isVideoFile(item.hover)) {
         media.classList.add("has-hover");
-        const video = el("video", "project-card-hover", { poster: resolveSrc(posterOf(item.hover)), preload: "none", "aria-hidden": "true" });
+        const video = el("video", "project-card-hover", { poster: resolveSrc(item.hoverPoster || posterOf(item.hover)), preload: "none", "aria-hidden": "true" });
         video.muted = true;
         video.loop = true;
         video.playsInline = true;

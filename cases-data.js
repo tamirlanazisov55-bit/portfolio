@@ -497,11 +497,12 @@ window.CASES = [
   "sections": [
     "canvas"
   ],
-  "hover": "",
+  "hover": "./assets/video/in-between/bosphorus-preview.mp4",
+  "hoverPoster": "./assets/video/in-between/bosphorus.webp",
   "title": "Между делом",
   "titleEn": "In Between",
   "year": "",
-  "cover": "./assets/video/in-between/cover.webp",
+  "cover": "./assets/video/in-between/bosphorus.webp",
   "subtitle": {
     "ru": "Личный видеодневник",
     "en": "A personal video diary"
