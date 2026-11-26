@@ -3350,13 +3350,12 @@ p.cv-item-title {
 /* Personal video diary: lightweight stills, one on-demand player. */
 .case-film-grid {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  grid-auto-rows: clamp(110px, 14vw, 300px);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: calc(10px * var(--display-scale));
 }
 .case-film-tile {
   position: relative;
-  grid-column: span 2;
+  aspect-ratio: 16 / 9;
   padding: 0;
   overflow: hidden;
   border: 0;
@@ -3366,8 +3365,6 @@ p.cv-item-title {
   text-align: left;
   cursor: pointer;
 }
-.case-film-tile.is-featured { grid-column: span 4; grid-row: span 2; }
-.case-film-tile.is-portrait { grid-column: span 2; grid-row: span 3; }
 .case-film-tile .case-media-img,
 .case-film-tile .case-media-img:not(.is-loaded) {
   width: 100%;
@@ -3435,15 +3432,10 @@ p.cv-item-title {
 .film-player-error { font-size: 16px; }
 .film-player-error a { color: inherit; text-decoration: underline; }
 @media (max-width: 1000px) {
-  .case-film-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: auto; }
-  .case-film-tile, .case-film-tile.is-portrait { grid-column: span 1; grid-row: auto; aspect-ratio: 16 / 10; }
-  .case-film-tile.is-featured { grid-column: span 2; grid-row: auto; aspect-ratio: 16 / 9; }
-  .case-film-tile.is-portrait { aspect-ratio: 9 / 16; }
+  .case-film-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 560px) {
   .case-film-grid { grid-template-columns: 1fr; }
-  .case-film-tile, .case-film-tile.is-featured, .case-film-tile.is-portrait { grid-column: 1; }
-  .case-film-tile.is-portrait { max-height: 75svh; }
   .film-player { width: calc(100vw - 16px); max-height: calc(100dvh - 16px); padding: 12px; border-radius: 14px; }
   .film-player-title { font-size: 16px; }
   .film-player-bar, .film-player-navigation { gap: 8px; }
