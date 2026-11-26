@@ -3482,7 +3482,7 @@ p.cv-item-title {
 }
 .project-stack-left { left: 34.2%; top: 49%; width: 30.5%; aspect-ratio: 1; z-index: 1; --stack-angle: -16deg; }
 .project-stack-center { left: 50%; top: 43%; width: 46%; z-index: 2; --stack-angle: 0deg; }
-.project-stack-right { left: 67%; top: 66%; width: 34.5%; z-index: 3; --stack-angle: 3.5deg; }
+.project-stack-right { left: 67%; top: 48%; width: 34.5%; z-index: 3; --stack-angle: 3.5deg; }
 .project-card .project-card-stack img,
 .project-card:hover .project-card-stack img,
 .project-card:focus-visible .project-card-stack img {
