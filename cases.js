@@ -198,26 +198,34 @@
     const lang = document.documentElement.lang === "en" ? "en" : "ru";
     const copy = (ru, en) => lang === "en" ? en : ru;
     const dialog = el("dialog", "film-player", { "aria-labelledby": "film-player-title" });
-    const bar = el("div", "film-player-bar");
     const title = el("h2", "film-player-title film-visually-hidden", { id: "film-player-title" });
-    const close = el("button", "film-player-button", { type: "button", autofocus: "autofocus" });
-    close.textContent = copy("Закрыть", "Close");
-    bar.append(title, close);
-    const video = el("video", "film-player-video", { controls: "controls", playsinline: "playsinline", preload: "none" });
+    const close = el("button", "film-player-button film-player-close", { type: "button", autofocus: "autofocus", "aria-label": copy("Закрыть", "Close") });
+    close.innerHTML = '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15"/></svg>';
+    const stage = el("div", "film-player-media");
+    const video = el("video", "film-player-video", { playsinline: "playsinline", preload: "none" });
+    const toggle = el("button", "film-player-toggle", { type: "button", "aria-label": copy("Пауза", "Pause") });
+    toggle.innerHTML = '<span aria-hidden="true">▶</span>';
+    stage.append(video, toggle);
     const error = el("p", "film-player-error", { role: "status" });
     error.hidden = true;
     error.append(document.createTextNode(copy("Не удалось воспроизвести видео. ", "The video could not be played. ")));
     const direct = el("a", "", { target: "_blank", rel: "noopener" });
     direct.textContent = copy("Открыть файл", "Open video file");
     error.append(direct);
-    const navigation = el("div", "film-player-navigation");
-    const prev = el("button", "film-player-button", { type: "button" });
-    prev.textContent = copy("Предыдущее", "Previous");
-    const count = el("span", "film-player-count");
-    const next = el("button", "film-player-button", { type: "button" });
-    next.textContent = copy("Следующее", "Next");
-    navigation.append(prev, count, next);
-    dialog.append(bar, video, error, navigation);
+    const prev = el("button", "film-player-button film-player-prev", { type: "button", "aria-label": copy("Предыдущее", "Previous") });
+    prev.innerHTML = '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="m12 5-5 5 5 5"/></svg>';
+    const next = el("button", "film-player-button film-player-next", { type: "button", "aria-label": copy("Следующее", "Next") });
+    next.innerHTML = '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="m8 5 5 5-5 5"/></svg>';
+    dialog.append(title, stage, close, prev, next, error);
+    const syncPlayback = () => {
+      stage.classList.toggle("is-playing", !video.paused && !video.ended);
+      toggle.setAttribute("aria-label", video.paused || video.ended ? copy("Воспроизвести", "Play") : copy("Пауза", "Pause"));
+    };
+    toggle.addEventListener("click", () => {
+      if (video.paused || video.ended) video.play().catch(syncPlayback);
+      else video.pause();
+    });
+    ["play", "pause", "ended"].forEach((event) => video.addEventListener(event, syncPlayback));
     let current = start;
     const show = (index) => {
       current = (index + films.length) % films.length;
@@ -225,12 +233,12 @@
       video.pause();
       error.hidden = true;
       title.textContent = pick(film.title, lang);
+      dialog.classList.toggle("is-portrait", !!film.portrait);
       video.setAttribute("aria-label", title.textContent);
       video.poster = resolveSrc(film.poster);
       video.src = resolveSrc(film.src);
       direct.href = video.src;
-      count.textContent = `${current + 1} / ${films.length}`;
-      video.play().catch(() => { /* Native controls remain available if autoplay is denied. */ });
+      video.play().catch(syncPlayback);
     };
     close.addEventListener("click", () => dialog.close());
     prev.addEventListener("click", () => show(current - 1));
@@ -242,8 +250,6 @@
       if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close();
     });
     dialog.addEventListener("keydown", (event) => {
-      // Leave the player's native seeking and volume shortcuts intact.
-      if (event.target === video) return;
       if (event.key === "ArrowLeft") { event.preventDefault(); show(current - 1); }
       if (event.key === "ArrowRight") { event.preventDefault(); show(current + 1); }
     });
