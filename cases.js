@@ -388,7 +388,7 @@
         media.classList.add("project-card-stack");
         ["left", "center", "right"].forEach((position, index) => {
           const layer = el("span", `project-stack-layer project-stack-${position}`);
-          layer.append(el("img", "", { src: resolveSrc(item.previewStack[index]), alt: "", width: "480", height: "560", loading: "lazy", decoding: "async" }));
+          layer.append(el("img", "", { src: resolveSrc(item.previewStack[index]), alt: "", width: "480", height: position === "left" ? "480" : "560", loading: "lazy", decoding: "async" }));
           media.append(layer);
         });
       } else {
