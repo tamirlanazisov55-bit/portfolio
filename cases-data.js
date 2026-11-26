@@ -501,6 +501,7 @@ window.CASES = [
   "hoverPoster": "./assets/video/in-between/bosphorus.webp",
   "title": "Между делом",
   "titleEn": "In Between",
+  "previewStack": ["./assets/canvas-stacks/in-between-left.webp", "./assets/canvas-stacks/in-between-center.webp", "./assets/canvas-stacks/in-between-right.webp"],
   "year": "",
   "cover": "./assets/video/in-between/bosphorus.webp",
   "subtitle": {
@@ -756,6 +757,7 @@ window.CASES = [
 },
   {
     slug: "overlock",
+    previewStack: ["./assets/canvas-stacks/overlock-left.webp", "./assets/canvas-stacks/overlock-center.webp", "./assets/canvas-stacks/overlock-right.webp"],
     chips: { ru: ["Брендинг", "UI", "AI"], en: ["Branding", "UI", "AI"] },
     sections: ["canvas"],
     hover: "./assets/cases/malbert-overlock-card.png",
@@ -797,6 +799,7 @@ window.CASES = [
   },
   {
     slug: "turk",
+    previewStack: ["./assets/canvas-stacks/turk-left.webp", "./assets/canvas-stacks/turk-center.webp", "./assets/canvas-stacks/turk-right.webp"],
     chips: { ru: ["AI", "Motion"], en: ["AI", "Motion"] },
     sections: ["canvas"],
     hover: "./assets/cases/turk-hover.mp4",
@@ -824,6 +827,7 @@ window.CASES = [
   },
   {
     slug: "icons-challenge",
+    previewStack: ["./assets/canvas-stacks/icons-left.webp", "./assets/canvas-stacks/icons-center.webp", "./assets/canvas-stacks/icons-right.webp"],
     chips: { ru: ["Иконки"], en: ["Icons"] },
     sections: ["canvas"],
     hover: "",

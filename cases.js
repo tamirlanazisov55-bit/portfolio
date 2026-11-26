@@ -382,26 +382,37 @@
       const card = el("a", "project-card", { href: `./cases/${item.slug}` });
 
       const media = el("div", "project-card-media");
-      media.append(el("img", "project-card-cover", { src: resolveSrc(item.cover), alt: item.title, loading: "lazy", decoding: "async" }));
-      if (item.hover && isVideoFile(item.hover)) {
-        media.classList.add("has-hover");
-        const video = el("video", "project-card-hover", { poster: resolveSrc(item.hoverPoster || posterOf(item.hover)), preload: "none", "aria-hidden": "true" });
-        video.muted = true;
-        video.loop = true;
-        video.playsInline = true;
-        media.append(video);
-        card.addEventListener("pointerenter", () => {
-          if (!video.src) video.src = resolveSrc(item.hover);
-          video.play().catch(() => {});
+      const hasStack = section === "canvas" && Array.isArray(item.previewStack) && item.previewStack.length === 3;
+      if (hasStack) {
+        card.classList.add("project-card-stacked");
+        media.classList.add("project-card-stack");
+        ["left", "center", "right"].forEach((position, index) => {
+          const layer = el("span", `project-stack-layer project-stack-${position}`);
+          layer.append(el("img", "", { src: resolveSrc(item.previewStack[index]), alt: "", width: "480", height: "560", loading: "lazy", decoding: "async" }));
+          media.append(layer);
         });
-        card.addEventListener("pointerleave", () => video.pause());
-      } else if (item.hover) {
-        media.classList.add("has-hover");
-        media.append(el("img", "project-card-hover", { src: resolveSrc(item.hover), alt: "", loading: "lazy", decoding: "async", "aria-hidden": "true" }));
+      } else {
+        media.append(el("img", "project-card-cover", { src: resolveSrc(item.cover), alt: item.title, loading: "lazy", decoding: "async" }));
+        if (item.hover && isVideoFile(item.hover)) {
+          media.classList.add("has-hover");
+          const video = el("video", "project-card-hover", { poster: resolveSrc(item.hoverPoster || posterOf(item.hover)), preload: "none", "aria-hidden": "true" });
+          video.muted = true;
+          video.loop = true;
+          video.playsInline = true;
+          media.append(video);
+          card.addEventListener("pointerenter", () => {
+            if (!video.src) video.src = resolveSrc(item.hover);
+            video.play().catch(() => {});
+          });
+          card.addEventListener("pointerleave", () => video.pause());
+        } else if (item.hover) {
+          media.classList.add("has-hover");
+          media.append(el("img", "project-card-hover", { src: resolveSrc(item.hover), alt: "", loading: "lazy", decoding: "async", "aria-hidden": "true" }));
+        }
       }
       const badges = ribbonBadges(item, "project-card-ribbons");
       if (badges) media.append(badges);
-      if (item.chips && item.chips.ru.length) {
+      if (!hasStack && item.chips && item.chips.ru.length) {
         const tags = el("div", "project-card-tags");
         item.chips.ru.forEach((label, i) => {
           const tag = i18n("span", "project-card-tag type-button", { ru: label, en: item.chips.en[i] || label });
