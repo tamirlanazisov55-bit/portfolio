@@ -3346,3 +3346,115 @@ p.cv-item-title {
     transform: translate3d(0, 0, 0);
   }
 }
+
+/* Personal video diary: lightweight stills, one on-demand player. */
+.case-film-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-auto-rows: clamp(110px, 14vw, 300px);
+  gap: calc(10px * var(--display-scale));
+}
+.case-film-tile {
+  position: relative;
+  grid-column: span 2;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--card-radius);
+  background: #18282c;
+  color: white;
+  text-align: left;
+  cursor: pointer;
+}
+.case-film-tile.is-featured { grid-column: span 4; grid-row: span 2; }
+.case-film-tile.is-portrait { grid-column: span 2; grid-row: span 3; }
+.case-film-tile .case-media-img,
+.case-film-tile .case-media-img:not(.is-loaded) {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  object-fit: cover;
+  transition: transform 600ms ease;
+}
+.case-film-tile:hover .case-media-img { transform: scale(1.03); }
+.case-film-tile:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; }
+.case-film-caption {
+  position: absolute;
+  inset: auto 0 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 46px 18px 18px;
+  background: linear-gradient(transparent, rgb(0 0 0 / 70%));
+  font-size: 14px;
+  line-height: 1.3;
+}
+.case-film-play {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  border: 1px solid rgb(255 255 255 / 65%);
+  border-radius: 50%;
+  font-size: 11px;
+  padding-left: 2px;
+}
+.case-film-duration { margin-left: auto; font-variant-numeric: tabular-nums; opacity: .8; }
+.case-film-tile.is-portrait .case-film-caption { flex-wrap: wrap; padding-inline: 12px; }
+.case-film-tile.is-portrait .case-film-name { width: 100%; order: 2; }
+.film-player {
+  width: min(1200px, calc(100vw - 40px));
+  max-width: none;
+  max-height: calc(100dvh - 40px);
+  margin: auto;
+  padding: 16px;
+  overflow: auto;
+  border: 0;
+  border-radius: 20px;
+  background: #131313;
+  color: #fff;
+}
+.film-player::backdrop { background: rgb(0 0 0 / 88%); }
+.film-player-bar, .film-player-navigation { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.film-player-bar { margin-bottom: 12px; }
+.film-player-title { margin: 0; font-size: 18px; font-weight: 500; }
+.film-player-button {
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 1px solid #555;
+  border-radius: 24px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+.film-player-button:hover { background: #333; }
+.film-player-button:focus-visible { outline: 2px solid white; outline-offset: 3px; }
+.film-player-video { display: block; width: 100%; height: min(68dvh, 675px); background: #000; object-fit: contain; border-radius: 8px; }
+.film-player-navigation { margin-top: 12px; }
+.film-player-count { font-size: 14px; font-variant-numeric: tabular-nums; color: #bbb; }
+.film-player-error { font-size: 16px; }
+.film-player-error a { color: inherit; text-decoration: underline; }
+@media (max-width: 1000px) {
+  .case-film-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: auto; }
+  .case-film-tile, .case-film-tile.is-portrait { grid-column: span 1; grid-row: auto; aspect-ratio: 16 / 10; }
+  .case-film-tile.is-featured { grid-column: span 2; grid-row: auto; aspect-ratio: 16 / 9; }
+  .case-film-tile.is-portrait { aspect-ratio: 9 / 16; }
+}
+@media (max-width: 560px) {
+  .case-film-grid { grid-template-columns: 1fr; }
+  .case-film-tile, .case-film-tile.is-featured, .case-film-tile.is-portrait { grid-column: 1; }
+  .case-film-tile.is-portrait { max-height: 75svh; }
+  .case-film-tile.is-portrait .case-film-caption { flex-wrap: nowrap; padding-inline: 18px; }
+  .case-film-tile.is-portrait .case-film-name { width: auto; order: 0; }
+  .film-player { width: calc(100vw - 16px); max-height: calc(100dvh - 16px); padding: 12px; border-radius: 14px; }
+  .film-player-title { font-size: 16px; }
+  .film-player-bar, .film-player-navigation { gap: 8px; }
+  .film-player-button { padding-inline: 10px; }
+  .film-player-video { height: 62dvh; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .case-film-tile .case-media-img { transition: none; }
+}

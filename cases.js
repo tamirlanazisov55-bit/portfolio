@@ -177,6 +177,93 @@
     return grid;
   }
 
+  // Personal films: posters only until a visitor explicitly opens the player.
+  function renderFilmGrid(entry) {
+    const grid = el("section", "case-film-grid", { "aria-label": "Video diary" });
+    entry.items.forEach((film, index) => {
+      const button = el("button", "case-film-tile" + (film.portrait ? " is-portrait" : "") + (index === 0 ? " is-featured" : ""), { type: "button" });
+      const image = mediaImage(film.poster, { eager: index === 0, alt: "" });
+      image.sizes = "(max-width: 560px) 100vw, (max-width: 1000px) 50vw, 65vw";
+      const caption = el("span", "case-film-caption");
+      const play = el("span", "case-film-play", { "aria-hidden": "true" });
+      play.textContent = "▶";
+      caption.append(play, i18n("span", "case-film-name", film.title), el("span", "case-film-duration"));
+      caption.lastChild.textContent = film.duration;
+      button.append(image, caption);
+      button.addEventListener("click", () => openFilmPlayer(entry.items, index, button));
+      grid.append(button);
+    });
+    return grid;
+  }
+
+  function openFilmPlayer(films, start, trigger) {
+    const lang = document.documentElement.lang === "en" ? "en" : "ru";
+    const copy = (ru, en) => lang === "en" ? en : ru;
+    const dialog = el("dialog", "film-player", { "aria-labelledby": "film-player-title" });
+    const bar = el("div", "film-player-bar");
+    const title = el("h2", "film-player-title", { id: "film-player-title" });
+    const close = el("button", "film-player-button", { type: "button", autofocus: "autofocus" });
+    close.textContent = copy("Закрыть", "Close");
+    bar.append(title, close);
+    const video = el("video", "film-player-video", { controls: "controls", playsinline: "playsinline", preload: "none" });
+    const error = el("p", "film-player-error", { role: "status" });
+    error.hidden = true;
+    error.append(document.createTextNode(copy("Не удалось воспроизвести видео. ", "The video could not be played. ")));
+    const direct = el("a", "", { target: "_blank", rel: "noopener" });
+    direct.textContent = copy("Открыть файл", "Open video file");
+    error.append(direct);
+    const navigation = el("div", "film-player-navigation");
+    const prev = el("button", "film-player-button", { type: "button" });
+    prev.textContent = copy("Предыдущее", "Previous");
+    const count = el("span", "film-player-count");
+    const next = el("button", "film-player-button", { type: "button" });
+    next.textContent = copy("Следующее", "Next");
+    navigation.append(prev, count, next);
+    dialog.append(bar, video, error, navigation);
+    let current = start;
+    const show = (index) => {
+      current = (index + films.length) % films.length;
+      const film = films[current];
+      video.pause();
+      error.hidden = true;
+      title.textContent = pick(film.title, lang);
+      video.setAttribute("aria-label", title.textContent);
+      video.poster = resolveSrc(film.poster);
+      video.src = resolveSrc(film.src);
+      direct.href = video.src;
+      count.textContent = `${current + 1} / ${films.length}`;
+      video.play().catch(() => { /* Native controls remain available if autoplay is denied. */ });
+    };
+    close.addEventListener("click", () => dialog.close());
+    prev.addEventListener("click", () => show(current - 1));
+    next.addEventListener("click", () => show(current + 1));
+    video.addEventListener("error", () => { error.hidden = false; });
+    dialog.addEventListener("click", (event) => {
+      if (event.target !== dialog) return;
+      const rect = dialog.getBoundingClientRect();
+      if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close();
+    });
+    dialog.addEventListener("keydown", (event) => {
+      // Leave the player's native seeking and volume shortcuts intact.
+      if (event.target === video) return;
+      if (event.key === "ArrowLeft") { event.preventDefault(); show(current - 1); }
+      if (event.key === "ArrowRight") { event.preventDefault(); show(current + 1); }
+    });
+    const previousOverflow = document.body.style.overflow;
+    dialog.addEventListener("close", () => {
+      video.pause();
+      video.removeAttribute("src");
+      video.load();
+      dialog.remove();
+      document.body.style.overflow = previousOverflow;
+      trigger.focus({ preventScroll: true });
+    }, { once: true });
+    document.body.append(dialog);
+    document.body.style.overflow = "hidden";
+    dialog.showModal();
+    show(start);
+  }
+
   function openLightbox(items, start = 0) {
     const list = Array.isArray(items) ? items : [items];
     let current = start;
@@ -321,8 +408,7 @@
       }
 
       const head = el("div", "project-card-head");
-      const name = el("h2", "type-body-s");
-      name.textContent = item.title;
+      const name = i18n("h2", "type-body-s", item.titleEn ? { ru: item.title, en: item.titleEn } : item.title);
       const year = el("span", "type-body-s project-card-year");
       year.textContent = item.year;
       head.append(name, year);
@@ -362,8 +448,8 @@
     const arrow = el("span", "case-back-arrow", { "aria-hidden": "true" });
     arrow.textContent = "←";
     back.append(arrow, i18n("span", "", inProjects ? ui.back : ui.backCanvas));
-    const title = el("h1", "case-title");
-    title.textContent = item.title;
+    const title = item.titleEn ? i18n("h1", "case-title", { ru: item.title, en: item.titleEn }) : el("h1", "case-title");
+    if (!item.titleEn) title.textContent = item.title;
     const titleBadges = ribbonBadges(item, "case-title-ribbons");
     if (titleBadges) title.append(titleBadges);
     hero.append(back, title, i18n("p", "type-body-l case-subtitle", item.subtitle));
@@ -422,11 +508,15 @@
     const media = el("section", "case-media");
     const grids = [];
     item.media.forEach((entry, i) => {
-      if (typeof entry === "object" && entry.type === "grid") grids.push(renderGrid3(entry));
+      if (typeof entry === "object" && entry.type === "film-grid") grids.push(renderFilmGrid(entry));
+      else if (typeof entry === "object" && entry.type === "grid") grids.push(renderGrid3(entry));
       else media.append(renderMediaItem(entry, i, item.title));
     });
 
-    root.append(hero, info, item.article ? renderArticle(item) : media, ...grids);
+    root.append(hero, info);
+    if (item.article) root.append(renderArticle(item));
+    else if (media.childNodes.length) root.append(media);
+    root.append(...grids);
 
     // Credits
     if (item.credits && item.credits.length) {
@@ -454,8 +544,7 @@
       nav.append(i18n("p", "type-body-s case-next-label", ui.next));
       const card = el("a", "case-next-card", { href: `./cases/${next.slug}` });
       const text = el("div", "case-next-text");
-      const nextTitle = el("span", "case-next-title");
-      nextTitle.textContent = next.title;
+      const nextTitle = i18n("span", "case-next-title", next.titleEn ? { ru: next.title, en: next.titleEn } : next.title);
       text.append(nextTitle, i18n("span", "type-body-l case-next-subtitle", next.subtitle));
       const thumb = el("div", "case-next-thumb");
       thumb.append(el("img", "", { src: resolveSrc(next.cover), alt: next.title, loading: "lazy", decoding: "async" }));
@@ -475,7 +564,9 @@
       navPill.append(extra);
     }
 
-    document.title = `${item.title} — Азисов Тамирлан`;
+    const updateTitle = () => { document.title = `${document.documentElement.lang === "en" && item.titleEn ? item.titleEn : item.title} — Азисов Тамирлан`; };
+    updateTitle();
+    if (item.titleEn) new MutationObserver(updateTitle).observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
 
     // Чистый адрес без .html
     if (location.protocol !== "file:" && location.pathname.endsWith(".html")) {

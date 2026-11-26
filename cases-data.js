@@ -482,6 +482,277 @@ window.CASES = [
       },
     ],
   },
+{
+  "slug": "in-between",
+  "chips": {
+    "ru": [
+      "Видео",
+      "Личное"
+    ],
+    "en": [
+      "Film",
+      "Personal"
+    ]
+  },
+  "sections": [
+    "canvas"
+  ],
+  "hover": "",
+  "title": "Между делом",
+  "titleEn": "In Between",
+  "year": "",
+  "cover": "./assets/video/in-between/cover.webp",
+  "subtitle": {
+    "ru": "Личный видеодневник",
+    "en": "A personal video diary"
+  },
+  "tags": {
+    "ru": [
+      "Видео",
+      "Съёмка",
+      "Монтаж",
+      "Цвет"
+    ],
+    "en": [
+      "Film",
+      "Cinematography",
+      "Editing",
+      "Colour"
+    ]
+  },
+  "role": {
+    "ru": "Съёмка и монтаж",
+    "en": "Filming & editing"
+  },
+  "client": {
+    "ru": "Личный проект",
+    "en": "Personal project"
+  },
+  "website": "",
+  "behance": "",
+  "summary": {
+    "ru": "Между работой и повседневными делами снимаю то, что хочется запомнить: свет на воде, улицы незнакомого города, дорогу и маленькие паузы. Здесь — короткие видеозарисовки из поездок. Без большого сюжета, просто моменты и настроение.",
+    "en": "Between work and everyday life, I film things I want to remember: light on the water, unfamiliar streets, the road and small pauses. A collection of short films from my travels. No big story, just moments and a feeling."
+  },
+  "credits": [],
+  "media": [
+    {
+      "type": "film-grid",
+      "items": [
+        {
+          "src": "./assets/video/in-between/last-light.mp4",
+          "poster": "./assets/video/in-between/last-light.webp",
+          "title": {
+            "ru": "Последний свет",
+            "en": "Last light"
+          },
+          "duration": "0:15",
+          "portrait": false
+        },
+        {
+          "src": "./assets/video/in-between/bosphorus.mp4",
+          "poster": "./assets/video/in-between/bosphorus.webp",
+          "title": {
+            "ru": "Босфор",
+            "en": "Bosphorus"
+          },
+          "duration": "0:11",
+          "portrait": false
+        },
+        {
+          "src": "./assets/video/in-between/yellow-taxis.mp4",
+          "poster": "./assets/video/in-between/yellow-taxis.webp",
+          "title": {
+            "ru": "Жёлтые такси",
+            "en": "Yellow taxis"
+          },
+          "duration": "0:12",
+          "portrait": false
+        },
+        {
+          "src": "./assets/video/in-between/through-the-streets.mp4",
+          "poster": "./assets/video/in-between/through-the-streets.webp",
+          "title": {
+            "ru": "Между улиц",
+            "en": "Between streets"
+          },
+          "duration": "0:13",
+          "portrait": false
+        },
+        {
+          "src": "./assets/video/in-between/by-the-water.mp4",
+          "poster": "./assets/video/in-between/by-the-water.webp",
+          "title": {
+            "ru": "У воды",
+            "en": "By the water"
+          },
+          "duration": "0:24",
+          "portrait": false
+        },
+        {
+          "src": "./assets/video/in-between/passing-ships.mp4",
+          "poster": "./assets/video/in-between/passing-ships.webp",
+          "title": {
+            "ru": "Проходящие корабли",
+            "en": "Passing ships"
+          },
+          "duration": "0:11",
+          "portrait": true
+        },
+        {
+          "src": "./assets/video/in-between/fishermen.mp4",
+          "poster": "./assets/video/in-between/fishermen.webp",
+          "title": {
+            "ru": "Рыбаки",
+            "en": "Fishermen"
+          },
+          "duration": "0:11",
+          "portrait": false
+        },
+        {
+          "src": "./assets/video/in-between/neighbourhood.mp4",
+          "poster": "./assets/video/in-between/neighbourhood.webp",
+          "title": {
+            "ru": "По соседству",
+            "en": "Around the corner"
+          },
+          "duration": "0:12",
+          "portrait": false
+        },
+        {
+          "src": "./assets/video/in-between/evening-mosque.mp4",
+          "poster": "./assets/video/in-between/evening-mosque.webp",
+          "title": {
+            "ru": "Вечер у мечети",
+            "en": "Evening by the mosque"
+          },
+          "duration": "0:09",
+          "portrait": false
+        },
+        {
+          "src": "./assets/video/in-between/from-the-ferry.mp4",
+          "poster": "./assets/video/in-between/from-the-ferry.webp",
+          "title": {
+            "ru": "С парома",
+            "en": "From the ferry"
+          },
+          "duration": "0:09",
+          "portrait": true
+        },
+        {
+          "src": "./assets/video/in-between/ferry-tea.mp4",
+          "poster": "./assets/video/in-between/ferry-tea.webp",
+          "title": {
+            "ru": "Чай на пароме",
+            "en": "Tea on the ferry"
+          },
+          "duration": "0:06",
+          "portrait": false
+        },
+        {
+          "src": "./assets/video/in-between/coffee-break.mp4",
+          "poster": "./assets/video/in-between/coffee-break.webp",
+          "title": {
+            "ru": "На кофе",
+            "en": "Coffee break"
+          },
+          "duration": "0:18",
+          "portrait": false
+        },
+        {
+          "src": "./assets/video/in-between/courtyard.mp4",
+          "poster": "./assets/video/in-between/courtyard.webp",
+          "title": {
+            "ru": "Во дворе",
+            "en": "In the courtyard"
+          },
+          "duration": "0:11",
+          "portrait": false
+        },
+        {
+          "src": "./assets/video/in-between/under-the-dome.mp4",
+          "poster": "./assets/video/in-between/under-the-dome.webp",
+          "title": {
+            "ru": "Под куполом",
+            "en": "Under the dome"
+          },
+          "duration": "0:12",
+          "portrait": false
+        },
+        {
+          "src": "./assets/video/in-between/above-the-city.mp4",
+          "poster": "./assets/video/in-between/above-the-city.webp",
+          "title": {
+            "ru": "Над городом",
+            "en": "Above the city"
+          },
+          "duration": "0:11",
+          "portrait": false
+        },
+        {
+          "src": "./assets/video/in-between/after-dark.mp4",
+          "poster": "./assets/video/in-between/after-dark.webp",
+          "title": {
+            "ru": "После заката",
+            "en": "After sunset"
+          },
+          "duration": "0:19",
+          "portrait": false
+        },
+        {
+          "src": "./assets/video/in-between/night-walk.mp4",
+          "poster": "./assets/video/in-between/night-walk.webp",
+          "title": {
+            "ru": "Ночная прогулка",
+            "en": "Night walk"
+          },
+          "duration": "0:24",
+          "portrait": false
+        },
+        {
+          "src": "./assets/video/in-between/side-streets.mp4",
+          "poster": "./assets/video/in-between/side-streets.webp",
+          "title": {
+            "ru": "Переулки",
+            "en": "Side streets"
+          },
+          "duration": "0:09",
+          "portrait": false
+        },
+        {
+          "src": "./assets/video/in-between/across-the-strait.mp4",
+          "poster": "./assets/video/in-between/across-the-strait.webp",
+          "title": {
+            "ru": "Через пролив",
+            "en": "Across the strait"
+          },
+          "duration": "0:13",
+          "portrait": false
+        },
+        {
+          "src": "./assets/video/in-between/waves.mp4",
+          "poster": "./assets/video/in-between/waves.webp",
+          "title": {
+            "ru": "Волны",
+            "en": "Waves"
+          },
+          "duration": "0:19",
+          "portrait": false
+        },
+        {
+          "src": "./assets/video/in-between/on-the-road.mp4",
+          "poster": "./assets/video/in-between/on-the-road.webp",
+          "title": {
+            "ru": "В дороге",
+            "en": "On the road"
+          },
+          "duration": "0:31",
+          "portrait": false
+        }
+      ]
+    }
+  ]
+},
   {
     slug: "overlock",
     chips: { ru: ["Брендинг", "UI", "AI"], en: ["Branding", "UI", "AI"] },
